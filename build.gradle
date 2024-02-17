@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.poly'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+}
+
+ext {
+	set('springCloudVersion', "2021.0.3")
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	// Commons Lang
+	implementation 'org.apache.commons:commons-lang3:3.13.0'
+
+	// Object Mapper
+	implementation 'org.modelmapper:modelmapper:3.1.1'
+	implementation 'com.google.code.gson:gson:2.10.1'
+	// FlywayDB
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	// MySQL
+	runtimeOnly 'mysql:mysql-connector-java:8.0.28'
+	// Jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Redis
+	implementation 'org.springframework.data:spring-data-redis:3.2.1'
+	implementation 'io.lettuce:lettuce-core:6.3.1.RELEASE'
+
+	// Mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	//Cloudinary
+	implementation 'com.cloudinary:cloudinary-http44:1.32.2'
+}
+
+tasks.named('test', Test) {
+	useJUnitPlatform()
+}
