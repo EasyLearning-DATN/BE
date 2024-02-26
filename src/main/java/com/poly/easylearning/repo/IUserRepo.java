@@ -2,6 +2,7 @@ package com.poly.easylearning.repo;
 
 import com.poly.easylearning.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -9,5 +10,8 @@ import java.util.UUID;
 
 @Repository
 public interface IUserRepo extends JpaRepository<User, UUID> {
-	Optional<User> findUserByUsername(String username);
+	Optional<User> findByUsername(String username);
+
+	@Query("SELECT u FROM `User` u JOIN UserInfo ui ON u.id = ui.user.id WHERE ui.email LIKE :email")
+	Optional<User> findByEmail(String email);
 }

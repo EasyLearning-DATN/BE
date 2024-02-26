@@ -1,7 +1,12 @@
 package com.poly.easylearning.exception;
 
-public class DataNotFoundException extends Exception {
-    public DataNotFoundException(String message) {
-        super(message);
+import lombok.Getter;
+
+@Getter
+public class DataNotFoundException extends RuntimeException {
+
+    private final String code;
+    public DataNotFoundException(String code) {
+        this.code = code;
     }
 }

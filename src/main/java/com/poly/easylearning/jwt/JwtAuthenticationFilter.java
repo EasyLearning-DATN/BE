@@ -23,9 +23,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final IJwtService jwtService;
-
     private final UserDetailsService userDetailsService;
-
     private final ITokenRepo tokenRepo;
 
     @Override
@@ -41,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            var isValidToken = tokenRepo.findByToken(jwt).map(t -> !t.isExpired() && !t.isRevoked()).orElse(false);
+            boolean isValidToken = tokenRepo.findByToken(jwt).map(t -> !t.isExpired() && !t.isRevoked()).orElse(false);
             if (jwtService.isValidToken(jwt, userDetails) && isValidToken) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

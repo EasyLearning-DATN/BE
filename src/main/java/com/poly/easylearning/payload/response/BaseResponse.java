@@ -1,4 +1,4 @@
-package com.poly.easylearning.response;
+package com.poly.easylearning.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

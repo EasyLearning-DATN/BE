@@ -111,8 +111,4 @@ public class JwtServiceImpl implements IJwtService {
             return null;
         }
     }
-
-    public long timeResponseTokenBooking(String token) {
-        return TimeUnit.MILLISECONDS.toSeconds(extractExpired(token).getTime());
-    }
 }

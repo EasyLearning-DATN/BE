@@ -31,6 +31,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
     private boolean locked;
     private boolean enable;
 
