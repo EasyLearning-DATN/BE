@@ -1,10 +1,9 @@
 package com.poly.easylearning.service;
 
-import com.poly.easylearning.common.RestResponse;
+import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.dto.LessonDTO;
-import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.exception.DataNotFoundException;
-import com.poly.easylearning.response.LessonResponse;
+import com.poly.easylearning.payload.response.LessonResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

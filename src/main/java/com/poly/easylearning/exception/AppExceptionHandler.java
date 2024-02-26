@@ -24,16 +24,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AppExceptionHandler {
 
-    private final ResponseUtil responseUtil;
-
     @ExceptionHandler(value = ApiRequestException.class)
     public ResponseEntity<Object> handleException(ApiRequestException e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         AppException exception = new AppException(
                 e.getCode(),
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(e.getCode()),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, badRequest);
     }
@@ -46,14 +44,14 @@ public class AppExceptionHandler {
         if (e.getBindingResult().hasErrors()) {
             listError = e.getBindingResult().getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .map(responseUtil::getMessageBundle)
+                    .map(ResponseUtil::getMessageBundle)
                     .toList();
         }
         AppException exception = new AppException(
                 ResourceBundleConstant.ERROR_VALIDATION_FIELD,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
                 listError.toString(),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, badRequest);
     }
@@ -64,8 +62,8 @@ public class AppExceptionHandler {
         AppException exception = new AppException(
                 code,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(code),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(code),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
@@ -77,7 +75,7 @@ public class AppExceptionHandler {
                 ResourceBundleConstant.ERROR_SERVER,
                 SystemConstant.STATUS_CODE_INTERNAL,
                 errorMessage,
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, internalServerError);
     }
@@ -98,8 +96,8 @@ public ResponseEntity<Object> handleException(MismatchedInputException e) {
         AppException exception = new AppException(
                 ResourceBundleConstant.SYS_1002,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(ResourceBundleConstant.SYS_1002),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(ResourceBundleConstant.SYS_1002),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
@@ -109,10 +107,19 @@ public ResponseEntity<Object> handleException(MismatchedInputException e) {
         AppException exception = new AppException(
                 e.getCode(),
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(e.getCode()),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
-
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<Object> handleException(DataNotFoundException e) {
+        AppException exception = new AppException(
+                e.getCode(),
+                SystemConstant.STATUS_CODE_BAD_REQUEST,
+                ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
+        );
+        return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
+    }
 }
