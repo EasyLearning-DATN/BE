@@ -3,8 +3,8 @@ package com.poly.easylearning.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.poly.easylearning.entity.Image;
-import com.poly.easylearning.repo.ImageRepo;
-import com.poly.easylearning.service.ImageStorageService;
+import com.poly.easylearning.repo.IImageRepo;
+import com.poly.easylearning.service.IImageStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,11 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ImageStorageServiceImpl implements ImageStorageService {
+public class ImageStorageServiceImpl implements IImageStorageService {
 
     private static final String UPLOAD_PRESET = "ml_default";
     private final Cloudinary cloudinary;
-    private final ImageRepo imageRepo;
+    private final IImageRepo imageRepo;
 
     /**
      * Upload images to Cloudinary. If an image with the same name already exists, it will be overwritten.
