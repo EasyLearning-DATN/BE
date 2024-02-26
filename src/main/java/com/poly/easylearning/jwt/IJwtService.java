@@ -31,6 +31,4 @@ public interface IJwtService {
     Boolean isTokenExpired(String token);
 
     Date extractExpired(String token);
-
-    long timeResponseTokenBooking(String token);
 }

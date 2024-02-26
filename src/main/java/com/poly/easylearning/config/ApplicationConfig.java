@@ -1,6 +1,7 @@
 package com.poly.easylearning.config;
 
 import com.poly.easylearning.constant.ResourceBundleConstant;
+import com.poly.easylearning.exception.ApiRequestException;
 import com.poly.easylearning.repo.IUserRepo;
 import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,6 @@ public class ApplicationConfig {
 
     private final IUserRepo userRepo;
 
-    private final ResponseUtil responseUtil;
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -35,8 +34,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepo.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(responseUtil.getMessageBundle(ResourceBundleConstant.USR_2002)));
+        return username -> userRepo.findByUsername(username)
+                .orElseThrow(() -> new ApiRequestException(ResponseUtil.getMessageBundle(ResourceBundleConstant.USR_2002)));
     }
 
     @Bean
