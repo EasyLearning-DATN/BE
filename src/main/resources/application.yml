@@ -51,7 +51,7 @@ spring:
         use_nationalized_character_data: true
         enable_lazy_load_no_trans: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}

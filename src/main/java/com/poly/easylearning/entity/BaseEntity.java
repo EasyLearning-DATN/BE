@@ -40,6 +40,11 @@ public abstract class BaseEntity {
     private LocalDateTime lastModifiedDate;
     @LastModifiedBy
     private String lastModifiedBy;
-    @Column
+    @Column(nullable = false)
     private Boolean isDeleted;
+
+    @PrePersist
+    protected void onCreate() {
+        isDeleted = false;
+    }
 }
