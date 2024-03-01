@@ -14,17 +14,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-@Table(name="lesson")
+@Table(name="question_type")
 @Entity
-public class Lesson extends BaseEntity
-{
+public class QuestionType extends BaseEntity {
     @Column(name = "name", length = 255, nullable = false)
     private String name;
-    private String description;
-
-    @Column(name = "is_public", nullable = false)
-    private boolean isPublic;
-
-    @Column(name = "image_url")
-    private String imageUrl;
 }

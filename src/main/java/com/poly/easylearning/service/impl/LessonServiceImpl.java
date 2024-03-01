@@ -1,44 +1,56 @@
 package com.poly.easylearning.service.impl;
 
 import com.poly.easylearning.constant.ResourceBundleConstant;
+import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
-import com.poly.easylearning.dto.LessonDTO;
+import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.repo.ILessonRepo;
 import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.service.ILessonService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Service
+@Slf4j
+@Transactional
 public class LessonServiceImpl implements ILessonService {
     private final ILessonRepo lessonRepo;
 
     @Override
-    public RestResponse<Page<LessonResponse>> getListLesson(String keyword, PageRequest pageRequest) {
-        return RestResponse.ok(ResourceBundleConstant.LSN_4003, lessonRepo.searchLesson(keyword, pageRequest)
-                .map(LessonResponse::fromLesson));
+    public RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, PageRequest pageRequest) {
+        Page<Lesson> pageReponse = lessonRepo.searchLesson(keyword, pageRequest);
+        List<LessonResponse> lessonResponses = pageReponse.get().map(LessonResponse::fromLesson).collect(Collectors.toList());
+        ListResponse<LessonResponse> listResponse = ListResponse.build(pageReponse.getTotalPages(), lessonResponses);
+        return RestResponse.ok(ResourceBundleConstant.LSN_4003,
+                listResponse);
     }
 
     @Override
     public RestResponse<LessonResponse> getOneLesson(UUID id) throws DataNotFoundException {
-        return lessonRepo.getLessonById(id)
-                .map(LessonResponse::fromLesson)
-                .map(item -> RestResponse.ok(ResourceBundleConstant.LSN_4004, item))
-                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4004));
+        Lesson lesson = lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
+        LessonResponse lessonResponse = LessonResponse.fromLesson(lesson);
+
+        return RestResponse.ok(ResourceBundleConstant.LSN_4004, lessonResponse);
     }
 
     @Override
-    public RestResponse<LessonResponse> createLesson(LessonDTO lessonDTO) {
+    public RestResponse<LessonResponse> createLesson(LessonRequest lessonRequest) {
         Lesson newLesson = Lesson.builder()
-                .name(lessonDTO.getName())
-                .description(lessonDTO.getDescription())
-                .isPublic(lessonDTO.isPublic())
-                .imageUrl(lessonDTO.getImageUrl())
+                .name(lessonRequest.getName())
+                .description(lessonRequest.getDescription())
+                .isPublic(lessonRequest.isPublic())
+                .imageUrl(lessonRequest.getImageUrl())
                 .build();
 
         lessonRepo.save(newLesson);
@@ -47,18 +59,18 @@ public class LessonServiceImpl implements ILessonService {
     }
 
     @Override
-    public RestResponse<LessonResponse> updateLesson(UUID id, LessonDTO lessonDTO) throws DataNotFoundException {
+    public RestResponse<LessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException {
         Lesson existingLesson =
                 lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
-        existingLesson.setName(lessonDTO.getName());
-        existingLesson.setDescription(lessonDTO.getDescription());
-        existingLesson.setPublic(lessonDTO.isPublic());
-        existingLesson.setImageUrl(lessonDTO.getImageUrl());
+        existingLesson.setName(lessonRequest.getName());
+        existingLesson.setDescription(lessonRequest.getDescription());
+        existingLesson.setPublic(lessonRequest.isPublic());
+        existingLesson.setImageUrl(lessonRequest.getImageUrl());
 
         lessonRepo.save(existingLesson);
 
         LessonResponse response = LessonResponse.fromLesson(existingLesson);
-        return RestResponse.accepted(ResourceBundleConstant.LSN_4005, response);
+        return RestResponse.accepted(ResourceBundleConstant.LSN_4008, response);
     }
 
     @Override
