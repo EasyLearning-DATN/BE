@@ -1,5 +1,6 @@
 package com.poly.easylearning.entity;
 
+import com.poly.easylearning.utils.SecurityContextUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -35,11 +37,24 @@ public abstract class BaseEntity {
     @CreatedDate
     private LocalDateTime createdDate;
     @CreatedBy
-    private String createdBy;
+    private UUID createdBy;
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
     @LastModifiedBy
-    private String lastModifiedBy;
-    @Column
+    private UUID lastModifiedBy;
+    @Column(nullable = false)
     private Boolean isDeleted;
+
+    @PrePersist
+    protected void onCreate() {
+        User user = SecurityContextUtils.getCurrentUser();
+        isDeleted = false;
+        createdBy = user != null ? user.getId() : null;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        User user = SecurityContextUtils.getCurrentUser();
+        lastModifiedBy = user != null ? user.getId() : null ;
+    }
 }

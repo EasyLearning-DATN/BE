@@ -44,7 +44,8 @@ public class ApplicationSecurityConfig {
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(SystemConstant.API_PUBLIC + "/**").permitAll()
-                        .requestMatchers(SystemConstant.API_ADMIN + "/**").permitAll() // dev env
+//                        .requestMatchers(SystemConstant.API_ADMIN + "/**").permitAll() // dev env
+//                        .requestMatchers(SystemConstant.API_MEMBER + "/**").permitAll() // dev env
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

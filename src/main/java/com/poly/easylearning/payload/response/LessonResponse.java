@@ -1,4 +1,4 @@
-package com.poly.easylearning.response;
+package com.poly.easylearning.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.easylearning.entity.Lesson;

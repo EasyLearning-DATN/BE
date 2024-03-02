@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,23 +18,22 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "`user_info`")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String email;
 
     @Column(name = "full_name")
     private String fullName;
-    private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "avatar_id")
+    @OneToOne
+    @JoinColumn(name = "avatar")
     private Image avatar;
 
-    private String subscription;
+    private LocalDate dayOfBirth;
+    private boolean isDeleted;
+
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")

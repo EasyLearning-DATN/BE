@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,16 +25,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AppExceptionHandler {
 
-    private final ResponseUtil responseUtil;
-
     @ExceptionHandler(value = ApiRequestException.class)
     public ResponseEntity<Object> handleException(ApiRequestException e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         AppException exception = new AppException(
                 e.getCode(),
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(e.getCode()),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, badRequest);
     }
@@ -44,16 +43,23 @@ public class AppExceptionHandler {
         List<String> listError = new ArrayList<>();
 
         if (e.getBindingResult().hasErrors()) {
+//            List<ObjectError> erros = e.getBindingResult().getAllErrors();
+//            for (ObjectError oe : erros) {
+//                DefaultMessageSourceResolvable dm = new DefaultMessageSourceResolvable(oe);
+//                String message = dm.getDefaultMessage();
+//                String mmmmm = ResponseUtil.getMessageBundle(message);
+//                listError.add(mmmmm);
+//            }
             listError = e.getBindingResult().getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .map(responseUtil::getMessageBundle)
+                    .map(ResponseUtil::getMessageBundle)
                     .toList();
         }
         AppException exception = new AppException(
                 ResourceBundleConstant.ERROR_VALIDATION_FIELD,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
                 listError.toString(),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, badRequest);
     }
@@ -64,11 +70,12 @@ public class AppExceptionHandler {
         AppException exception = new AppException(
                 code,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(code),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(code),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         String errorMessage = Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage();
@@ -77,7 +84,7 @@ public class AppExceptionHandler {
                 ResourceBundleConstant.ERROR_SERVER,
                 SystemConstant.STATUS_CODE_INTERNAL,
                 errorMessage,
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, internalServerError);
     }
@@ -94,12 +101,12 @@ public class AppExceptionHandler {
 //    }
 
     @ExceptionHandler({MismatchedInputException.class})
-public ResponseEntity<Object> handleException(MismatchedInputException e) {
+    public ResponseEntity<Object> handleException(MismatchedInputException e) {
         AppException exception = new AppException(
                 ResourceBundleConstant.SYS_1002,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(ResourceBundleConstant.SYS_1002),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(ResourceBundleConstant.SYS_1002),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
@@ -109,10 +116,20 @@ public ResponseEntity<Object> handleException(MismatchedInputException e) {
         AppException exception = new AppException(
                 e.getCode(),
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
-                responseUtil.getMessageBundle(e.getCode()),
-                responseUtil.currentTimeSeconds()
+                ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
 
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<Object> handleException(DataNotFoundException e) {
+        AppException exception = new AppException(
+                e.getCode(),
+                SystemConstant.STATUS_CODE_BAD_REQUEST,
+                ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
+        );
+        return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
+    }
 }
