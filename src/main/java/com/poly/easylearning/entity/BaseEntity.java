@@ -1,5 +1,6 @@
 package com.poly.easylearning.entity;
 
+import com.poly.easylearning.utils.SecurityContextUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,20 @@ public abstract class BaseEntity {
     private LocalDateTime lastModifiedDate;
     @LastModifiedBy
     private UUID lastModifiedBy;
-    @Column
+
+    @Column(nullable = false)
     private Boolean isDeleted;
+
+    @PrePersist
+    protected void onCreate() {
+        User user = SecurityContextUtils.getCurrentUser();
+        isDeleted = false;
+        createdBy = user != null ? user.getId() : null;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        User user = SecurityContextUtils.getCurrentUser();
+        lastModifiedBy = user != null ? user.getId() : null ;
+    }
 }

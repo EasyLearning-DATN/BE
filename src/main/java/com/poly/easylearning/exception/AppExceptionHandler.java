@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +43,13 @@ public class AppExceptionHandler {
         List<String> listError = new ArrayList<>();
 
         if (e.getBindingResult().hasErrors()) {
+//            List<ObjectError> erros = e.getBindingResult().getAllErrors();
+//            for (ObjectError oe : erros) {
+//                DefaultMessageSourceResolvable dm = new DefaultMessageSourceResolvable(oe);
+//                String message = dm.getDefaultMessage();
+//                String mmmmm = ResponseUtil.getMessageBundle(message);
+//                listError.add(mmmmm);
+//            }
             listError = e.getBindingResult().getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .map(ResponseUtil::getMessageBundle)
@@ -67,6 +75,7 @@ public class AppExceptionHandler {
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         String errorMessage = Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage();
@@ -92,7 +101,7 @@ public class AppExceptionHandler {
 //    }
 
     @ExceptionHandler({MismatchedInputException.class})
-public ResponseEntity<Object> handleException(MismatchedInputException e) {
+    public ResponseEntity<Object> handleException(MismatchedInputException e) {
         AppException exception = new AppException(
                 ResourceBundleConstant.SYS_1002,
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
@@ -112,6 +121,7 @@ public ResponseEntity<Object> handleException(MismatchedInputException e) {
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
     }
+
     @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<Object> handleException(DataNotFoundException e) {
         AppException exception = new AppException(

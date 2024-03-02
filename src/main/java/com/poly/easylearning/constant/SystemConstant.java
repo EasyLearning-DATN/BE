@@ -17,13 +17,22 @@ public class SystemConstant {
 	public static final String API_MEMBER = "/member";
 	public static final String VERSION_1 = "/v1";
 	public static final String API_USER = "/user";
+	public static final String API_ROLE = "/role";
 	public static final String API_USERINFO = "/info";
 	public static final String API_AVATAR = "/avatar";
+	public static final String API_PASSWORD = "/password";
 	public static final String LOCK_USER = "/lock";
+	public static final String API_CHANGE_STATUS = "/change-status";
+	public static final String API_GET_TOKEN_FORGOT_PASSWORD = "/get-token-forgot-pass";
 	public static final String API_FORGOT_PASSWORD = "/forgot-pass";
 	public static final String API_LOGOUT = "/logout";
 	public static final String API_SIGNUP = "/sign-up";
 	public static final String API_AUTHENTICATION = "/authenticate";
+	public static final String API_LESSON = "/lesson";
+	public static final String API_VALID_TOKEN = "/valid-token";
+
+	public static final String API_QUESTION_TYPE = "/question-type";
+
 	public static final String PATH_ID = "/{id}";
 	public static final String ID = "id";
 
@@ -35,4 +44,9 @@ public class SystemConstant {
 	/* Security */
 	public static final String BEARER = "Bearer ";
 	public static final String AUTHORIZATION = "Authorization";
+
+	//Param
+	public static final String CURRENT_PAGE = "currentPage";
+	public static final String LIMIT_PAGE = "limitPage";
+	public static final String NAME = "name";
 }
