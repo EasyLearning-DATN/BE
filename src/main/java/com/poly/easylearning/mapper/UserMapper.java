@@ -30,6 +30,8 @@ public class UserMapper implements Function<User, UserDTO> {
 				.fullName(userInfo.getFullName())
 				.email(userInfo.getEmail())
 				.dayOfBirth(userInfo.getDayOfBirth())
+				.provider(user.getProvider())
+				.locked(user.isLocked())
 				.build();
 	}
 }

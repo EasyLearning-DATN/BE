@@ -9,9 +9,10 @@ import java.util.Objects;
 public class SecurityContextUtils {
 	public static User getCurrentUser(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(Objects.isNull(authentication)){
+		if(Objects.isNull(authentication) || authentication.getPrincipal().equals("anonymousUser")){
 			return null;
 		}
+
 		return (User)authentication.getPrincipal();
 	}
 }

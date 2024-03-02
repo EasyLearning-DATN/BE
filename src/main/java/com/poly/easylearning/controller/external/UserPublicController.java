@@ -33,10 +33,16 @@ public class UserPublicController {
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(authService.authenticate(authRequest));
 	}
-	@PostMapping(SystemConstant.API_FORGOT_PASSWORD)
-	public ResponseEntity<?> forgotPassword(
-			@Valid @RequestBody UserForgotPasswordRequest request
+
+	//generate token forgot password
+	@GetMapping(SystemConstant.API_GET_TOKEN_FORGOT_PASSWORD)
+	public ResponseEntity<?> generateCodeForgotPassword(@RequestParam(name = "email") String email) {
+		return new ResponseEntity<>(userService.generateTokenForgotPass(email), HttpStatus.OK);
+	}
+	@GetMapping(SystemConstant.API_VALID_TOKEN)
+	public ResponseEntity<?> validTokenForgotPass(
+			@RequestParam(name = "token") String token
 	) {
-		return new ResponseEntity<>(userService.forgotPassword(request), HttpStatus.OK);
+		return new ResponseEntity<>(userService.validTokenForgotPass(token), HttpStatus.OK);
 	}
 }

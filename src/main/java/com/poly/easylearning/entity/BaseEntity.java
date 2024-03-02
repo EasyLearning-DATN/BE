@@ -15,7 +15,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -47,12 +46,14 @@ public abstract class BaseEntity {
 
     @PrePersist
     protected void onCreate() {
+        User user = SecurityContextUtils.getCurrentUser();
         isDeleted = false;
-        createdBy = Objects.requireNonNull(SecurityContextUtils.getCurrentUser()).getId();
+        createdBy = user != null ? user.getId() : null;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        lastModifiedBy = Objects.requireNonNull(SecurityContextUtils.getCurrentUser()).getId();
+        User user = SecurityContextUtils.getCurrentUser();
+        lastModifiedBy = user != null ? user.getId() : null ;
     }
 }

@@ -2,34 +2,38 @@ package com.poly.easylearning.service.impl;
 
 import com.poly.easylearning.constant.DefaultValueConstants;
 import com.poly.easylearning.dto.UserDTO;
-import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
+import com.poly.easylearning.entity.*;
+import com.poly.easylearning.enums.TokenType;
+import com.poly.easylearning.enums.UserStatus;
+import com.poly.easylearning.payload.request.*;
 import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.constant.UploadFolder;
-import com.poly.easylearning.entity.Image;
-import com.poly.easylearning.entity.RoleApp;
-import com.poly.easylearning.entity.User;
-import com.poly.easylearning.entity.UserInfo;
 import com.poly.easylearning.enums.Provider;
 import com.poly.easylearning.enums.RoleName;
 import com.poly.easylearning.exception.ApiRequestException;
 import com.poly.easylearning.jwt.IJwtService;
 import com.poly.easylearning.mapper.UserMapper;
-import com.poly.easylearning.payload.request.UserRQ;
-import com.poly.easylearning.payload.request.UserUpdateRQ;
+import com.poly.easylearning.repo.ITokenRepo;
 import com.poly.easylearning.repo.IUserRepo;
 import com.poly.easylearning.service.IEmailService;
 import com.poly.easylearning.service.IImageStorageService;
 import com.poly.easylearning.service.RoleService;
 import com.poly.easylearning.service.IUserService;
+import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +54,8 @@ public class IUserServiceImpl implements IUserService {
     private final UserMapper userMapper;
     private final IImageStorageService imageStorageService;
     private final IEmailService emailService;
+    private final ITokenRepo tokenRepo;
+
 
     @Override
     public RestResponse register(UserRQ userRQ) {
@@ -57,9 +63,9 @@ public class IUserServiceImpl implements IUserService {
         if(checkUsername.isPresent()){
             throw new ApiRequestException(ResourceBundleConstant.USR_2003);
         }
-        Optional<User> checkEmail = userRepo.findByEmail(userRQ.getUsername());
-        if(checkEmail.isPresent() && Provider.LOCAL.equals(userRQ.getProvider())){
-            throw new ApiRequestException(ResourceBundleConstant.USR_2003);
+        Optional<User> checkEmail = userRepo.findByEmail(userRQ.getEmail());
+        if(checkEmail.isPresent()){
+            throw new ApiRequestException(ResourceBundleConstant.USR_2015);
         }
         User newUser = User.builder()
                 .username(userRQ.getUsername())
@@ -70,15 +76,13 @@ public class IUserServiceImpl implements IUserService {
                 .isDeleted(false)
                 .build();
         /* Check if the role exists in the database, add a new ROLE_USER if it doesn't exist.*/
-        Set<RoleApp> roles = new HashSet<>();
+        List<UserRole> userRoles = new ArrayList<>();
         RoleApp roleApp = roleService.findRole(RoleName.ROLE_USER)
                 .orElseGet(() -> {
                     RoleApp newRole = new RoleApp();
                     newRole.setName(RoleName.ROLE_USER);
                     return roleService.create(newRole);
                 });
-        roles.add(roleApp);
-        newUser.setRoles(roles); // set role for new Account
         UserInfo userInfo = UserInfo.builder() // update:: create default img
                 .email(userRQ.getEmail())
                 .fullName(userRQ.getFullName())
@@ -87,9 +91,16 @@ public class IUserServiceImpl implements IUserService {
                 .isDeleted(false)
                 .build();
         newUser.setUserInfo(userInfo); // set user info for new Account
-        userRepo.save(newUser);
-        String token = jwtService.generateToken(newUser);
-        return RestResponse.ok(ResourceBundleConstant.USR_2004, token);
+//        User userSaved = userRepo.save(newUser);
+        userRoles.add(
+                UserRole.builder()
+                        .role(roleApp)
+                        .user(newUser)
+                        .build()
+        );
+        newUser.setUserRoles(userRoles);
+        User userSaved = userRepo.save(newUser);
+        return RestResponse.ok(ResourceBundleConstant.USR_2004, userMapper.apply(userSaved));
     }
     @Override
     public RestResponse getInfo(User user){
@@ -105,14 +116,20 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public RestResponse updateInfo(User oldUser, UserUpdateRQ userUpdateRQ) {
         checkUserIsLocked(oldUser);
-        UserInfo userInfo = oldUser.getUserInfo();
-        userInfo.setFullName(userUpdateRQ.getFullName());
-        userInfo.setEmail(userUpdateRQ.getEmail());
-        userInfo.setDayOfBirth(userUpdateRQ.getDayOfBirth());
+        UserInfo userInfo = updateUserInfoField(oldUser, userUpdateRQ);
         oldUser.setUserInfo(userInfo);
         User userUpdated = userRepo.save(oldUser);
         return RestResponse.ok(ResourceBundleConstant.USR_2006, userMapper.apply(userUpdated));
     }
+
+    private UserInfo updateUserInfoField(User oldUser, UserUpdateRQ userUpdateRQ) {
+        UserInfo userInfo = oldUser.getUserInfo();
+        userInfo.setFullName(userUpdateRQ.getFullName());
+        userInfo.setEmail(userUpdateRQ.getEmail());
+        userInfo.setDayOfBirth(userUpdateRQ.getDayOfBirth());
+        return userInfo;
+    }
+
     private User findById(UUID userID){
         return userRepo.findById(userID)
                 .orElseThrow(() -> new ApiRequestException(
@@ -144,21 +161,19 @@ public class IUserServiceImpl implements IUserService {
                 ));
     }
     @Override
-    public RestResponse forgotPassword(UserForgotPasswordRequest request) {
-        User user = userRepo.findByEmailAndLocked(request.getEmail(), false)
+    public RestResponse generateTokenForgotPass(String email) {
+        User user = userRepo.findByEmailAndLocked(email, false)
                 .orElseThrow(() -> new ApiRequestException(ResourceBundleConstant.USR_2002));
-        String password = generateRandomPassword();
-        user.setPassword(passwordEncoder.encode(password));
-        User userSave = userRepo.save(user);
-        emailService.send(userSave.getUserInfo().getEmail(), emailService.buildEmailForgotPassword(password),
-                ResourceBundleConstant.USR_2011);
-        return RestResponse.ok(ResourceBundleConstant.USR_2011, user.getId());
+        String token = jwtService.generateToken(user);
+        emailService.send(email, emailService.buildEmailForgotPassword(token),
+                ResponseUtil.getMessageBundle(ResourceBundleConstant.USR_2011));
+        return RestResponse.ok(ResourceBundleConstant.USR_2011, token);
     }
 
     @Override
     public RestResponse findAllByCondition(String name, Optional<Integer> currentPage, Optional<Integer> limitPage) {
-
-        Pageable pageable = PageRequest.of(currentPage.orElse(1), limitPage.orElse(DefaultValueConstants.LIMIT_PAGE));
+        Pageable pageable = ResponseUtil.pageable(currentPage.orElse(1),
+                limitPage.orElse(DefaultValueConstants.LIMIT_PAGE));
         Page<User> users = userRepo.findAllByCondition(name, pageable);
         List<UserDTO> userDTOS = users.stream().map(user -> userMapper.applyForA(user)).toList();
         ListResponse<UserDTO> listResponse = ListResponse.build(users.getTotalPages(), userDTOS);
@@ -166,10 +181,75 @@ public class IUserServiceImpl implements IUserService {
     }
 
     @Override
+    public RestResponse validTokenForgotPass(String token) {
+        String username = jwtService.extractUsername(token);
+        UserDetails userDetails = findByUsername(username);
+        if (jwtService.isValidToken(token, userDetails)) {
+            saveUserToken((User)userDetails, token);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+            return RestResponse.ok(ResourceBundleConstant.USR_2013, token);
+        }
+        return RestResponse.ok(ResourceBundleConstant.USR_2014, "");
+    }
+
+    @Override
+    public RestResponse updatePassword(User user, PasswordUpdate passwordUpdate) {
+        checkUserIsLocked(user);
+        user.setPassword(passwordEncoder.encode(passwordUpdate.getPassword()));
+        userRepo.save(user);
+        return RestResponse.ok(ResourceBundleConstant.USR_2016, "OK");
+    }
+
+    @Override
+    public RestResponse getUserResById(UUID id) {
+        User user = findById(id);
+        return RestResponse.ok(ResourceBundleConstant.USR_2007, userMapper.applyForA(user));
+    }
+
+    @Override
+    public RestResponse changeStatus(UUID userId, UserStatusRQ userStatusRQ) {
+        User user = findById(userId);
+        if(UserStatus.UNLOCK.equals(userStatusRQ.getStatus())){
+            user.setLocked(false);
+            userRepo.save(user);
+            return RestResponse.ok(ResourceBundleConstant.USR_2017, user.getId());
+        }else{
+            return lockAccount(user);
+        }
+    }
+
+    @Override
+    public RestResponse deleteUser(UUID userId) {
+        User user = findById(userId);
+        user.setIsDeleted(true);
+        userRepo.save(user);
+        return RestResponse.ok(ResourceBundleConstant.USR_2018, user.getId());
+    }
+    @Override
+    public RestResponse updateUser(UserUpdateRQ userUpdateRQ, UUID userId) {
+        User oldUser = findById(userId);
+        UserInfo userInfo = updateUserInfoField(oldUser, userUpdateRQ);
+        oldUser.setUserInfo(userInfo);
+        User userUpdated = userRepo.save(oldUser);
+        return RestResponse.ok(ResourceBundleConstant.USR_2006, userMapper.applyForA(userUpdated));
+    }
+
+    @Override
     public RestResponse lockAccount(User user) {
         user.setLocked(true);
         userRepo.save(user);
         return RestResponse.ok(ResourceBundleConstant.USR_2008, user.getId());
+    }
+    private void saveUserToken(User user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .tokenType(TokenType.BEARER)
+                .token(jwtToken)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepo.save(token);
     }
     private String generateRandomPassword() {
         String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

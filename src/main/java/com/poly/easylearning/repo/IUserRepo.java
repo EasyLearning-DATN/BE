@@ -12,15 +12,25 @@ import java.util.UUID;
 
 @Repository
 public interface IUserRepo extends JpaRepository<User, UUID> {
+	@Query("""
+			SELECT u FROM User u
+			WHERE u.username = :username
+			AND u.isDeleted != TRUE
+			""")
 	Optional<User> findByUsername(String username);
 
-	@Query("SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id WHERE ui.email LIKE :email")
+	@Query("""
+			SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id
+			WHERE ui.email LIKE :email
+			AND u.isDeleted != TRUE
+			""")
 	Optional<User> findByEmail(String email);
 
 	@Query("""
 			SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id
 			WHERE ui.email LIKE :email
 			AND u.locked = :locked
+			AND u.isDeleted != TRUE
 			""")
 	Optional<User> findByEmailAndLocked(String email, boolean locked);
 
@@ -28,6 +38,14 @@ public interface IUserRepo extends JpaRepository<User, UUID> {
 	@Query("""
 			SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id
 			WHERE LOWER(ui.fullName) LIKE LOWER(CONCAT('%', :fullName, '%'))
+			AND u.isDeleted != TRUE
 			""")
 	Page<User> findAllByCondition(String fullName, Pageable pageable);
+
+	@Query("""
+			SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id
+			WHERE u.id = :userID
+			AND u.isDeleted != TRUE
+			""")
+	Optional<User> findById(UUID userID);
 }

@@ -2,6 +2,7 @@ package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
 import com.poly.easylearning.entity.User;
+import com.poly.easylearning.payload.request.PasswordUpdate;
 import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
 import com.poly.easylearning.payload.request.UserUpdateRQ;
 import com.poly.easylearning.service.IUserService;
@@ -28,7 +29,7 @@ public class UserMemberController {
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(userService.getInfo(user));
 	}
-	@PostMapping(SystemConstant.API_USERINFO)
+	@PatchMapping(SystemConstant.API_USERINFO)
 	public ResponseEntity<?> updateInfo(
 			@AuthenticationPrincipal User oldUser,
 			@RequestBody UserUpdateRQ userUpdateRQ
@@ -37,7 +38,7 @@ public class UserMemberController {
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(userService.updateInfo(oldUser, userUpdateRQ));
 	}
-	@PatchMapping(SystemConstant.API_USERINFO)
+	@PatchMapping(SystemConstant.API_AVATAR)
 	public ResponseEntity<?> updateAvatar(
 			@AuthenticationPrincipal User user,
 			@RequestParam(name = "avatar") MultipartFile avatarFile
@@ -45,6 +46,15 @@ public class UserMemberController {
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(userService.updateAvatar(user, avatarFile));
+	}
+	@PatchMapping(SystemConstant.API_PASSWORD)
+	public ResponseEntity<?> updatePassword(
+			@AuthenticationPrincipal User user,
+			@RequestBody PasswordUpdate passwordUpdate
+	){
+		return ResponseEntity
+				.status(SystemConstant.STATUS_CODE_SUCCESS)
+				.body(userService.updatePassword(user, passwordUpdate));
 	}
 	@PatchMapping(SystemConstant.LOCK_USER)
 	public ResponseEntity<?> lockAccount(@AuthenticationPrincipal User user) {
