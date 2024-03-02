@@ -1,6 +1,10 @@
 package com.poly.easylearning.service.impl;
 
+import com.poly.easylearning.constant.DefaultValueConstants;
+import com.poly.easylearning.dto.UserDTO;
 import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
+import com.poly.easylearning.payload.response.LessonResponse;
+import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.constant.UploadFolder;
@@ -22,6 +26,9 @@ import com.poly.easylearning.service.RoleService;
 import com.poly.easylearning.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -146,6 +153,16 @@ public class IUserServiceImpl implements IUserService {
         emailService.send(userSave.getUserInfo().getEmail(), emailService.buildEmailForgotPassword(password),
                 ResourceBundleConstant.USR_2011);
         return RestResponse.ok(ResourceBundleConstant.USR_2011, user.getId());
+    }
+
+    @Override
+    public RestResponse findAllByCondition(String name, Optional<Integer> currentPage, Optional<Integer> limitPage) {
+
+        Pageable pageable = PageRequest.of(currentPage.orElse(1), limitPage.orElse(DefaultValueConstants.LIMIT_PAGE));
+        Page<User> users = userRepo.findAllByCondition(name, pageable);
+        List<UserDTO> userDTOS = users.stream().map(user -> userMapper.applyForA(user)).toList();
+        ListResponse<UserDTO> listResponse = ListResponse.build(users.getTotalPages(), userDTOS);
+        return RestResponse.ok(ResourceBundleConstant.USR_2007, listResponse);
     }
 
     @Override

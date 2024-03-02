@@ -8,6 +8,7 @@ import com.poly.easylearning.payload.request.UserRQ;
 import com.poly.easylearning.payload.request.UserUpdateRQ;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -24,4 +25,6 @@ public interface IUserService {
     User findByUsername(String username);
 
     RestResponse forgotPassword(UserForgotPasswordRequest request);
+
+    RestResponse findAllByCondition(String name, Optional<Integer> currentPage, Optional<Integer> limitPage);
 }

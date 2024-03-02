@@ -36,4 +36,9 @@ public class SystemConstant {
 	/* Security */
 	public static final String BEARER = "Bearer ";
 	public static final String AUTHORIZATION = "Authorization";
+
+	//Param
+	public static final String CURRENT_PAGE = "currentPage";
+	public static final String LIMIT_PAGE = "limitPage";
+	public static final String NAME = "name";
 }
