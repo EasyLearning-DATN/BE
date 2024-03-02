@@ -17,7 +17,7 @@ public class UserMapper implements Function<User, UserDTO> {
 				.fullName(userInfo.getFullName())
 				.email(userInfo.getEmail())
 				.dayOfBirth(userInfo.getDayOfBirth())
-				.avatar(userInfo.getAvatar().getUrl())
+				.avatar(userInfo.getAvatar() != null ? userInfo.getAvatar().getUrl() : "")
 				.build();
 	}
 }

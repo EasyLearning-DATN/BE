@@ -14,4 +14,11 @@ public interface IUserRepo extends JpaRepository<User, UUID> {
 
 	@Query("SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id WHERE ui.email LIKE :email")
 	Optional<User> findByEmail(String email);
+
+	@Query("""
+			SELECT u FROM User u JOIN UserInfo ui ON u.id = ui.user.id 
+			WHERE ui.email LIKE :email
+			AND u.locked = :locked
+			""")
+	Optional<User> findByEmailAndLocked(String email, boolean locked);
 }

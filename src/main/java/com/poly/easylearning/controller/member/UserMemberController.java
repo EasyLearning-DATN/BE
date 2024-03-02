@@ -1,10 +1,15 @@
 package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
+import com.poly.easylearning.entity.User;
+import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
 import com.poly.easylearning.payload.request.UserUpdateRQ;
 import com.poly.easylearning.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,32 +22,34 @@ import java.util.UUID;
 @RequestMapping(SystemConstant.API_MEMBER + SystemConstant.VERSION_1 + SystemConstant.API_USER)
 public class UserMemberController {
 	private final IUserService userService;
-	@GetMapping(SystemConstant.API_GET_USERINFO)
-	public ResponseEntity<?> getInfo(@RequestParam(name = "token") String token){
+	@GetMapping(SystemConstant.API_USERINFO)
+	public ResponseEntity<?> getInfo(@AuthenticationPrincipal User user){
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(userService.getInfo(token));
+				.body(userService.getInfo(user));
 	}
-	@PostMapping(SystemConstant.API_UPDATE_USERINFO)
-	public ResponseEntity<?> updateInfo(@RequestBody UserUpdateRQ userUpdateRQ
+	@PostMapping(SystemConstant.API_USERINFO)
+	public ResponseEntity<?> updateInfo(
+			@AuthenticationPrincipal User oldUser,
+			@RequestBody UserUpdateRQ userUpdateRQ
 	){
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(userService.updateInfo(userUpdateRQ));
+				.body(userService.updateInfo(oldUser, userUpdateRQ));
 	}
-	@PatchMapping(SystemConstant.API_UPDATE_AVATAR)
+	@PatchMapping(SystemConstant.API_USERINFO)
 	public ResponseEntity<?> updateAvatar(
-			@RequestParam(name = "id") UUID userID,
+			@AuthenticationPrincipal User user,
 			@RequestParam(name = "avatar") MultipartFile avatarFile
 	){
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(userService.updateAvatar(userID, avatarFile));
+				.body(userService.updateAvatar(user, avatarFile));
 	}
-	@DeleteMapping
-	public ResponseEntity<?> lockAccount(@RequestParam(name = "id") UUID userID) {
+	@PatchMapping(SystemConstant.LOCK_USER)
+	public ResponseEntity<?> lockAccount(@AuthenticationPrincipal User user) {
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(userService.lockAccount(userID));
+				.body(userService.lockAccount(user));
 	}
 }
