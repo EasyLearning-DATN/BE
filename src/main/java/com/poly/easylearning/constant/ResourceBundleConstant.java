@@ -42,4 +42,9 @@ public class ResourceBundleConstant {
     //QuestionType
     public static final String QST_5001 = "QST_5001";
     public static final String QST_5002 = "QST_5002";
+    public static final String QST_5003 = "QST_5003";
+    public static final String QST_5004 = "QST_5004";
+    public static final String QST_5005 = "QST_5005";
+    public static final String QST_5006 = "QST_5006";
+    public static final String QST_5008 = "QST_5008";
 }
