@@ -17,7 +17,7 @@ import java.util.UUID;
 public class BaseResponse {
     private UUID id;
     private LocalDateTime createdDate;
-    private String createdBy;
+    private UUID createdBy;
     private LocalDateTime lastModifiedDate;
-    private String lastModifiedBy;
+    private UUID lastModifiedBy;
 }

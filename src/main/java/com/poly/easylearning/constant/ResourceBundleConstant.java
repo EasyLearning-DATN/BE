@@ -4,6 +4,7 @@ public class ResourceBundleConstant {
 	//system
 	public static final String SYS_1001 = "SYS_1001";
 	public static final String SYS_1002 = "SYS_1002";
+	public static final String SYS_1003 = "SYS_1003";
 
 	//auth
 	public static final String ERROR_VALIDATION_FIELD = "ERROR_VALIDATION_FIELD";

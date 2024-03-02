@@ -35,7 +35,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepo.findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException(ResponseUtil.getMessageBundle(ResourceBundleConstant.USR_2002)));
+                .orElseThrow(() -> new ApiRequestException(ResourceBundleConstant.USR_2002));
     }
 
     @Bean

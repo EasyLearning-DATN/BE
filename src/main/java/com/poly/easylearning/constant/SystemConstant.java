@@ -17,9 +17,10 @@ public class SystemConstant {
 	public static final String API_MEMBER = "/member";
 	public static final String VERSION_1 = "/v1";
 	public static final String API_USER = "/user";
-	public static final String API_GET_USERINFO = "/info";
-	public static final String API_UPDATE_USERINFO = "/update-info";
-	public static final String API_UPDATE_AVATAR = "/update-avatar";
+	public static final String API_USERINFO = "/info";
+	public static final String API_AVATAR = "/avatar";
+	public static final String LOCK_USER = "/lock";
+	public static final String API_FORGOT_PASSWORD = "/forgot-pass";
 	public static final String API_LOGOUT = "/logout";
 	public static final String API_SIGNUP = "/sign-up";
 	public static final String API_AUTHENTICATION = "/authenticate";
