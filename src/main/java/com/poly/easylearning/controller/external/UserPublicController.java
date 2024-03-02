@@ -2,10 +2,13 @@ package com.poly.easylearning.controller.external;
 
 import com.poly.easylearning.constant.SystemConstant;
 import com.poly.easylearning.payload.request.AuthRequest;
+import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
 import com.poly.easylearning.payload.request.UserRQ;
 import com.poly.easylearning.service.AuthService;
 import com.poly.easylearning.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +33,10 @@ public class UserPublicController {
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(authService.authenticate(authRequest));
 	}
-
+	@PostMapping(SystemConstant.API_FORGOT_PASSWORD)
+	public ResponseEntity<?> forgotPassword(
+			@Valid @RequestBody UserForgotPasswordRequest request
+	) {
+		return new ResponseEntity<>(userService.forgotPassword(request), HttpStatus.OK);
+	}
 }
