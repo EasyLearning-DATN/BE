@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class QuestionTypeRequest {
-    @NotBlank(message = "QST_5001")
-    @Size(min = 2, max = 255, message = "QST_5002")
+    @NotBlank(message = "QST_5005")
+    @Size(min = 2, max = 255, message = "QST_5006")
     private String name;
 }

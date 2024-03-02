@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +29,7 @@ public class LessonServiceImpl implements ILessonService {
     @Override
     public RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, PageRequest pageRequest) {
         Page<Lesson> pageReponse = lessonRepo.searchLesson(keyword, pageRequest);
-        List<LessonResponse> lessonResponses = pageReponse.get().map(LessonResponse::fromLesson).collect(Collectors.toList());
+        List<LessonResponse> lessonResponses = pageReponse.get().map(LessonResponse::fromLesson).toList();
         ListResponse<LessonResponse> listResponse = ListResponse.build(pageReponse.getTotalPages(), lessonResponses);
         return RestResponse.ok(ResourceBundleConstant.LSN_4003,
                 listResponse);
@@ -53,8 +52,8 @@ public class LessonServiceImpl implements ILessonService {
                 .imageUrl(lessonRequest.getImageUrl())
                 .build();
 
-        lessonRepo.save(newLesson);
-        LessonResponse response = LessonResponse.fromLesson(newLesson);
+        Lesson lesson = lessonRepo.save(newLesson);
+        LessonResponse response = LessonResponse.fromLesson(lesson);
         return RestResponse.created(ResourceBundleConstant.LSN_4002, response);
     }
 
@@ -67,9 +66,9 @@ public class LessonServiceImpl implements ILessonService {
         existingLesson.setPublic(lessonRequest.isPublic());
         existingLesson.setImageUrl(lessonRequest.getImageUrl());
 
-        lessonRepo.save(existingLesson);
+        Lesson lesson = lessonRepo.save(existingLesson);
 
-        LessonResponse response = LessonResponse.fromLesson(existingLesson);
+        LessonResponse response = LessonResponse.fromLesson(lesson);
         return RestResponse.accepted(ResourceBundleConstant.LSN_4008, response);
     }
 
