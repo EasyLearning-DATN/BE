@@ -42,4 +42,9 @@ public abstract class BaseEntity {
     private UUID lastModifiedBy;
     @Column
     private Boolean isDeleted;
+
+    @PrePersist
+    protected void onCreate() {
+        isDeleted = false;
+    }
 }
