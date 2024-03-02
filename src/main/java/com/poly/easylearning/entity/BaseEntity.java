@@ -47,12 +47,14 @@ public abstract class BaseEntity {
 
     @PrePersist
     protected void onCreate() {
+        User user = SecurityContextUtils.getCurrentUser();
         isDeleted = false;
-        createdBy = Objects.requireNonNull(SecurityContextUtils.getCurrentUser()).getId();
+        createdBy = user != null ? user.getId() : null;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        lastModifiedBy = Objects.requireNonNull(SecurityContextUtils.getCurrentUser()).getId();
+        User user = SecurityContextUtils.getCurrentUser();
+        lastModifiedBy = user != null ? user.getId() : null ;
     }
 }
