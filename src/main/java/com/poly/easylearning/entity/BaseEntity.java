@@ -35,11 +35,11 @@ public abstract class BaseEntity {
     @CreatedDate
     private LocalDateTime createdDate;
     @CreatedBy
-    private String createdBy;
+    private UUID createdBy;
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
     @LastModifiedBy
-    private String lastModifiedBy;
+    private UUID lastModifiedBy;
     @Column
     private Boolean isDeleted;
 }
