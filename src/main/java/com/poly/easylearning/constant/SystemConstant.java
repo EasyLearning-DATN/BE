@@ -27,6 +27,7 @@ public class SystemConstant {
 	public static final String API_LESSON = "/lesson";
 
 	public static final String API_QUESTION_TYPE = "/question-type";
+	public static final String API_ANSWER = "/answer";
 
 	public static final String PATH_ID = "/{id}";
 	public static final String ID = "id";

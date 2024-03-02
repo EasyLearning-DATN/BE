@@ -43,13 +43,6 @@ public class AppExceptionHandler {
         List<String> listError = new ArrayList<>();
 
         if (e.getBindingResult().hasErrors()) {
-//            List<ObjectError> erros = e.getBindingResult().getAllErrors();
-//            for (ObjectError oe : erros) {
-//                DefaultMessageSourceResolvable dm = new DefaultMessageSourceResolvable(oe);
-//                String message = dm.getDefaultMessage();
-//                String mmmmm = ResponseUtil.getMessageBundle(message);
-//                listError.add(mmmmm);
-//            }
             listError = e.getBindingResult().getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .map(ResponseUtil::getMessageBundle)

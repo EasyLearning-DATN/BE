@@ -47,4 +47,18 @@ public class ResourceBundleConstant {
     public static final String QST_5005 = "QST_5005";
     public static final String QST_5006 = "QST_5006";
     public static final String QST_5008 = "QST_5008";
+
+    //Answer
+    public static final String ANS_6001 = "ANS_6001";
+    public static final String ANS_6002 = "ANS_6002";
+    public static final String ANS_6003 = "ANS_6003";
+    public static final String ANS_6004 = "ANS_6004";
+
+    //Question
+    public static final String QUE_7001 = "QUE_7001";
+    public static final String QUE_7002 = "QUE_7002";
+    public static final String QUE_7003 = "QUE_7003";
+    public static final String QUE_7004 = "QUE_7004";
+    public static final String QUE_7007 = "QUE_7003";
+    public static final String QUE_7008 = "QUE_7004";
 }
