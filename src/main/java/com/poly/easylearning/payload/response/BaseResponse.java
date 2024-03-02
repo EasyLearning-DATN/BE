@@ -1,5 +1,6 @@
 package com.poly.easylearning.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,15 @@ import java.util.UUID;
 @SuperBuilder(toBuilder = true)
 public class BaseResponse {
     private UUID id;
+    @JsonProperty("created_date")
     private LocalDateTime createdDate;
-    private String createdBy;
+
+    @JsonProperty("created_by")
+    private UUID createdBy;
+
+    @JsonProperty("last_modified_date")
     private LocalDateTime lastModifiedDate;
-    private String lastModifiedBy;
+
+    @JsonProperty("last_modified_by")
+    private UUID lastModifiedBy;
 }
