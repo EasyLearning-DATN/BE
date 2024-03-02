@@ -22,7 +22,6 @@ import com.poly.easylearning.service.IEmailService;
 import com.poly.easylearning.service.IImageStorageService;
 import com.poly.easylearning.service.RoleService;
 import com.poly.easylearning.service.IUserService;
-import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,7 +54,6 @@ public class IUserServiceImpl implements IUserService {
     private final IImageStorageService imageStorageService;
     private final IEmailService emailService;
     private final ITokenRepo tokenRepo;
-
 
     @Override
     public RestResponse register(UserRQ userRQ) {

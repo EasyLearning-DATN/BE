@@ -41,6 +41,7 @@ public abstract class BaseEntity {
     private LocalDateTime lastModifiedDate;
     @LastModifiedBy
     private UUID lastModifiedBy;
+
     @Column(nullable = false)
     private Boolean isDeleted;
 

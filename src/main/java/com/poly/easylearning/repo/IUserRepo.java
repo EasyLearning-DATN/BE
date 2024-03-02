@@ -48,4 +48,5 @@ public interface IUserRepo extends JpaRepository<User, UUID> {
 			AND u.isDeleted != TRUE
 			""")
 	Optional<User> findById(UUID userID);
+
 }
