@@ -20,4 +20,18 @@ public class UserMapper implements Function<User, UserDTO> {
 				.avatar(userInfo.getAvatar() != null ? userInfo.getAvatar().getUrl() : "")
 				.build();
 	}
+
+	// For Admin manager
+	public UserDTO applyForA(User user) {
+		UserInfo userInfo = user.getUserInfo();
+		return UserDTO.builder()
+				.id(user.getId())
+				.username(user.getUsername())
+				.fullName(userInfo.getFullName())
+				.email(userInfo.getEmail())
+				.dayOfBirth(userInfo.getDayOfBirth())
+				.provider(user.getProvider())
+				.locked(user.isLocked())
+				.build();
+	}
 }
