@@ -22,6 +22,7 @@ import com.poly.easylearning.service.IEmailService;
 import com.poly.easylearning.service.IImageStorageService;
 import com.poly.easylearning.service.RoleService;
 import com.poly.easylearning.service.IUserService;
+import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -128,7 +129,8 @@ public class IUserServiceImpl implements IUserService {
         return userInfo;
     }
 
-    private User findById(UUID userID){
+    @Override
+    public User findById(UUID userID){
         return userRepo.findById(userID)
                 .orElseThrow(() -> new ApiRequestException(
                         ResourceBundleConstant.USR_2002
@@ -232,7 +234,6 @@ public class IUserServiceImpl implements IUserService {
         User userUpdated = userRepo.save(oldUser);
         return RestResponse.ok(ResourceBundleConstant.USR_2006, userMapper.applyForA(userUpdated));
     }
-
     @Override
     public RestResponse lockAccount(User user) {
         user.setLocked(true);

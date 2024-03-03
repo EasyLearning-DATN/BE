@@ -21,4 +21,6 @@ public interface IRoleRepo extends JpaRepository<RoleApp, Integer> {
         WHERE u.id = :userID
 		""")
 	List<RoleApp> findAllByUserId(UUID userID);
+
+	Optional<RoleApp> findById(UUID roleID);
 }

@@ -36,4 +36,6 @@ public interface IUserService {
     RestResponse deleteUser(UUID userId);
 
     RestResponse updateUser(UserUpdateRQ userUpdateRQ, UUID userId);
+
+    User findById(UUID userID);
 }
