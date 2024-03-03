@@ -232,7 +232,6 @@ public class IUserServiceImpl implements IUserService {
         User userUpdated = userRepo.save(oldUser);
         return RestResponse.ok(ResourceBundleConstant.USR_2006, userMapper.applyForA(userUpdated));
     }
-
     @Override
     public RestResponse lockAccount(User user) {
         user.setLocked(true);

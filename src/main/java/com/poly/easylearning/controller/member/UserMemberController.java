@@ -62,4 +62,10 @@ public class UserMemberController {
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(userService.lockAccount(user));
 	}
+	@GetMapping(SystemConstant.API_LOGOUT)
+	public ResponseEntity<?> logout() {
+		return ResponseEntity
+				.status(SystemConstant.STATUS_CODE_SUCCESS)
+				.body("OK");
+	}
 }
