@@ -73,8 +73,14 @@ public class AnswerServiceImpl implements IAnswerService {
     }
 
     @Override
-    public void deleteAnswer(UUID id) throws DataNotFoundException {
+    public void deleteOneAnswer(UUID id) throws DataNotFoundException {
         Answer existingAnswer = answerRepo.getAnswerById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.ANS_6001));
         answerRepo.delete(existingAnswer);
+    }
+
+    @Override
+    public void deleteListAnswer(List<UUID> ids) throws DataNotFoundException {
+//        Answer existingAnswer = answerRepo.getAnswerById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.ANS_6001));
+        answerRepo.deleteAllByIdIn(ids);
     }
 }
