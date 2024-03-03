@@ -24,6 +24,12 @@ public class ResourceBundleConstant {
     public static final String USR_2012 = "USR_2012";
     public static final String USR_2013 = "USR_2013";
     public static final String USR_2014 = "USR_2014";
+    public static final String USR_2015 = "USR_2015";
+    public static final String USR_2016 = "USR_2016";
+    public static final String USR_2017 = "USR_2017";
+    public static final String USR_2018 = "USR_2018";
+    public static final String USR_2019 = "USR_2019";
+    public static final String USR_2020 = "USR_2020";
 
     //Image
     public static final String IMG_3001 = "IMG_3001";
@@ -47,7 +53,7 @@ public class ResourceBundleConstant {
     public static final String QST_5005 = "QST_5005";
     public static final String QST_5006 = "QST_5006";
     public static final String QST_5008 = "QST_5008";
-
+  
     //Answer
     public static final String ANS_6001 = "ANS_6001";
     public static final String ANS_6002 = "ANS_6002";
@@ -66,4 +72,10 @@ public class ResourceBundleConstant {
     //DATE
     public static final String DAT_8001 = "DAT_8001";
     public static final String DAT_8002 = "DAT_8002";
+
+    //Role
+    public static final String RL_6001 = "RL_6001";
+    public static final String RL_6002 = "RL_6002";
+    public static final String RL_6003 = "RL_6003";
+
 }

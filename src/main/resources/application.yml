@@ -73,3 +73,10 @@ cloudinary:
   cloud_name: dvjmszx5r
   api_key: 894964399353631
   api_secret: iYa0dfZzxS7-MdPuNp-CKgUTyM4
+
+#App config
+app:
+  config:
+    domain: "http://localhost:1001/easy-learning"
+    path:
+      valid_token: "/public/v1/user/valid-token?token="
