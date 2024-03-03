@@ -22,6 +22,7 @@ import com.poly.easylearning.service.IEmailService;
 import com.poly.easylearning.service.IImageStorageService;
 import com.poly.easylearning.service.RoleService;
 import com.poly.easylearning.service.IUserService;
+import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -128,7 +129,8 @@ public class IUserServiceImpl implements IUserService {
         return userInfo;
     }
 
-    private User findById(UUID userID){
+    @Override
+    public User findById(UUID userID){
         return userRepo.findById(userID)
                 .orElseThrow(() -> new ApiRequestException(
                         ResourceBundleConstant.USR_2002

@@ -2,14 +2,12 @@ package com.poly.easylearning.controller.admin;
 
 
 import com.poly.easylearning.constant.SystemConstant;
+import com.poly.easylearning.payload.request.RoleUpdateRQ;
 import com.poly.easylearning.service.IRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -20,12 +18,14 @@ import java.util.UUID;
 public class RoleController {
 	private final IRoleService roleService;
 
-//	@GetMapping
-//	public ResponseEntity<?> updateRole(){
-//		return ResponseEntity
-//				.status(SystemConstant.STATUS_CODE_SUCCESS)
-//				.body(roleService.updateRole());
-//	}
+	@PutMapping
+	public ResponseEntity<?> updateRole(
+			@RequestBody RoleUpdateRQ roleUpdate
+	){
+		return ResponseEntity
+				.status(SystemConstant.STATUS_CODE_SUCCESS)
+				.body(roleService.updateRole(roleUpdate));
+	}
 	@GetMapping
 	public ResponseEntity<?> getRoleByUser(
 			@RequestParam(name = "userId") UUID userID
@@ -33,5 +33,11 @@ public class RoleController {
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(roleService.getAllRoleByUserId(userID));
+	}
+	@GetMapping("/all")
+	public ResponseEntity<?> getAllRole(){
+		return ResponseEntity
+				.status(SystemConstant.STATUS_CODE_SUCCESS)
+				.body(roleService.getAll());
 	}
 }
