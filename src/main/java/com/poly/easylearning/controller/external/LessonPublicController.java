@@ -29,7 +29,13 @@ public class LessonPublicController {
             @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
             @RequestParam(value = "sort", defaultValue = "desc") String sort,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "limit", defaultValue = "10") int limit) {
+            @RequestParam(value = "limit", defaultValue = "10") int limit,
+            @RequestParam(value = "id" , defaultValue = "") String id,
+            @RequestParam(value = "dateStart", defaultValue = "") String dateStart,
+            @RequestParam(value = "dateEnd", defaultValue = "") String dateEnd,
+            @RequestParam(value = "createdBy", defaultValue = "") String createdBy,
+            @RequestParam(value = "isPublic", defaultValue = "") String isPublic
+    ) {
 
         //Format sắp xếp
         Sort.Direction direction = Sort.Direction.DESC;
@@ -37,7 +43,7 @@ public class LessonPublicController {
             direction = Sort.Direction.ASC;
         }
         PageRequest pageRequest = PageRequest.of(page, limit, direction, sortBy);
-        return ResponseEntity.ok(lessonService.getListLesson(key, pageRequest));
+        return ResponseEntity.ok(lessonService.getListLesson(key, id, dateStart, dateEnd, createdBy, isPublic, pageRequest));
     }
 
     @GetMapping(SystemConstant.PATH_ID)
