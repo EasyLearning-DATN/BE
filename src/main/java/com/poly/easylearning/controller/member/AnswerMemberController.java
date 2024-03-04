@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +41,13 @@ public class AnswerMemberController {
 
     @DeleteMapping(SystemConstant.PATH_ID)
     public ResponseEntity<Void> deleteAnswer(@PathVariable(name = "id") UUID id) {
-        answerService.deleteAnswer(id);
+        answerService.deleteOneAnswer(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteListAnswer(@RequestParam(name = "ids") List<UUID> ids) {
+        answerService.deleteListAnswer(ids);
         return ResponseEntity.noContent().build();
     }
 }

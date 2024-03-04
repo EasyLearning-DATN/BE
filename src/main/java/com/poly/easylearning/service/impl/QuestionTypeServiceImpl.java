@@ -70,9 +70,7 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
 
     @Override
     public void deleteQuestionType(UUID id) throws DataNotFoundException {
-        //Xóa mềm
         QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
-        existingQuestionType.setIsDeleted(true);
-        questionTypeRepo.save(existingQuestionType);
+        questionTypeRepo.delete(existingQuestionType);
     }
 }

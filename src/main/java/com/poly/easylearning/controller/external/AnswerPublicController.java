@@ -38,8 +38,7 @@ public class AnswerPublicController {
     }
 
     @GetMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<RestResponse<AnswerResponse>> getOneAnswer(
-            @PathVariable(name = "id") UUID id) {
+    public ResponseEntity<RestResponse<AnswerResponse>> getOneAnswer(@PathVariable(name = "id") UUID id) {
         return ResponseEntity.ok(answerService.getOneAnswer(id));
     }
 }

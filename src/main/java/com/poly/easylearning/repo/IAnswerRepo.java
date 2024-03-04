@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 public interface IAnswerRepo extends JpaRepository<Answer, UUID> {
     @Query("SELECT a FROM Answer a WHERE " +
@@ -18,4 +19,6 @@ public interface IAnswerRepo extends JpaRepository<Answer, UUID> {
     @Query("SELECT a FROM Answer a WHERE " +
             "(a.id = :id)" + " AND (a.isDeleted = false )")
     Optional<Answer> getAnswerById(UUID id);
+
+    void deleteAllByIdIn(List<UUID> ids);
 }
