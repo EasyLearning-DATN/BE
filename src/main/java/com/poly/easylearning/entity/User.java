@@ -38,13 +38,13 @@ public class User extends BaseEntity implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserInfo userInfo;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<RoleApp> roles;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<UserRole> userRoles;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Token> tokens;
 
     public User(String username, String password, Provider provider) {
         this.username = username;
@@ -52,11 +52,12 @@ public class User extends BaseEntity implements UserDetails {
         this.provider = provider;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        for (RoleApp role: this.roles) {
-            authorityList.add(new SimpleGrantedAuthority(role.getName().getValue()));
+        for (UserRole userRole: this.userRoles) {
+            authorityList.add(new SimpleGrantedAuthority(userRole.getRole().getName().getValue()));
         }
         return authorityList;
     }
