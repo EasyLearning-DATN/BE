@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.UUID;
 
 public interface ILessonService {
-    RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, PageRequest pageRequest);
+    RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, String id, String dateStart, String dateEnd, String createdBy, String isPublic, PageRequest pageRequest);
 
     RestResponse<LessonResponse> getOneLesson(UUID id) throws DataNotFoundException;
 
