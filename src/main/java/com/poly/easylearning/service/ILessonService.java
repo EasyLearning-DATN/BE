@@ -1,5 +1,6 @@
 package com.poly.easylearning.service;
 
+import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.request.LessonRequest;
@@ -19,4 +20,6 @@ public interface ILessonService {
     RestResponse<LessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException;
 
     void deleteLesson(UUID id) throws DataNotFoundException;
+
+    Lesson findLessonEntityById(UUID lessonID);
 }

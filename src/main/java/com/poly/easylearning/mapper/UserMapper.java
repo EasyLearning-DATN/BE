@@ -13,6 +13,7 @@ public class UserMapper implements Function<User, UserDTO> {
 	public UserDTO apply(User user) {
 		UserInfo userInfo = user.getUserInfo();
 		return UserDTO.builder()
+				.id(user.getId())
 				.username(user.getUsername())
 				.fullName(userInfo.getFullName())
 				.email(userInfo.getEmail())

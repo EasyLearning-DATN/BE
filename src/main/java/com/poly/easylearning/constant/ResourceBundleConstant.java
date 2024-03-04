@@ -78,4 +78,10 @@ public class ResourceBundleConstant {
     public static final String RL_6002 = "RL_6002";
     public static final String RL_6003 = "RL_6003";
 
+    //Report
+    public static final String RP_7001 = "RP_7001";
+    public static final String RP_7002 = "RP_7002";
+    public static final String RP_7003 = "RP_7003";
+    public static final String RP_7004 = "RP_7004";
+    public static final String RP_7005 = "RP_7005";
 }
