@@ -47,4 +47,13 @@ public class ResourceBundleConstant {
     public static final String QST_5005 = "QST_5005";
     public static final String QST_5006 = "QST_5006";
     public static final String QST_5008 = "QST_5008";
+
+    //PackageUpgrade
+    public static final String PKU_6001 = "PKU_6001";
+    public static final String PKU_6002 = "PKU_6002";
+    public static final String PKU_6003 = "PKU_6003";
+    public static final String PKU_6004 = "PKU_6004";
+    public static final String PKU_6005 = "PKU_6005";
+    public static final String PKU_6006 = "PKU_6006";
+    public static final String PKU_6008 = "PKU_6008";
 }
