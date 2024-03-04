@@ -22,6 +22,7 @@ public class SystemConstant {
 	public static final String API_AVATAR = "/avatar";
 	public static final String API_PASSWORD = "/password";
 	public static final String LOCK_USER = "/lock";
+	public static final String API_REPORT = "/report";
 	public static final String API_CHANGE_STATUS = "/change-status";
 	public static final String API_GET_TOKEN_FORGOT_PASSWORD = "/get-token-forgot-pass";
 	public static final String API_FORGOT_PASSWORD = "/forgot-pass";

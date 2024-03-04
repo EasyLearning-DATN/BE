@@ -1,6 +1,7 @@
 package com.poly.easylearning.service.impl;
 
 import com.poly.easylearning.constant.ResourceBundleConstant;
+import com.poly.easylearning.exception.ApiRequestException;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.request.LessonRequest;
@@ -74,9 +75,14 @@ public class LessonServiceImpl implements ILessonService {
 
     @Override
     public void deleteLesson(UUID id) throws DataNotFoundException {
-        //Xóa mềm
         Lesson existingLesson = lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
         existingLesson.setIsDeleted(true);
         lessonRepo.save(existingLesson);
+    }
+
+    @Override
+    public Lesson findLessonEntityById(UUID lessonID) {
+        return lessonRepo.getLessonById(lessonID)
+                .orElseThrow(()-> new ApiRequestException(ResourceBundleConstant.LSN_4001));
     }
 }
