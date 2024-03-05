@@ -29,12 +29,14 @@ public class SystemConstant {
 	public static final String API_LOGOUT = "/logout";
 	public static final String API_SIGNUP = "/sign-up";
 	public static final String API_AUTHENTICATION = "/authenticate";
+	public static final String API_COMMENT = "/comment";
 	public static final String API_LESSON = "/lesson";
-	public static final String API_PACKAGE_UPGRADE = "/package-upgrade";
 	public static final String API_VALID_TOKEN = "/valid-token";
 
 	public static final String API_QUESTION_TYPE = "/question-type";
 	public static final String API_ANSWER = "/answer";
+	public static final String API_PACKAGE_UPGRADE = "/pack-upgrade";
+	public static final String API_REACTION = "/reaction";
 
 	public static final String PATH_ID = "/{id}";
 	public static final String ID = "id";
