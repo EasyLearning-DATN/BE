@@ -11,6 +11,7 @@ import com.poly.easylearning.repo.ILessonRepo;
 import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.utils.DateUtil;
+import com.poly.easylearning.utils.SecurityContextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -77,6 +78,7 @@ public class LessonServiceImpl implements ILessonService {
                 .description(lessonRequest.getDescription())
                 .isPublic(lessonRequest.isPublic())
                 .imageUrl(lessonRequest.getImageUrl())
+                .userInfo(SecurityContextUtils.getCurrentUser().getUserInfo())
                 .build();
 
         Lesson lesson = lessonRepo.save(newLesson);
