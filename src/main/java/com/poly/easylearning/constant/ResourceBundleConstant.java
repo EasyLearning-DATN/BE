@@ -53,15 +53,6 @@ public class ResourceBundleConstant {
     public static final String QST_5005 = "QST_5005";
     public static final String QST_5006 = "QST_5006";
     public static final String QST_5008 = "QST_5008";
-
-    //PackageUpgrade
-    public static final String PKU_6001 = "PKU_6001";
-    public static final String PKU_6002 = "PKU_6002";
-    public static final String PKU_6003 = "PKU_6003";
-    public static final String PKU_6004 = "PKU_6004";
-    public static final String PKU_6005 = "PKU_6005";
-    public static final String PKU_6006 = "PKU_6006";
-    public static final String PKU_6008 = "PKU_6008";
   
     //Answer
     public static final String ANS_6001 = "ANS_6001";
@@ -93,4 +84,21 @@ public class ResourceBundleConstant {
     public static final String RP_7003 = "RP_7003";
     public static final String RP_7004 = "RP_7004";
     public static final String RP_7005 = "RP_7005";
+
+    //Comment
+    public static final String CMT_8001 = "CMT_8001";
+    public static final String CMT_8002 = "CMT_8002";
+    public static final String CMT_8003 = "CMT_8003";
+    public static final String CMT_8004 = "CMT_8004";
+    public static final String CMT_8005 = "CMT_8005";
+    public static final String CMT_8006 = "CMT_8006";
+    public static final String CMT_8007 = "CMT_8007";
+
+    //Reaction
+    public static final String RTC_9001 = "RTC_9001";
+    public static final String RTC_9002 = "RTC_9002";
+    public static final String RTC_9003 = "RTC_9003";
+    public static final String RTC_9004 = "RTC_9004";
+
+
 }

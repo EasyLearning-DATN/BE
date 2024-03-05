@@ -77,6 +77,6 @@ cloudinary:
 #App config
 app:
   config:
-    domain: "http://localhost:1001/easy-learning"
+    domain: "http://localhost:4200"
     path:
-      valid_token: "/public/v1/user/valid-token?token="
+      valid_token: "/confirm-password?token="

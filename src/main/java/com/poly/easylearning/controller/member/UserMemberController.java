@@ -1,6 +1,7 @@
 package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
+import com.poly.easylearning.dto.ReactionDTO;
 import com.poly.easylearning.entity.User;
 import com.poly.easylearning.payload.request.PasswordUpdate;
 import com.poly.easylearning.payload.request.UserForgotPasswordRequest;

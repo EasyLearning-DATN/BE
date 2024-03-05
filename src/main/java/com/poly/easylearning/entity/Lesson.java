@@ -1,7 +1,8 @@
 package com.poly.easylearning.entity;
 
-import com.poly.easylearning.utils.SecurityContextUtils;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +18,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class Lesson extends BaseEntity
 {
-    @ManyToOne
-    @JoinColumn(name = "user_info")
-    private UserInfo userInfo;
-
     @Column(name = "name", length = 255, nullable = false)
     private String name;
     private String description;
