@@ -1,5 +1,6 @@
 package com.poly.easylearning.service;
 
+import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.request.LessonRequest;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.UUID;
 
 public interface ILessonService {
-    RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, PageRequest pageRequest);
+    RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, String id, String dateStart, String dateEnd, String createdBy, String isPublic, PageRequest pageRequest);
 
     RestResponse<LessonResponse> getOneLesson(UUID id) throws DataNotFoundException;
 
@@ -19,4 +20,6 @@ public interface ILessonService {
     RestResponse<LessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException;
 
     void deleteLesson(UUID id) throws DataNotFoundException;
+
+    Lesson findLessonEntityById(UUID lessonID);
 }

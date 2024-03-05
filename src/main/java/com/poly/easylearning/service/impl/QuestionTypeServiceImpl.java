@@ -62,17 +62,15 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
                         .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
         existingQuestionType.setName(questionTypeRequest.getName());
 
-        questionTypeRepo.save(existingQuestionType);
+        QuestionType questionType = questionTypeRepo.save(existingQuestionType);
 
-        QuestionTypeResponse response = QuestionTypeResponse.fromQuestionType(existingQuestionType);
+        QuestionTypeResponse response = QuestionTypeResponse.fromQuestionType(questionType);
         return RestResponse.accepted(ResourceBundleConstant.QST_5008, response);
     }
 
     @Override
     public void deleteQuestionType(UUID id) throws DataNotFoundException {
-        //Xóa mềm
-        QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
-        existingQuestionType.setIsDeleted(true);
-        questionTypeRepo.save(existingQuestionType);
+        QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
+        questionTypeRepo.delete(existingQuestionType);
     }
 }

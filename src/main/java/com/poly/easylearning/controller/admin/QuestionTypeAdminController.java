@@ -1,12 +1,9 @@
-package com.poly.easylearning.controller.member;
+package com.poly.easylearning.controller.admin;
 
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.payload.request.QuestionTypeRequest;
-import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.QuestionTypeResponse;
 import com.poly.easylearning.payload.response.RestResponse;
-import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.service.IQuestionTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +16,8 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(SystemConstant.API_MEMBER + SystemConstant.VERSION_1 + SystemConstant.API_QUESTION_TYPE)
-public class QuestionTypeMemberController {
+@RequestMapping(SystemConstant.API_ADMIN + SystemConstant.VERSION_1 + SystemConstant.API_QUESTION_TYPE)
+public class QuestionTypeAdminController {
     private final IQuestionTypeService questionTypeService;
 
     @PostMapping("")

@@ -15,7 +15,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -42,6 +41,7 @@ public abstract class BaseEntity {
     private LocalDateTime lastModifiedDate;
     @LastModifiedBy
     private UUID lastModifiedBy;
+
     @Column(nullable = false)
     private Boolean isDeleted;
 

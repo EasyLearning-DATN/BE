@@ -20,6 +20,9 @@ public class LessonResponse extends BaseResponse {
     @JsonProperty("image_url")
     private String imageUrl;
 
+    @JsonProperty("user_info")
+    private UserInfoResponse userInfoResponse;
+
     public static LessonResponse fromLesson(Lesson lesson) {
         LessonResponse lessonResponse = LessonResponse.builder()
                 .id(lesson.getId())
@@ -31,6 +34,7 @@ public class LessonResponse extends BaseResponse {
                 .description(lesson.getDescription())
                 .isPublic(lesson.isPublic())
                 .imageUrl(lesson.getImageUrl())
+                .userInfoResponse(UserInfoResponse.fromUserInfo(lesson.getUserInfo()))
                 .build();
 
         return lessonResponse;

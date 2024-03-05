@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,13 +44,6 @@ public class AppExceptionHandler {
         List<String> listError = new ArrayList<>();
 
         if (e.getBindingResult().hasErrors()) {
-//            List<ObjectError> erros = e.getBindingResult().getAllErrors();
-//            for (ObjectError oe : erros) {
-//                DefaultMessageSourceResolvable dm = new DefaultMessageSourceResolvable(oe);
-//                String message = dm.getDefaultMessage();
-//                String mmmmm = ResponseUtil.getMessageBundle(message);
-//                listError.add(mmmmm);
-//            }
             listError = e.getBindingResult().getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .map(ResponseUtil::getMessageBundle)
@@ -128,6 +122,17 @@ public class AppExceptionHandler {
                 e.getCode(),
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
                 ResponseUtil.getMessageBundle(e.getCode()),
+                ResponseUtil.currentTimeSeconds()
+        );
+        return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InvalidParameterException.class)
+    public ResponseEntity<Object> handleException(InvalidParameterException e) {
+        AppException exception = new AppException(
+                e.getMessage(),
+                SystemConstant.STATUS_CODE_BAD_REQUEST,
+                ResponseUtil.getMessageBundle(e.getMessage()),
                 ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));

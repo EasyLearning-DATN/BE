@@ -24,6 +24,12 @@ public class ResourceBundleConstant {
     public static final String USR_2012 = "USR_2012";
     public static final String USR_2013 = "USR_2013";
     public static final String USR_2014 = "USR_2014";
+    public static final String USR_2015 = "USR_2015";
+    public static final String USR_2016 = "USR_2016";
+    public static final String USR_2017 = "USR_2017";
+    public static final String USR_2018 = "USR_2018";
+    public static final String USR_2019 = "USR_2019";
+    public static final String USR_2020 = "USR_2020";
 
     //Image
     public static final String IMG_3001 = "IMG_3001";
@@ -56,4 +62,35 @@ public class ResourceBundleConstant {
     public static final String PKU_6005 = "PKU_6005";
     public static final String PKU_6006 = "PKU_6006";
     public static final String PKU_6008 = "PKU_6008";
+  
+    //Answer
+    public static final String ANS_6001 = "ANS_6001";
+    public static final String ANS_6002 = "ANS_6002";
+    public static final String ANS_6003 = "ANS_6003";
+    public static final String ANS_6004 = "ANS_6004";
+    public static final String ANS_6008 = "ANS_6008";
+
+    //Question
+    public static final String QUE_7001 = "QUE_7001";
+    public static final String QUE_7002 = "QUE_7002";
+    public static final String QUE_7003 = "QUE_7003";
+    public static final String QUE_7004 = "QUE_7004";
+    public static final String QUE_7007 = "QUE_7003";
+    public static final String QUE_7008 = "QUE_7004";
+
+    //DATE
+    public static final String DAT_8001 = "DAT_8001";
+    public static final String DAT_8002 = "DAT_8002";
+
+    //Role
+    public static final String RL_6001 = "RL_6001";
+    public static final String RL_6002 = "RL_6002";
+    public static final String RL_6003 = "RL_6003";
+
+    //Report
+    public static final String RP_7001 = "RP_7001";
+    public static final String RP_7002 = "RP_7002";
+    public static final String RP_7003 = "RP_7003";
+    public static final String RP_7004 = "RP_7004";
+    public static final String RP_7005 = "RP_7005";
 }

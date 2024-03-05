@@ -51,13 +51,13 @@ public class PackageUpgradeServiceImpl implements IPackageUpgradeService {
     }
 
     @Override
-    public RestResponse<PackageUpgradeResponse> createPackageUpgrade(PackageUpgradeRequest PackageUpgradeRequest) {
+    public RestResponse<PackageUpgradeResponse> createPackageUpgrade(PackageUpgradeRequest packageUpgradeRequest) {
         PackageUpgrade newPackageUpgrade = PackageUpgrade.builder()
-                .name(PackageUpgradeRequest.getName())
-                .description(PackageUpgradeRequest.getDescription())
-                .price(PackageUpgradeRequest.getPrice())
-                .sale(PackageUpgradeRequest.getSale())
-                .expiry(PackageUpgradeRequest.getExpiry())
+                .name(packageUpgradeRequest.getName())
+                .description(packageUpgradeRequest.getDescription())
+                .price(packageUpgradeRequest.getPrice())
+                .sale(packageUpgradeRequest.getSale())
+                .expiry(packageUpgradeRequest.getExpiry())
                 .build();
 
         PackageUpgrade packageUpgrade = packageUpgradeRepo.save(newPackageUpgrade);
@@ -66,13 +66,13 @@ public class PackageUpgradeServiceImpl implements IPackageUpgradeService {
     }
 
     @Override
-    public RestResponse<PackageUpgradeResponse> updatePackageUpgrade(UUID id, PackageUpgradeRequest PackageUpgradeRequest) throws DataNotFoundException {
+    public RestResponse<PackageUpgradeResponse> updatePackageUpgrade(UUID id, PackageUpgradeRequest packageUpgradeRequest) throws DataNotFoundException {
         PackageUpgrade existingPackageUpgrade = packageUpgradeRepo.getPackageUpgradeById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.PKU_6001));
-        existingPackageUpgrade.setName(PackageUpgradeRequest.getName());
-        existingPackageUpgrade.setDescription(PackageUpgradeRequest.getDescription());
-        existingPackageUpgrade.setPrice(PackageUpgradeRequest.getPrice());
-        existingPackageUpgrade.setSale(PackageUpgradeRequest.getSale());
-        existingPackageUpgrade.setExpiry(PackageUpgradeRequest.getExpiry());
+        existingPackageUpgrade.setName(packageUpgradeRequest.getName());
+        existingPackageUpgrade.setDescription(packageUpgradeRequest.getDescription());
+        existingPackageUpgrade.setPrice(packageUpgradeRequest.getPrice());
+        existingPackageUpgrade.setSale(packageUpgradeRequest.getSale());
+        existingPackageUpgrade.setExpiry(packageUpgradeRequest.getExpiry());
 
         PackageUpgrade packageUpgrade = packageUpgradeRepo.save(existingPackageUpgrade);
 
