@@ -31,4 +31,19 @@ public interface IReportRepo extends JpaRepository<Report, UUID> {
 			AND o.isDeleted != TRUE
 			""")
 	Optional<Report> findById(UUID reportId);
+
+	@Query("""
+			SELECT o FROM Report o
+			WHERE o.status = :status
+			AND o.isDeleted != TRUE
+			""")
+	Page<Report> findByStatus(ReportStatus status, Pageable pageable);
+
+
+	@Query("""
+			SELECT o FROM Report o
+			WHERE o.type = :type
+			AND o.isDeleted != TRUE
+			""")
+	Page<Report> findByType(ReportType type, Pageable pageable);
 }

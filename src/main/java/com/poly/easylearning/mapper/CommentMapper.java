@@ -57,7 +57,7 @@ public class CommentMapper implements Function<Comment, CommentDTO> {
             return 0;
         }
         return (int) reactions.stream()
-                .filter(reaction -> reaction.isLiked() == isLiked)
+                .filter(reaction -> reaction.isLiked() == isLiked && !reaction.getIsDeleted())
                 .count();
     }
 }

@@ -9,6 +9,7 @@ import com.poly.easylearning.repo.IImageRepo;
 import com.poly.easylearning.service.IImageStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +45,7 @@ public class ImageStorageServiceImpl implements IImageStorageService {
                     resource.get("public_id").toString(),
                     resource.get("url").toString()
             );
-            imageRepo.save(newImageResponse);
+            imageRepo.saveAndFlush(newImageResponse);
             log.info("Upload image successfully with public id {} ", newImageResponse.getPublicId());
             return newImageResponse;
         } catch (Exception e) {
