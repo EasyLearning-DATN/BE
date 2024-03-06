@@ -1,7 +1,6 @@
 package com.poly.easylearning.repo;
 
 import com.poly.easylearning.entity.Answer;
-import com.poly.easylearning.entity.QuestionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

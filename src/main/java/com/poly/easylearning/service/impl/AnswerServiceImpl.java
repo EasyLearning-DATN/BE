@@ -3,25 +3,19 @@ package com.poly.easylearning.service.impl;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.Answer;
 import com.poly.easylearning.entity.Question;
-import com.poly.easylearning.entity.QuestionType;
 import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.payload.request.AnswerRequest;
 import com.poly.easylearning.payload.response.AnswerResponse;
-import com.poly.easylearning.payload.response.ListResponse;
-import com.poly.easylearning.payload.response.QuestionTypeResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.repo.IAnswerRepo;
 import com.poly.easylearning.repo.IQuestionRepo;
 import com.poly.easylearning.service.IAnswerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 

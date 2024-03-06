@@ -2,7 +2,6 @@ package com.poly.easylearning.service;
 
 import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.payload.request.QuestionRequest;
-import com.poly.easylearning.payload.request.QuestionTypeRequest;
 import com.poly.easylearning.payload.response.*;
 import org.springframework.data.domain.PageRequest;
 

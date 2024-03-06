@@ -102,4 +102,21 @@ public class ResourceBundleConstant {
     public static final String RP_7003 = "RP_7003";
     public static final String RP_7004 = "RP_7004";
     public static final String RP_7005 = "RP_7005";
+
+    //Comment
+    public static final String CMT_8001 = "CMT_8001";
+    public static final String CMT_8002 = "CMT_8002";
+    public static final String CMT_8003 = "CMT_8003";
+    public static final String CMT_8004 = "CMT_8004";
+    public static final String CMT_8005 = "CMT_8005";
+    public static final String CMT_8006 = "CMT_8006";
+    public static final String CMT_8007 = "CMT_8007";
+
+    //Reaction
+    public static final String RTC_9001 = "RTC_9001";
+    public static final String RTC_9002 = "RTC_9002";
+    public static final String RTC_9003 = "RTC_9003";
+    public static final String RTC_9004 = "RTC_9004";
+
+
 }

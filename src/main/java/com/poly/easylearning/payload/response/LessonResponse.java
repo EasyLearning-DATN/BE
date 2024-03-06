@@ -18,7 +18,7 @@ public class LessonResponse extends BaseResponse {
     @JsonProperty("is_public")
     private boolean isPublic;
 
-    private Image image;
+    private ImageResponse image;
 
     @JsonProperty("user_info")
     private UserInfoResponse userInfoResponse;
@@ -33,7 +33,7 @@ public class LessonResponse extends BaseResponse {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .isPublic(lesson.isPublic())
-                .image(lesson.getImage())
+                .image(ImageResponse.fromImage(lesson.getImage()))
                 .userInfoResponse(UserInfoResponse.fromUserInfo(lesson.getUserInfo()))
                 .build();
     }

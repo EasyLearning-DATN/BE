@@ -1,6 +1,5 @@
 package com.poly.easylearning.payload.response;
 
-import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.entity.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

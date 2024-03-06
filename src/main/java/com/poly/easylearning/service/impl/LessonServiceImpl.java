@@ -2,7 +2,6 @@ package com.poly.easylearning.service.impl;
 
 import com.poly.easylearning.constant.DefaultValueConstants;
 import com.poly.easylearning.constant.ResourceBundleConstant;
-import com.poly.easylearning.constant.SystemConstant;
 import com.poly.easylearning.entity.Image;
 import com.poly.easylearning.exception.ApiRequestException;
 import com.poly.easylearning.payload.response.ListResponse;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

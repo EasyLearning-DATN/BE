@@ -1,8 +1,6 @@
 package com.poly.easylearning.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.poly.easylearning.entity.Answer;
-import com.poly.easylearning.entity.Image;
 import com.poly.easylearning.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

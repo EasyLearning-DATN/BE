@@ -4,12 +4,10 @@ import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.*;
 import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.payload.request.QuestionRequest;
-import com.poly.easylearning.payload.request.QuestionTypeRequest;
 import com.poly.easylearning.payload.response.*;
 import com.poly.easylearning.repo.*;
 import com.poly.easylearning.service.IAnswerService;
 import com.poly.easylearning.service.IQuestionService;
-import com.poly.easylearning.service.IQuestionTypeService;
 import com.poly.easylearning.utils.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.InvalidParameterException;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 

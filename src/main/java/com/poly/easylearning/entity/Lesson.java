@@ -1,6 +1,5 @@
 package com.poly.easylearning.entity;
 
-import com.poly.easylearning.utils.SecurityContextUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +29,7 @@ public class Lesson extends BaseEntity
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
