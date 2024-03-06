@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class ImageStorageServiceImpl implements IImageStorageService {
     private final IImageRepo imageRepo;
 
     public Image upload(MultipartFile multipartFile, String folder) {
-        String publicId = multipartFile.getOriginalFilename() + UUID.randomUUID();
+        String publicId = String.valueOf(System.currentTimeMillis());
 
         try {
             Map<String, Object> params = ObjectUtils.asMap(

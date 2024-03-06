@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,4 +26,7 @@ public class AnswerRequest {
     @JsonProperty("is_correct")
     @NotNull(message = ResourceBundleConstant.ANS_6007)
     private Boolean isCorrect;
+
+    @JsonProperty("question_id")
+    private UUID questionId;
 }

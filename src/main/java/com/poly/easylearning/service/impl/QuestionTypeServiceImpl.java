@@ -48,6 +48,7 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
     public RestResponse<QuestionTypeResponse> createQuestionType(QuestionTypeRequest questionTypeRequest) {
         QuestionType questionType = QuestionType.builder()
                 .name(questionTypeRequest.getName())
+                .code(questionTypeRequest.getCode())
                 .build();
 
         questionTypeRepo.save(questionType);
@@ -61,6 +62,7 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
                 questionTypeRepo.getQuestionTypeById(id)
                         .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
         existingQuestionType.setName(questionTypeRequest.getName());
+        existingQuestionType.setCode(questionTypeRequest.getCode());
 
         QuestionType questionType = questionTypeRepo.save(existingQuestionType);
 

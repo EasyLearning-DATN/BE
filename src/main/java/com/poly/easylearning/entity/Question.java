@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,7 +26,7 @@ public class Question extends BaseEntity {
     private Double weighted;
 
     @OneToMany(mappedBy = "question")
-    private Collection<Answer> answers;
+    private List<Answer> answers;
 
     @ManyToOne
     @JoinColumn(name="question_type")
@@ -35,8 +35,4 @@ public class Question extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
-
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image image;
 }

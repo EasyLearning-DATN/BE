@@ -1,12 +1,16 @@
 package com.poly.easylearning.service.impl;
 
+import com.poly.easylearning.constant.DefaultValueConstants;
 import com.poly.easylearning.constant.ResourceBundleConstant;
+import com.poly.easylearning.constant.SystemConstant;
+import com.poly.easylearning.entity.Image;
 import com.poly.easylearning.exception.ApiRequestException;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.exception.DataNotFoundException;
+import com.poly.easylearning.repo.IImageRepo;
 import com.poly.easylearning.repo.ILessonRepo;
 import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.service.ILessonService;
@@ -31,6 +35,7 @@ import java.util.UUID;
 @Transactional
 public class LessonServiceImpl implements ILessonService {
     private final ILessonRepo lessonRepo;
+    private final IImageRepo imageRepo;
 
     @Override
     public RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, String id, String dateStart, String dateEnd, String createdBy, String isPublic, PageRequest pageRequest) {
@@ -73,11 +78,15 @@ public class LessonServiceImpl implements ILessonService {
 
     @Override
     public RestResponse<LessonResponse> createLesson(LessonRequest lessonRequest) {
+        Image image = imageRepo.findByPublicId(lessonRequest.getImageId())
+                    .orElse(imageRepo.findByPublicId(DefaultValueConstants.IMAGE_LESSON_DEFAULT)
+                            .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3005)));
+
         Lesson newLesson = Lesson.builder()
                 .name(lessonRequest.getName())
                 .description(lessonRequest.getDescription())
                 .isPublic(lessonRequest.isPublic())
-                .imageUrl(lessonRequest.getImageUrl())
+                .image(image)
                 .userInfo(SecurityContextUtils.getCurrentUser().getUserInfo())
                 .build();
 
@@ -93,8 +102,10 @@ public class LessonServiceImpl implements ILessonService {
         existingLesson.setName(lessonRequest.getName());
         existingLesson.setDescription(lessonRequest.getDescription());
         existingLesson.setPublic(lessonRequest.isPublic());
-        existingLesson.setImageUrl(lessonRequest.getImageUrl());
+        Image image = imageRepo.findByPublicId(lessonRequest.getImageId())
+                .orElse(existingLesson.getImage());
 
+        existingLesson.setImage(image);
         Lesson lesson = lessonRepo.save(existingLesson);
 
         LessonResponse response = LessonResponse.fromLesson(lesson);
@@ -111,6 +122,6 @@ public class LessonServiceImpl implements ILessonService {
     @Override
     public Lesson findLessonEntityById(UUID lessonID) {
         return lessonRepo.getLessonById(lessonID)
-                .orElseThrow(()-> new ApiRequestException(ResourceBundleConstant.LSN_4001));
+                .orElseThrow(() -> new ApiRequestException(ResourceBundleConstant.LSN_4001));
     }
 }

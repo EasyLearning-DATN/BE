@@ -24,11 +24,6 @@ public class Answer extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
-
-    @JsonIgnore
-    @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
 }

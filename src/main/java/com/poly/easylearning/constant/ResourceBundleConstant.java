@@ -36,6 +36,7 @@ public class ResourceBundleConstant {
     public static final String IMG_3002 = "IMG_3002";
     public static final String IMG_3003 = "IMG_3003";
     public static final String IMG_3004 = "IMG_3004";
+    public static final String IMG_3005 = "IMG_3005";
 
     //Lesson
     public static final String LSN_4001 = "LSN_4001";

@@ -27,6 +27,6 @@ public class LessonRequest {
     @NotNull(message = ResourceBundleConstant.LSN_4007)
     private boolean isPublic = true;
 
-    @JsonProperty("image_url")
-    private String imageUrl;
+    @JsonProperty("image_id")
+    private String imageId;
 }

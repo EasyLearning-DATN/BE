@@ -1,10 +1,6 @@
 package com.poly.easylearning.payload.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.poly.easylearning.entity.Answer;
-import com.poly.easylearning.entity.Image;
-import com.poly.easylearning.entity.QuestionType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +19,9 @@ public class QuestionRequest {
     private String title;
     private String description;
     private Double weighted;
-    private List<Answer> answers;
+    private List<AnswerRequest> answers;
     @JsonProperty("lesson_id")
     private UUID lessonId;
     @JsonProperty("question_type_id")
     private UUID questionTypeId;
-    @OneToOne
-    @JsonProperty("image_id")
-    private String imageId;
 }

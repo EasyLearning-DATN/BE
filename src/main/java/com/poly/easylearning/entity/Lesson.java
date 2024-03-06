@@ -30,8 +30,9 @@ public class Lesson extends BaseEntity
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @OneToMany(mappedBy = "lesson")
     private Collection<Question> questions;

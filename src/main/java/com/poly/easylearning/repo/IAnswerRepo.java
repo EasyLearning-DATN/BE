@@ -21,4 +21,6 @@ public interface IAnswerRepo extends JpaRepository<Answer, UUID> {
     Optional<Answer> getAnswerById(UUID id);
 
     void deleteAllByIdIn(List<UUID> ids);
+
+    void deleteAnswersByQuestionId(UUID questionId);
 }

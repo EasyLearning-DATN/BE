@@ -22,9 +22,7 @@ public class QuestionResponse extends BaseResponse {
     private String title;
     private String description;
     private Double weighted;
-    @JsonProperty("image_path")
-    private Image image;
-    private List<Answer> answers;
+    private List<AnswerResponse> answers;
     @JsonProperty("question_type_id")
     private UUID questionTypeId;
 
@@ -36,8 +34,9 @@ public class QuestionResponse extends BaseResponse {
                 .lastModifiedDate(question.getLastModifiedDate())
                 .lastModifiedBy(question.getLastModifiedBy())
                 .title(question.getTitle())
+                .answers(question.getAnswers().stream().map(AnswerResponse::fromAnswer).toList())
+                .questionTypeId(question.getQuestionType().getId())
                 .description(question.getDescription())
-                .image(question.getImage())
                 .weighted(question.getWeighted())
                 .build();
     }

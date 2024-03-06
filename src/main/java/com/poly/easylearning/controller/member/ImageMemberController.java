@@ -26,12 +26,12 @@ public class ImageMemberController {
     private final IImageStorageService imageStorageService;
 
     @PostMapping("")
-    public ResponseEntity<RestResponse<ImageResponse>> createImage(@RequestParam(name = "file") MultipartFile multipartFile, @ModelAttribute(name = "folder", value = "folder") String folder ) throws BindException {
+    public ResponseEntity<RestResponse<ImageResponse>> createImage(@RequestParam(name = "file") MultipartFile multipartFile, @RequestParam(name = "folder", defaultValue = "folder") String folder ) throws BindException {
         return ResponseEntity.ok(RestResponse.created(ResourceBundleConstant.IMG_3004, ImageResponse.fromImage(imageStorageService.upload(multipartFile, folder))));
     }
 
-    @DeleteMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<Void> deleteImage(@PathVariable(name = "id") String publicId) {
+    @DeleteMapping("")
+    public ResponseEntity<Void> deleteImage(@RequestParam(name = "id") String publicId) {
         imageStorageService.delete(publicId);
         return ResponseEntity.noContent().build();
     }

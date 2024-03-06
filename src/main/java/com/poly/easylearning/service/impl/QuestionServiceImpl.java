@@ -7,6 +7,7 @@ import com.poly.easylearning.payload.request.QuestionRequest;
 import com.poly.easylearning.payload.request.QuestionTypeRequest;
 import com.poly.easylearning.payload.response.*;
 import com.poly.easylearning.repo.*;
+import com.poly.easylearning.service.IAnswerService;
 import com.poly.easylearning.service.IQuestionService;
 import com.poly.easylearning.service.IQuestionTypeService;
 import com.poly.easylearning.utils.DateUtil;
@@ -28,8 +29,7 @@ import java.util.UUID;
 @Transactional
 public class QuestionServiceImpl implements IQuestionService {
     private final IQuestionRepo questionRepo;
-    private final IImageRepo imageRepo;
-    private final IAnswerRepo answerRepo;
+    private final IAnswerService answerService;
     private final IQuestionTypeRepo questionTypeRepo;
     private final ILessonRepo lessonRepo;
 
@@ -82,52 +82,38 @@ public class QuestionServiceImpl implements IQuestionService {
                 .orElseThrow(()-> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
         QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(questionRequest.getQuestionTypeId())
                 .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
-        Image existingImage = imageRepo.findByPublicId(questionRequest.getImageId())
-                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3001));
-        Collection<Answer> answers = answerRepo.saveAll(questionRequest.getAnswers());
 
         Question question = Question.builder()
                 .title(questionRequest.getTitle())
                 .description(questionRequest.getDescription())
                 .weighted(questionRequest.getWeighted())
                 .lesson(existingLesson)
-                .image(existingImage)
-                .answers(answers)
                 .questionType(existingQuestionType)
                 .build();
-
-        questionRepo.save(question);
-        QuestionResponse response = QuestionResponse.fromQuestion(question);
+        Question questionResponse = questionRepo.save(question);
+        answerService.createAllAnswer(questionRequest.getAnswers(), questionResponse.getId());
+        QuestionResponse response = QuestionResponse.fromQuestion(questionRepo.findById(questionResponse.getId())
+                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001)));
         return RestResponse.created(ResourceBundleConstant.QUE_7002, response);
     }
 
     @Override
     public RestResponse<QuestionResponse> updateQuestion(UUID id, QuestionRequest questionRequest) throws DataNotFoundException {
-        Lesson existingLesson = lessonRepo.findById(questionRequest.getLessonId())
-                .orElseThrow(()-> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
-
         Question existingQuestion =
                 questionRepo.getQuestionById(id)
                         .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QUE_7001));
-
-        Image existingImage = imageRepo.findByPublicId(questionRequest.getImageId())
-                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3001));
         QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(questionRequest.getQuestionTypeId())
                 .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
 
-        Collection<Answer> answers = answerRepo.saveAll(questionRequest.getAnswers());
-
         existingQuestion.setTitle(questionRequest.getTitle());
         existingQuestion.setDescription(questionRequest.getDescription());
-        existingQuestion.setImage(existingImage);
         existingQuestion.setWeighted(questionRequest.getWeighted());
-        existingQuestion.setAnswers(answers);
         existingQuestion.setQuestionType(existingQuestionType);
-        existingQuestion.setLesson(existingLesson);
 
-        Question question = questionRepo.save(existingQuestion);
+        Question questionResponse = questionRepo.save(existingQuestion);
 
-        QuestionResponse response = QuestionResponse.fromQuestion(question);
+        QuestionResponse response = QuestionResponse.fromQuestion(questionRepo.findById(questionResponse.getId())
+                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001)));
         return RestResponse.accepted(ResourceBundleConstant.QUE_7008, response);
     }
 
