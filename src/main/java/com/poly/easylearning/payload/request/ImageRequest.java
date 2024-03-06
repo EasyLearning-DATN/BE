@@ -2,9 +2,8 @@ package com.poly.easylearning.payload.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.easylearning.constant.ResourceBundleConstant;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +15,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-public class AnswerRequest {
-    @NotBlank(message = ResourceBundleConstant.ANS_6005)
-    @Size(min = 1, max = 255, message = ResourceBundleConstant.ANS_6006)
-    private String value;
+public class ImageRequest {
+    @NotBlank(message = ResourceBundleConstant.IMG_3002)
+    @JsonProperty("public_id")
+    private String publicId;
 
-    @JsonProperty("is_correct")
-    @NotNull(message = ResourceBundleConstant.ANS_6007)
-    private Boolean isCorrect;
+    @NotBlank(message = ResourceBundleConstant.IMG_3003)
+    private String url;
 }

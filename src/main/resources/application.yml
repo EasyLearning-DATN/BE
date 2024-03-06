@@ -70,9 +70,9 @@ redis:
 
 #Cloudinary config
 cloudinary:
-  cloud_name: dvjmszx5r
-  api_key: 894964399353631
-  api_secret: iYa0dfZzxS7-MdPuNp-CKgUTyM4
+  cloud_name: dfz7841n3
+  api_key: 983357693662753
+  api_secret: TY2Wz3vGIBKnvqcTUXkdmiwvSFY
 
 #App config
 app:

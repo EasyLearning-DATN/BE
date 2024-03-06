@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Collection;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,4 +32,7 @@ public class Lesson extends BaseEntity
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany(mappedBy = "lesson")
+    private Collection<Question> questions;
 }

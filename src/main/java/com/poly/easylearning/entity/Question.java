@@ -1,13 +1,13 @@
 package com.poly.easylearning.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -22,9 +22,21 @@ public class Question extends BaseEntity {
 
     private String description;
 
-    @Column(name = "image_path")
-    private String imagePath;
-
     @Column(nullable = false)
     private Double weighted;
+
+    @OneToMany(mappedBy = "question")
+    private Collection<Answer> answers;
+
+    @ManyToOne
+    @JoinColumn(name="question_type")
+    private QuestionType questionType;
+
+    @ManyToOne
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 }

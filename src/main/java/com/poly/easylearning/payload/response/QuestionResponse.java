@@ -2,12 +2,16 @@ package com.poly.easylearning.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.easylearning.entity.Answer;
+import com.poly.easylearning.entity.Image;
 import com.poly.easylearning.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,11 +21,12 @@ import lombok.experimental.SuperBuilder;
 public class QuestionResponse extends BaseResponse {
     private String title;
     private String description;
-
-    @JsonProperty("image_path")
-    private String imagePath;
-
     private Double weighted;
+    @JsonProperty("image_path")
+    private Image image;
+    private List<Answer> answers;
+    @JsonProperty("question_type_id")
+    private UUID questionTypeId;
 
     public static QuestionResponse fromQuestion(Question question) {
         return QuestionResponse.builder()
@@ -32,7 +37,7 @@ public class QuestionResponse extends BaseResponse {
                 .lastModifiedBy(question.getLastModifiedBy())
                 .title(question.getTitle())
                 .description(question.getDescription())
-                .imagePath(question.getImagePath())
+                .image(question.getImage())
                 .weighted(question.getWeighted())
                 .build();
     }

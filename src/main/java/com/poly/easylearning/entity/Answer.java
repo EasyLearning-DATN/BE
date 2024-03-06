@@ -1,8 +1,7 @@
 package com.poly.easylearning.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +21,14 @@ public class Answer extends BaseEntity {
 
     @Column(name = "is_correct", nullable = false)
     private Boolean isCorrect;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 }
