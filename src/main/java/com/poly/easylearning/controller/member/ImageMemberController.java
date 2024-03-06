@@ -26,7 +26,9 @@ public class ImageMemberController {
     private final IImageStorageService imageStorageService;
 
     @PostMapping("")
-    public ResponseEntity<RestResponse<ImageResponse>> createImage(@RequestParam(name = "file") MultipartFile multipartFile, @RequestParam(name = "folder", defaultValue = "folder") String folder ) throws BindException {
+    public ResponseEntity<RestResponse<ImageResponse>> createImage(
+            @RequestParam(name = "file") MultipartFile multipartFile,
+            @RequestParam(name = "folder", defaultValue = "folder") String folder ) throws BindException {
         return ResponseEntity.ok(RestResponse.created(ResourceBundleConstant.IMG_3004, ImageResponse.fromImage(imageStorageService.upload(multipartFile, folder))));
     }
 
