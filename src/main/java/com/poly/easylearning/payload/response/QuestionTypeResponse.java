@@ -1,6 +1,5 @@
 package com.poly.easylearning.payload.response;
 
-import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.entity.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,17 +14,17 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 public class QuestionTypeResponse extends BaseResponse {
     private String name;
+    private String code;
 
     public static QuestionTypeResponse fromQuestionType(QuestionType questionType) {
-        QuestionTypeResponse questionTypeResponse = QuestionTypeResponse.builder()
+        return QuestionTypeResponse.builder()
                 .id(questionType.getId())
                 .createdDate(questionType.getCreatedDate())
                 .createdBy(questionType.getCreatedBy())
                 .lastModifiedDate(questionType.getLastModifiedDate())
                 .lastModifiedBy(questionType.getLastModifiedBy())
                 .name(questionType.getName())
+                .code(questionType.getCode())
                 .build();
-
-        return questionTypeResponse;
     }
 }

@@ -143,7 +143,7 @@ public class IUserServiceImpl implements IUserService {
                 storageService.delete(user.getUserInfo().getAvatar().getPublicId());
             }
             Image image = storageService
-                    .upload(avatarFile, UploadFolder.USER, String.valueOf(user.getId()));
+                    .upload(avatarFile, UploadFolder.USER);
             UserInfo userInfo = user.getUserInfo();
             userInfo.setAvatar(image);
             user.setUserInfo(userInfo);

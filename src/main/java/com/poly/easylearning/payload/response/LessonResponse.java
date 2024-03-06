@@ -1,6 +1,7 @@
 package com.poly.easylearning.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.poly.easylearning.entity.Image;
 import com.poly.easylearning.entity.Lesson;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -17,11 +18,13 @@ public class LessonResponse extends BaseResponse {
     @JsonProperty("is_public")
     private boolean isPublic;
 
-    @JsonProperty("image_url")
-    private String imageUrl;
+    private ImageResponse image;
+
+    @JsonProperty("user_info")
+    private UserInfoResponse userInfoResponse;
 
     public static LessonResponse fromLesson(Lesson lesson) {
-        LessonResponse lessonResponse = LessonResponse.builder()
+        return LessonResponse.builder()
                 .id(lesson.getId())
                 .createdDate(lesson.getCreatedDate())
                 .createdBy(lesson.getCreatedBy())
@@ -30,9 +33,8 @@ public class LessonResponse extends BaseResponse {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .isPublic(lesson.isPublic())
-                .imageUrl(lesson.getImageUrl())
+                .image(ImageResponse.fromImage(lesson.getImage()))
+                .userInfoResponse(UserInfoResponse.fromUserInfo(lesson.getUserInfo()))
                 .build();
-
-        return lessonResponse;
     }
 }

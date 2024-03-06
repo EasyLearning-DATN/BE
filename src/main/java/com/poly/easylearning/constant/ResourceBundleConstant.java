@@ -33,6 +33,10 @@ public class ResourceBundleConstant {
 
     //Image
     public static final String IMG_3001 = "IMG_3001";
+    public static final String IMG_3002 = "IMG_3002";
+    public static final String IMG_3003 = "IMG_3003";
+    public static final String IMG_3004 = "IMG_3004";
+    public static final String IMG_3005 = "IMG_3005";
 
     //Lesson
     public static final String LSN_4001 = "LSN_4001";
@@ -53,12 +57,26 @@ public class ResourceBundleConstant {
     public static final String QST_5005 = "QST_5005";
     public static final String QST_5006 = "QST_5006";
     public static final String QST_5008 = "QST_5008";
+    public static final String QST_5009 = "QST_5009";
+    public static final String QST_5010 = "QST_5010";
+
+    //PackageUpgrade
+    public static final String PKU_6001 = "PKU_6001";
+    public static final String PKU_6002 = "PKU_6002";
+    public static final String PKU_6003 = "PKU_6003";
+    public static final String PKU_6004 = "PKU_6004";
+    public static final String PKU_6005 = "PKU_6005";
+    public static final String PKU_6006 = "PKU_6006";
+    public static final String PKU_6008 = "PKU_6008";
   
     //Answer
     public static final String ANS_6001 = "ANS_6001";
     public static final String ANS_6002 = "ANS_6002";
     public static final String ANS_6003 = "ANS_6003";
     public static final String ANS_6004 = "ANS_6004";
+    public static final String ANS_6005 = "ANS_6005";
+    public static final String ANS_6006 = "ANS_6006";
+    public static final String ANS_6007 = "ANS_6007";
     public static final String ANS_6008 = "ANS_6008";
 
     //Question

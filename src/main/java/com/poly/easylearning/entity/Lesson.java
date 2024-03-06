@@ -1,13 +1,13 @@
 package com.poly.easylearning.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -18,6 +18,10 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class Lesson extends BaseEntity
 {
+    @ManyToOne
+    @JoinColumn(name = "user_info")
+    private UserInfo userInfo;
+
     @Column(name = "name", length = 255, nullable = false)
     private String name;
     private String description;
@@ -25,6 +29,10 @@ public class Lesson extends BaseEntity
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @OneToMany(mappedBy = "lesson")
+    private Collection<Question> questions;
 }
