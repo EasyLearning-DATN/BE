@@ -5,6 +5,7 @@ import com.poly.easylearning.dto.UserDTO;
 import com.poly.easylearning.entity.*;
 import com.poly.easylearning.enums.TokenType;
 import com.poly.easylearning.enums.UserStatus;
+import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.payload.request.*;
 import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
@@ -49,7 +50,6 @@ public class IUserServiceImpl implements IUserService {
     private final IUserRepo userRepo;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-    private final IImageStorageService storageService;
     private final IJwtService jwtService;
     private final UserMapper userMapper;
     private final IImageStorageService imageStorageService;
@@ -66,6 +66,13 @@ public class IUserServiceImpl implements IUserService {
         if(checkEmail.isPresent()){
             throw new ApiRequestException(ResourceBundleConstant.USR_2015);
         }
+        Image avatar = null;
+        if(Objects.nonNull(userRQ.getAvatar())){
+            avatar = imageStorageService.upload(userRQ.getAvatar(), UploadFolder.REPORT);
+        }else{
+            avatar = imageStorageService.findByPublicId(DefaultValueConstants.IMAGE_USER_DEFAULT);
+        }
+
         User newUser = User.builder()
                 .username(userRQ.getUsername())
                 .password(passwordEncoder.encode(userRQ.getPassword()))
@@ -87,6 +94,7 @@ public class IUserServiceImpl implements IUserService {
                 .fullName(userRQ.getFullName())
                 .dayOfBirth(userRQ.getDayOfBirth())
                 .user(newUser)
+                .avatar(avatar)
                 .isDeleted(false)
                 .build();
         newUser.setUserInfo(userInfo); // set user info for new Account
@@ -140,9 +148,9 @@ public class IUserServiceImpl implements IUserService {
     public RestResponse updateAvatar(User user, MultipartFile avatarFile) {
         if(Objects.nonNull(avatarFile)){
             if(user.getUserInfo() != null && user.getUserInfo().getAvatar() != null) {
-                storageService.delete(user.getUserInfo().getAvatar().getPublicId());
+                imageStorageService.delete(user.getUserInfo().getAvatar().getPublicId());
             }
-            Image image = storageService
+            Image image = imageStorageService
                     .upload(avatarFile, UploadFolder.USER);
             UserInfo userInfo = user.getUserInfo();
             userInfo.setAvatar(image);

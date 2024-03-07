@@ -3,6 +3,7 @@ package com.poly.easylearning.payload.request;
 
 import com.poly.easylearning.enums.Provider;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -16,4 +17,5 @@ public class UserRQ {
 	private String email;
 	private LocalDate dayOfBirth;
 	private Provider provider;
+	private MultipartFile avatar;
 }

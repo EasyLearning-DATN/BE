@@ -4,6 +4,7 @@ package com.poly.easylearning.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "`image`")
+@Builder
 public class Image {
     @Id
     private String publicId;

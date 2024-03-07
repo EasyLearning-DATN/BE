@@ -33,6 +33,7 @@ public class UserMapper implements Function<User, UserDTO> {
 				.dayOfBirth(userInfo.getDayOfBirth())
 				.provider(user.getProvider())
 				.locked(user.isLocked())
+				.avatar(userInfo.getAvatar() != null ? userInfo.getAvatar().getUrl() : "")
 				.build();
 	}
 }
