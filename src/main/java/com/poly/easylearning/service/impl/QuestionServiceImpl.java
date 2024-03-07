@@ -3,6 +3,7 @@ package com.poly.easylearning.service.impl;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.*;
 import com.poly.easylearning.exception.DataNotFoundException;
+import com.poly.easylearning.payload.request.AnswerRequest;
 import com.poly.easylearning.payload.request.QuestionRequest;
 import com.poly.easylearning.payload.response.*;
 import com.poly.easylearning.repo.*;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,7 +54,7 @@ public class QuestionServiceImpl implements IQuestionService {
         }
         if (!lessonId.isEmpty()) {
             try {
-                createdByMapper = UUID.fromString(createdBy);
+                lessonIdMapper = UUID.fromString(lessonId);
             } catch (Exception e) {
                 throw new InvalidParameterException(ResourceBundleConstant.DAT_8002);
             }
@@ -87,13 +90,32 @@ public class QuestionServiceImpl implements IQuestionService {
                 .lesson(existingLesson)
                 .questionType(existingQuestionType)
                 .build();
-        Question questionResponse = questionRepo.save(question);
-        answerService.createAllAnswer(questionRequest.getAnswers(), questionResponse.getId());
-        QuestionResponse response = QuestionResponse.fromQuestion(questionRepo.findById(questionResponse.getId())
-                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001)));
+        QuestionResponse response = saveQuestion(question, questionRequest.getAnswers());
         return RestResponse.created(ResourceBundleConstant.QUE_7002, response);
     }
+    @Override
+    public RestResponse<List<QuestionResponse>> createListQuestion(List<QuestionRequest> questionRequests) {
+        List<QuestionResponse> questionResponses = new ArrayList<>();
 
+        for(QuestionRequest questionRequest : questionRequests){
+            Lesson existingLesson = lessonRepo.findById(questionRequest.getLessonId())
+                    .orElseThrow(()-> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
+            QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(questionRequest.getQuestionTypeId())
+                    .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
+
+            Question question = Question.builder()
+                    .title(questionRequest.getTitle())
+                    .description(questionRequest.getDescription())
+                    .weighted(questionRequest.getWeighted())
+                    .lesson(existingLesson)
+                    .questionType(existingQuestionType)
+                    .build();
+            QuestionResponse response = saveQuestion(question, questionRequest.getAnswers());
+            questionResponses.add(response);
+        }
+
+        return RestResponse.created(ResourceBundleConstant.QUE_7002, questionResponses);
+    }
     @Override
     public RestResponse<QuestionResponse> updateQuestion(UUID id, QuestionRequest questionRequest) throws DataNotFoundException {
         Question existingQuestion =
@@ -106,11 +128,8 @@ public class QuestionServiceImpl implements IQuestionService {
         existingQuestion.setDescription(questionRequest.getDescription());
         existingQuestion.setWeighted(questionRequest.getWeighted());
         existingQuestion.setQuestionType(existingQuestionType);
+        QuestionResponse response = saveQuestion(existingQuestion, questionRequest.getAnswers());
 
-        Question questionResponse = questionRepo.save(existingQuestion);
-
-        QuestionResponse response = QuestionResponse.fromQuestion(questionRepo.findById(questionResponse.getId())
-                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001)));
         return RestResponse.accepted(ResourceBundleConstant.QUE_7008, response);
     }
 
@@ -120,5 +139,11 @@ public class QuestionServiceImpl implements IQuestionService {
         Question existingQuestion = questionRepo.getQuestionById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QUE_7001));
         existingQuestion.setIsDeleted(true);
         questionRepo.save(existingQuestion);
+    }
+
+    public QuestionResponse saveQuestion(Question question, List<AnswerRequest> answerRequests){
+        Question questionResponse = questionRepo.save(question);
+        List<AnswerResponse> answerResponses = answerService.createAllAnswer(answerRequests, questionResponse.getId()).data();
+        return QuestionResponse.fromQuestion(questionResponse, answerResponses);
     }
 }

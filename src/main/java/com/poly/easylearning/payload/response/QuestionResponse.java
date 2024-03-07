@@ -38,4 +38,19 @@ public class QuestionResponse extends BaseResponse {
                 .weighted(question.getWeighted())
                 .build();
     }
+
+    public static QuestionResponse fromQuestion(Question question, List<AnswerResponse> answerResponses) {
+        return QuestionResponse.builder()
+                .id(question.getId())
+                .createdDate(question.getCreatedDate())
+                .createdBy(question.getCreatedBy())
+                .lastModifiedDate(question.getLastModifiedDate())
+                .lastModifiedBy(question.getLastModifiedBy())
+                .title(question.getTitle())
+                .answers(answerResponses)
+                .questionTypeId(question.getQuestionType().getId())
+                .description(question.getDescription())
+                .weighted(question.getWeighted())
+                .build();
+    }
 }
