@@ -37,6 +37,7 @@ public class SystemConstant {
 
 	public static final String API_QUESTION_TYPE = "/question-type";
 	public static final String API_QUESTION = "/question";
+	public static final String API_CREATE_LIST = "/list";
 	public static final String API_ANSWER = "/answer";
 	public static final String API_REACTION = "/reaction";
 

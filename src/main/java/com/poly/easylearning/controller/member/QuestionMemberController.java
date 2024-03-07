@@ -1,12 +1,9 @@
 package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.payload.request.QuestionRequest;
-import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.QuestionResponse;
 import com.poly.easylearning.payload.response.RestResponse;
-import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.service.IQuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +28,15 @@ public class QuestionMemberController {
             throw new BindException(result);
         }
         return ResponseEntity.ok(questionService.createQuestion(questionRequest));
+    }
+
+    @PostMapping(SystemConstant.API_CREATE_LIST)
+    public ResponseEntity<RestResponse<List<QuestionResponse>>> createListQuestion(
+            @Valid @RequestBody List<QuestionRequest> questionRequests, BindingResult result) throws BindException {
+        if (result.hasErrors()) {
+            throw new BindException(result);
+        }
+        return ResponseEntity.ok(questionService.createListQuestion(questionRequests));
     }
 
     @PutMapping(SystemConstant.PATH_ID)
