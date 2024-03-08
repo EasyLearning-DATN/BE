@@ -15,4 +15,5 @@ public class ReportRQ {
 	private UUID targetId;
 	private String reason;
 	private ReportType type;
+	private MultipartFile image;
 }

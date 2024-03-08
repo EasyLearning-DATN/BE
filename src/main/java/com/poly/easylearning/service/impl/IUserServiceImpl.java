@@ -5,9 +5,7 @@ import com.poly.easylearning.dto.UserDTO;
 import com.poly.easylearning.entity.*;
 import com.poly.easylearning.enums.TokenType;
 import com.poly.easylearning.enums.UserStatus;
-import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.payload.request.*;
-import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.constant.ResourceBundleConstant;
@@ -27,14 +25,11 @@ import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,7 +63,7 @@ public class IUserServiceImpl implements IUserService {
         }
         Image avatar = null;
         if(Objects.nonNull(userRQ.getAvatar())){
-            avatar = imageStorageService.upload(userRQ.getAvatar(), UploadFolder.REPORT);
+            avatar = imageStorageService.upload(userRQ.getAvatar(), UploadFolder.USER);
         }else{
             avatar = imageStorageService.findByPublicId(DefaultValueConstants.IMAGE_USER_DEFAULT);
         }
