@@ -21,11 +21,10 @@ public class ReportMemberController {
 	@PostMapping
 	public ResponseEntity<?> createLessonReport(
 			@AuthenticationPrincipal User user,
-			@RequestParam(name = "image") MultipartFile image,
-			@RequestPart ReportRQ reportRQ
+			ReportRQ reportRQ
 	) {
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(reportService.createReport(image, reportRQ, user));
+				.body(reportService.createReport(reportRQ, user));
 	}
 }

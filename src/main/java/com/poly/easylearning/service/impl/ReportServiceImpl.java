@@ -45,10 +45,10 @@ public class ReportServiceImpl implements IReportService {
 	private final IImageStorageService storageService;
 
 	@Override
-	public RestResponse createReport(MultipartFile imageRQ, ReportRQ reportRQ, User user) {
-		Image image = null;
-		if(Objects.nonNull(imageRQ)){
-			image = storageService.upload(imageRQ, UploadFolder.REPORT);
+	public RestResponse createReport(ReportRQ reportRQ, User user) {
+		Image image = new Image();
+		if(Objects.nonNull(reportRQ.getImage())){
+			image = storageService.upload(reportRQ.getImage(), UploadFolder.REPORT);
 		}
 		Report reportSaved = reportRepo.save(
 				Report.builder()
