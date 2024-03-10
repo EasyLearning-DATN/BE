@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Collection;
 
@@ -35,4 +36,7 @@ public class Lesson extends BaseEntity
 
     @OneToMany(mappedBy = "lesson")
     private Collection<Question> questions;
+
+    @Column(name = "access_times", nullable = false)
+    private Integer accessTimes;
 }

@@ -23,6 +23,9 @@ public class LessonResponse extends BaseResponse {
     @JsonProperty("user_info")
     private UserInfoResponse userInfoResponse;
 
+    @JsonProperty("access_times")
+    private Integer accessTimes;
+
     public static LessonResponse fromLesson(Lesson lesson) {
         return LessonResponse.builder()
                 .id(lesson.getId())
@@ -33,6 +36,7 @@ public class LessonResponse extends BaseResponse {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .isPublic(lesson.isPublic())
+                .accessTimes(lesson.getAccessTimes())
                 .image(ImageResponse.fromImage(lesson.getImage()))
                 .userInfoResponse(UserInfoResponse.fromUserInfo(lesson.getUserInfo()))
                 .build();

@@ -15,6 +15,7 @@ import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.utils.DateUtil;
 import com.poly.easylearning.utils.SecurityContextUtils;
+import com.poly.easylearning.utils.ValidateUserUpdateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -74,10 +76,20 @@ public class LessonServiceImpl implements ILessonService {
     }
 
     @Override
+    public RestResponse<LessonResponse> getOneLessonIncrementAccess(UUID id) throws DataNotFoundException {
+        Lesson lesson = lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
+        lesson.setAccessTimes(lesson.getAccessTimes() + 1);
+        Lesson lessonNew = lessonRepo.save(lesson);
+        LessonResponse lessonResponse = LessonResponse.fromLesson(lessonNew);
+
+        return RestResponse.ok(ResourceBundleConstant.LSN_4004, lessonResponse);
+    }
+
+    @Override
     public RestResponse<LessonResponse> createLesson(LessonRequest lessonRequest) {
         Image image = imageRepo.findByPublicId(lessonRequest.getImageId())
-                    .orElse(imageRepo.findByPublicId(DefaultValueConstants.IMAGE_LESSON_DEFAULT)
-                            .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3005)));
+                .orElse(imageRepo.findByPublicId(DefaultValueConstants.IMAGE_LESSON_DEFAULT)
+                        .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3005)));
 
         Lesson newLesson = Lesson.builder()
                 .name(lessonRequest.getName())
@@ -85,6 +97,7 @@ public class LessonServiceImpl implements ILessonService {
                 .isPublic(lessonRequest.isPublic())
                 .image(image)
                 .userInfo(SecurityContextUtils.getCurrentUser().getUserInfo())
+                .accessTimes(0)
                 .build();
 
         Lesson lesson = lessonRepo.save(newLesson);
@@ -96,6 +109,7 @@ public class LessonServiceImpl implements ILessonService {
     public RestResponse<LessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException {
         Lesson existingLesson =
                 lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
+        ValidateUserUpdateUtils.checkUserUpdate(existingLesson);
         existingLesson.setName(lessonRequest.getName());
         existingLesson.setDescription(lessonRequest.getDescription());
         existingLesson.setPublic(lessonRequest.isPublic());

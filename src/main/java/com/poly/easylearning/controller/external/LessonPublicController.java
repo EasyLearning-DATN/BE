@@ -1,10 +1,12 @@
 package com.poly.easylearning.controller.external;
 
 import com.poly.easylearning.constant.SystemConstant;
+import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
+import com.poly.easylearning.repo.ILessonRepo;
 import com.poly.easylearning.service.ILessonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.UUID;
 @RequestMapping(SystemConstant.API_PUBLIC + SystemConstant.VERSION_1 + SystemConstant.API_LESSON)
 public class LessonPublicController {
     private final ILessonService lessonService;
+    private final ILessonRepo lessonRepo;
 
     @GetMapping("")
     public ResponseEntity<RestResponse<ListResponse<LessonResponse>>> getListLesson(
@@ -30,7 +33,7 @@ public class LessonPublicController {
             @RequestParam(value = "sort", defaultValue = "desc") String sort,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "limit", defaultValue = "10") int limit,
-            @RequestParam(value = "id" , defaultValue = "") String id,
+            @RequestParam(value = "id", defaultValue = "") String id,
             @RequestParam(value = "dateStart", defaultValue = "") String dateStart,
             @RequestParam(value = "dateEnd", defaultValue = "") String dateEnd,
             @RequestParam(value = "createdBy", defaultValue = "") String createdBy,
@@ -49,6 +52,6 @@ public class LessonPublicController {
     @GetMapping(SystemConstant.PATH_ID)
     public ResponseEntity<RestResponse<LessonResponse>> getOneLesson(
             @PathVariable(name = "id") UUID id) {
-        return ResponseEntity.ok(lessonService.getOneLesson(id));
+        return ResponseEntity.ok(lessonService.getOneLessonIncrementAccess(id));
     }
 }

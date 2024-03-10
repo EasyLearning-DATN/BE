@@ -15,6 +15,9 @@ public interface ILessonService {
 
     RestResponse<LessonResponse> getOneLesson(UUID id) throws DataNotFoundException;
 
+    public RestResponse<LessonResponse> getOneLessonIncrementAccess(UUID id) throws DataNotFoundException;
+
+
     RestResponse<LessonResponse> createLesson(LessonRequest lessonRequest);
 
     RestResponse<LessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException;

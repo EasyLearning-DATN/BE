@@ -10,6 +10,7 @@ import com.poly.easylearning.repo.*;
 import com.poly.easylearning.service.IAnswerService;
 import com.poly.easylearning.service.IQuestionService;
 import com.poly.easylearning.utils.DateUtil;
+import com.poly.easylearning.utils.ValidateUserUpdateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -102,7 +103,6 @@ public class QuestionServiceImpl implements IQuestionService {
                     .orElseThrow(()-> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
             QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(questionRequest.getQuestionTypeId())
                     .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
-
             Question question = Question.builder()
                     .title(questionRequest.getTitle())
                     .description(questionRequest.getDescription())
@@ -121,6 +121,7 @@ public class QuestionServiceImpl implements IQuestionService {
         Question existingQuestion =
                 questionRepo.getQuestionById(id)
                         .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QUE_7001));
+        ValidateUserUpdateUtils.checkUserUpdate(existingQuestion);
         QuestionType existingQuestionType = questionTypeRepo.getQuestionTypeById(questionRequest.getQuestionTypeId())
                 .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
 
