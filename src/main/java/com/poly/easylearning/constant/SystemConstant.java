@@ -40,6 +40,8 @@ public class SystemConstant {
 	public static final String API_CREATE_LIST = "/list";
 	public static final String API_ANSWER = "/answer";
 	public static final String API_REACTION = "/reaction";
+	public static final String API_TEST = "/test";
+	public static final String API_VIEW_RESULT_TYPE = "/view-result-type";
 
 	public static final String PATH_ID = "/{id}";
 	public static final String ID = "id";

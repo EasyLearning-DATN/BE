@@ -1,10 +1,10 @@
 package com.poly.easylearning.constant;
 
 public class ResourceBundleConstant {
-	//system
-	public static final String SYS_1001 = "SYS_1001";
-	public static final String SYS_1002 = "SYS_1002";
-	public static final String SYS_1003 = "SYS_1003";
+    //system
+    public static final String SYS_1001 = "SYS_1001";
+    public static final String SYS_1002 = "SYS_1002";
+    public static final String SYS_1003 = "SYS_1003";
 
     //auth
     public static final String ERROR_VALIDATION_FIELD = "ERROR_VALIDATION_FIELD";
@@ -68,7 +68,7 @@ public class ResourceBundleConstant {
     public static final String PKU_6005 = "PKU_6005";
     public static final String PKU_6006 = "PKU_6006";
     public static final String PKU_6008 = "PKU_6008";
-  
+
     //Answer
     public static final String ANS_6001 = "ANS_6001";
     public static final String ANS_6002 = "ANS_6002";
@@ -117,6 +117,34 @@ public class ResourceBundleConstant {
     public static final String RTC_9002 = "RTC_9002";
     public static final String RTC_9003 = "RTC_9003";
     public static final String RTC_9004 = "RTC_9004";
+
+    //Test
+    public static final String TES_10001 = "TES_10001";
+    public static final String TES_10002 = "TES_10002";
+    public static final String TES_10003 = "TES_10003";
+    public static final String TES_10004 = "TES_10004";
+    public static final String TES_10005 = "TES_10005";
+    public static final String TES_10006 = "TES_10006";
+    public static final String TES_10007 = "TES_10007";
+
+    //ViewResultType
+    public static final String VRT_11001 = "VRT_11001";
+    public static final String VRT_11002 = "VRT_11002";
+    public static final String VRT_11003 = "VRT_11003";
+    public static final String VRT_11004 = "VRT_11004";
+    public static final String VRT_11005 = "VRT_11005";
+    public static final String VRT_11006 = "VRT_11006";
+    public static final String VRT_11007 = "VRT_11007";
+    public static final String VRT_11008 = "VRT_11008";
+
+    //QuestionTest
+    public static final String QUT_12001 = "QUT_12001";
+    public static final String QUT_12002 = "QUT_12002";
+    public static final String QUT_12003 = "QUT_12003";
+    public static final String QUT_12004 = "QUT_12004";
+    public static final String QUT_12005 = "QUT_12005";
+    public static final String QUT_12006 = "QUT_12006";
+    public static final String QUT_12007 = "QUT_12007";
 
 
 }

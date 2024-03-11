@@ -21,7 +21,7 @@ public class QuestionType extends BaseEntity {
     @Column(length = 255, nullable = false)
     private String name;
 
-    @Column(length = 5, nullable = false)
+    @Column(length = 5, nullable = false, unique = true)
     private String code;
 
     @JsonIgnore

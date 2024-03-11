@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name="view_result_type")
 @Entity
 public class ViewResultType extends BaseEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
     @Column(nullable = false)
     private String name;
