@@ -38,4 +38,10 @@ public class UserInfo implements Serializable {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "userInfo")
+    private List<TestReport> reports;
+
+    @OneToMany(mappedBy = "userInfo")
+    private List<Test> tests;
 }
