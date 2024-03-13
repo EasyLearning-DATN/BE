@@ -21,9 +21,9 @@ public class Test extends BaseEntity{
     @Column(length = 255, nullable = false)
     private String name;
     private String description;
-    @Column(name = "time_total", nullable = false)
+    @Column(name = "time_total")
     private Long timeTotal; //second
-    @Column(name = "time_question", nullable = false)
+    @Column(name = "time_question")
     private Long timeQuestion;
     @Column(name = "total_question", nullable = false)
     private Integer totalQuestion;
