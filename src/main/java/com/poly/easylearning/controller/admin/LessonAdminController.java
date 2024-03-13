@@ -2,7 +2,7 @@ package com.poly.easylearning.controller.admin;
 
 import com.poly.easylearning.constant.SystemConstant;
 import com.poly.easylearning.payload.request.LessonRequest;
-import com.poly.easylearning.payload.response.LessonResponse;
+import com.poly.easylearning.payload.response.GetListLessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.service.ILessonService;
@@ -24,7 +24,7 @@ public class LessonAdminController {
     private final ILessonService lessonService;
 
     @GetMapping("")
-    public ResponseEntity<RestResponse<ListResponse<LessonResponse>>> getListLesson(
+    public ResponseEntity<RestResponse<ListResponse<GetListLessonResponse>>> getListLesson(
             @RequestParam(value = "key", defaultValue = "") String key,
             @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
             @RequestParam(value = "sort", defaultValue = "desc") String sort,
@@ -47,14 +47,14 @@ public class LessonAdminController {
     }
 
     @GetMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<RestResponse<LessonResponse>> getOneLesson(
+    public ResponseEntity<RestResponse<GetListLessonResponse>> getOneLesson(
             @PathVariable(name = "id") UUID id) {
         return ResponseEntity.ok(lessonService.getOneLesson(id));
     }
 
     @PutMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<RestResponse<LessonResponse>> updateLesson(@PathVariable(name = "id") UUID id,
-                                                                     @Valid @RequestBody LessonRequest lessonRequest, BindingResult result) throws BindException {
+    public ResponseEntity<RestResponse<GetListLessonResponse>> updateLesson(@PathVariable(name = "id") UUID id,
+                                                                            @Valid @RequestBody LessonRequest lessonRequest, BindingResult result) throws BindException {
         if (result.hasErrors()) {
             throw new BindException(result);
         }

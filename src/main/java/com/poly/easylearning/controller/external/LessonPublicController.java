@@ -1,20 +1,16 @@
 package com.poly.easylearning.controller.external;
 
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.entity.Lesson;
-import com.poly.easylearning.payload.request.LessonRequest;
-import com.poly.easylearning.payload.response.LessonResponse;
+import com.poly.easylearning.payload.response.GetListLessonResponse;
+import com.poly.easylearning.payload.response.GetOneLessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.repo.ILessonRepo;
 import com.poly.easylearning.service.ILessonService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,7 +23,7 @@ public class LessonPublicController {
     private final ILessonRepo lessonRepo;
 
     @GetMapping("")
-    public ResponseEntity<RestResponse<ListResponse<LessonResponse>>> getListLesson(
+    public ResponseEntity<RestResponse<ListResponse<GetListLessonResponse>>> getListLesson(
             @RequestParam(value = "key", defaultValue = "") String key,
             @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
             @RequestParam(value = "sort", defaultValue = "desc") String sort,
@@ -50,7 +46,7 @@ public class LessonPublicController {
     }
 
     @GetMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<RestResponse<LessonResponse>> getOneLesson(
+    public ResponseEntity<RestResponse<GetOneLessonResponse>> getOneLesson(
             @PathVariable(name = "id") UUID id) {
         return ResponseEntity.ok(lessonService.getOneLessonIncrementAccess(id));
     }

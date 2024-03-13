@@ -2,7 +2,7 @@ package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
 import com.poly.easylearning.payload.request.LessonRequest;
-import com.poly.easylearning.payload.response.LessonResponse;
+import com.poly.easylearning.payload.response.GetListLessonResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.service.ILessonService;
 import jakarta.validation.Valid;
@@ -21,7 +21,7 @@ public class LessonMemberController {
     private final ILessonService lessonService;
 
     @PostMapping("")
-    public ResponseEntity<RestResponse<LessonResponse>> createLesson(
+    public ResponseEntity<RestResponse<GetListLessonResponse>> createLesson(
             @Valid @RequestBody LessonRequest lessonRequest, BindingResult result) throws BindException {
         if (result.hasErrors()) {
             throw new BindException(result);
@@ -30,8 +30,8 @@ public class LessonMemberController {
     }
 
     @PutMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<RestResponse<LessonResponse>> updateLesson(@PathVariable(name = "id") UUID id,
-                                                                     @Valid @RequestBody LessonRequest lessonRequest, BindingResult result) throws BindException {
+    public ResponseEntity<RestResponse<GetListLessonResponse>> updateLesson(@PathVariable(name = "id") UUID id,
+                                                                            @Valid @RequestBody LessonRequest lessonRequest, BindingResult result) throws BindException {
         if (result.hasErrors()) {
             throw new BindException(result);
         }

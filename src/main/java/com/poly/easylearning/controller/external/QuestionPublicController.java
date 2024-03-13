@@ -1,12 +1,9 @@
 package com.poly.easylearning.controller.external;
 
-import com.poly.easylearning.constant.DefaultValueConstants;
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.QuestionResponse;
 import com.poly.easylearning.payload.response.RestResponse;
-import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.service.IQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
