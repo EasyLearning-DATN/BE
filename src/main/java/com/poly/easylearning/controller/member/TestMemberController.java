@@ -1,12 +1,9 @@
 package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.payload.request.TestRequest;
-import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.response.TestResponse;
-import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.service.ITestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

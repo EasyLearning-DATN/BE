@@ -4,6 +4,7 @@ import com.poly.easylearning.constant.DefaultValueConstants;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.Image;
 import com.poly.easylearning.exception.ApiRequestException;
+import com.poly.easylearning.payload.response.GetOneLessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.request.LessonRequest;
@@ -11,7 +12,7 @@ import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.exception.DataNotFoundException;
 import com.poly.easylearning.repo.IImageRepo;
 import com.poly.easylearning.repo.ILessonRepo;
-import com.poly.easylearning.payload.response.LessonResponse;
+import com.poly.easylearning.payload.response.GetListLessonResponse;
 import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.utils.DateUtil;
 import com.poly.easylearning.utils.SecurityContextUtils;
@@ -26,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -37,7 +37,7 @@ public class LessonServiceImpl implements ILessonService {
     private final IImageRepo imageRepo;
 
     @Override
-    public RestResponse<ListResponse<LessonResponse>> getListLesson(String keyword, String id, String dateStart, String dateEnd, String createdBy, String isPublic, PageRequest pageRequest) {
+    public RestResponse<ListResponse<GetListLessonResponse>> getListLesson(String keyword, String id, String dateStart, String dateEnd, String createdBy, String isPublic, PageRequest pageRequest) {
         UUID idMapper = null;
         UUID createdByMapper = null;
         Boolean isPublicMapper = null;
@@ -61,32 +61,32 @@ public class LessonServiceImpl implements ILessonService {
 
 
         Page<Lesson> pageReponse = lessonRepo.searchLesson(keyword, idMapper, DateUtil.fromString(dateStart), DateUtil.fromString(dateEnd), createdByMapper, isPublicMapper, pageRequest);
-        List<LessonResponse> lessonResponses = pageReponse.get().map(LessonResponse::fromLesson).toList();
-        ListResponse<LessonResponse> listResponse = ListResponse.build(pageReponse.getTotalPages(), lessonResponses);
+        List<GetListLessonResponse> lessonResponses = pageReponse.get().map(GetListLessonResponse::fromLesson).toList();
+        ListResponse<GetListLessonResponse> listResponse = ListResponse.build(pageReponse.getTotalPages(), lessonResponses);
         return RestResponse.ok(ResourceBundleConstant.LSN_4003,
                 listResponse);
     }
 
     @Override
-    public RestResponse<LessonResponse> getOneLesson(UUID id) throws DataNotFoundException {
+    public RestResponse<GetListLessonResponse> getOneLesson(UUID id) throws DataNotFoundException {
         Lesson lesson = lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
-        LessonResponse lessonResponse = LessonResponse.fromLesson(lesson);
+        GetListLessonResponse lessonResponse = GetListLessonResponse.fromLesson(lesson);
 
         return RestResponse.ok(ResourceBundleConstant.LSN_4004, lessonResponse);
     }
 
     @Override
-    public RestResponse<LessonResponse> getOneLessonIncrementAccess(UUID id) throws DataNotFoundException {
+    public RestResponse<GetOneLessonResponse> getOneLessonIncrementAccess(UUID id) throws DataNotFoundException {
         Lesson lesson = lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
         lesson.setAccessTimes(lesson.getAccessTimes() + 1);
         Lesson lessonNew = lessonRepo.save(lesson);
-        LessonResponse lessonResponse = LessonResponse.fromLesson(lessonNew);
+        GetOneLessonResponse lessonResponse = GetOneLessonResponse.fromLesson(lessonNew);
 
         return RestResponse.ok(ResourceBundleConstant.LSN_4004, lessonResponse);
     }
 
     @Override
-    public RestResponse<LessonResponse> createLesson(LessonRequest lessonRequest) {
+    public RestResponse<GetListLessonResponse> createLesson(LessonRequest lessonRequest) {
         Image image = imageRepo.findByPublicId(lessonRequest.getImageId())
                 .orElse(imageRepo.findByPublicId(DefaultValueConstants.IMAGE_LESSON_DEFAULT)
                         .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3005)));
@@ -101,12 +101,12 @@ public class LessonServiceImpl implements ILessonService {
                 .build();
 
         Lesson lesson = lessonRepo.save(newLesson);
-        LessonResponse response = LessonResponse.fromLesson(lesson);
+        GetListLessonResponse response = GetListLessonResponse.fromLesson(lesson);
         return RestResponse.created(ResourceBundleConstant.LSN_4002, response);
     }
 
     @Override
-    public RestResponse<LessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException {
+    public RestResponse<GetListLessonResponse> updateLesson(UUID id, LessonRequest lessonRequest) throws DataNotFoundException {
         Lesson existingLesson =
                 lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
         ValidateUserUpdateUtils.checkUserUpdate(existingLesson);
@@ -119,7 +119,7 @@ public class LessonServiceImpl implements ILessonService {
         existingLesson.setImage(image);
         Lesson lesson = lessonRepo.save(existingLesson);
 
-        LessonResponse response = LessonResponse.fromLesson(lesson);
+        GetListLessonResponse response = GetListLessonResponse.fromLesson(lesson);
         return RestResponse.accepted(ResourceBundleConstant.LSN_4008, response);
     }
 

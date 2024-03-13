@@ -2,22 +2,14 @@ package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.payload.request.ImageRequest;
-import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.payload.response.ImageResponse;
-import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.service.IImageStorageService;
-import com.poly.easylearning.service.ILessonService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
