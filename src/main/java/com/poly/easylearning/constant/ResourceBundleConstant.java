@@ -146,5 +146,21 @@ public class ResourceBundleConstant {
     public static final String QUT_12006 = "QUT_12006";
     public static final String QUT_12007 = "QUT_12007";
 
+    //QuestionReport
+    public static final String QUR_7001 = "QUR_7001";
+    public static final String QUR_7002 = "QUR_7002";
+    public static final String QUR_7003 = "QUR_7003";
+    public static final String QUR_7004 = "QUR_7004";
+    public static final String QUR_7007 = "QUR_7003";
+    public static final String QUR_7008 = "QUR_7004";
+
+    //TestReport
+    public static final String TER_10001 = "TER_10001";
+    public static final String TER_10002 = "TER_10002";
+    public static final String TER_10003 = "TER_10003";
+    public static final String TER_10004 = "TER_10004";
+    public static final String TER_10005 = "TER_10005";
+    public static final String TER_10006 = "TER_10006";
+    public static final String TER_10007 = "TER_10007";
 
 }

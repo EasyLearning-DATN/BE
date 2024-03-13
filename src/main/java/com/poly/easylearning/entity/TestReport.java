@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -27,4 +28,10 @@ public class TestReport extends BaseEntity {
 
     @OneToMany(mappedBy = "testReport")
     private List<ReportItem> reportItems;
+
+    @Column(name = "doing_date")
+    private LocalDateTime doingDate;
+
+    @OneToMany(mappedBy = "testReport")
+    private List<QuestionReport> questionReports;
 }
