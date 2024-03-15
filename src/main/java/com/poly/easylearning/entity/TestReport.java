@@ -26,9 +26,6 @@ public class TestReport extends BaseEntity {
     @JoinColumn(name = "user_info_id")
     private UserInfo userInfo;
 
-    @OneToMany(mappedBy = "testReport")
-    private List<ReportItem> reportItems;
-
     @Column(name = "doing_date")
     private LocalDateTime doingDate;
 

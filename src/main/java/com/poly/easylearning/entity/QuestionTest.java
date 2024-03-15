@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -34,7 +33,4 @@ public class QuestionTest{
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
-
-    @OneToMany(mappedBy = "questionTest")
-    private List<ReportItem> reportItems;
 }

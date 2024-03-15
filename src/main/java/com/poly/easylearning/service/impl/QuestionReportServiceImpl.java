@@ -3,6 +3,8 @@ package com.poly.easylearning.service.impl;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.*;
 import com.poly.easylearning.exception.DataNotFoundException;
+import com.poly.easylearning.payload.request.ReportItemRequest;
+import com.poly.easylearning.repo.IQuestionRepo;
 import com.poly.easylearning.repo.IQuestionReportRepo;
 import com.poly.easylearning.repo.IQuestionTypeRepo;
 import com.poly.easylearning.service.IAnswerReportService;
@@ -12,9 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +25,7 @@ import java.util.UUID;
 public class QuestionReportServiceImpl implements IQuestionReportService {
     private final IQuestionReportRepo questionReportRepo;
     private final IAnswerReportService answerReportService;
-    private final IQuestionTypeRepo questionTypeRepo;
+    private final IQuestionRepo questionRepo;
 
     @Override
     public List<QuestionReport> getListQuestionReport() {
@@ -37,26 +39,41 @@ public class QuestionReportServiceImpl implements IQuestionReportService {
     }
 
     @Override
-    public List<QuestionReport> createListQuestionReport(List<QuestionReport> questionReports) {
-        List<QuestionReport> questionRequests = new ArrayList<>();
-
+    public void createListQuestionReport(List<QuestionReport> questionReports, TestReport testReport) {
         for (QuestionReport questionReport : questionReports) {
-            QuestionReport question = QuestionReport.builder()
+            QuestionReport questionCreate = QuestionReport.builder()
                     .title(questionReport.getTitle())
                     .description(questionReport.getDescription())
                     .weighted(questionReport.getWeighted())
                     .questionTypeCode(questionReport.getQuestionTypeCode())
+                    .answerOfUser(questionReport.getAnswerOfUser())
+                    .testReport(testReport)
                     .build();
-            QuestionReport response = saveQuestionReport(question, questionReport.getAnswerReports());
-            questionRequests.add(response);
+            QuestionReport questionReportResponse = questionReportRepo.save(questionCreate);
+            answerReportService.createAllAnswerReport(questionReport.getAnswerReports(), questionReportResponse.getId());
         }
-
-        return questionRequests;
     }
 
-    public QuestionReport saveQuestionReport(QuestionReport questionReport, List<AnswerReport> answerReports) {
-        QuestionReport question = questionReportRepo.save(questionReport);
-        List<AnswerReport> answerResponses = answerReportService.createAllAnswerReport(answerReports, question.getId());
-        return question;
+    @Override
+    public void createListQuestionReportAndAnswerReport(List<ReportItemRequest> reportItemRequests, TestReport testReport) {
+        List<QuestionReport> questionReports = reportItemRequests.stream().map(reportItemRequest -> {
+            Question question = questionRepo.findById(reportItemRequest.getQuestionId()).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QUE_7001));
+            List<AnswerReport> answerReports = question.getAnswers().stream().map(answer -> AnswerReport.builder()
+                    .value(answer.getValue())
+                    .isCorrect(answer.getIsCorrect())
+                    .build()
+            ).collect(Collectors.toList());
+            return QuestionReport.builder()
+                    .testReport(testReport)
+                    .title(question.getTitle())
+                    .description(question.getDescription())
+                    .questionTypeCode(question.getQuestionType().getCode())
+                    .weighted(question.getWeighted())
+                    .answerReports(answerReports)
+                    .answerOfUser(reportItemRequest.getAnswers().toString())
+                    .build();
+        }).collect(Collectors.toList());
+
+        createListQuestionReport(questionReports, testReport);
     }
 }

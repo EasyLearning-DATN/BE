@@ -19,12 +19,12 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 public class TestReportResponse extends BaseResponse {
     @JsonProperty("test")
-    private TestResponse testResponse;
+    private TestOfTestReportResponse testOfTestReportResponse;
 
     @JsonProperty("user_info")
     private UserInfoResponse userInfoResponse;
 
-    @JsonProperty("questions")
+    @JsonProperty("question_report")
     private List<QuestionReportResponse> questionReportResponses;
 
     @Column(name = "doing_date")
@@ -37,9 +37,9 @@ public class TestReportResponse extends BaseResponse {
                 .createdBy(testReport.getCreatedBy())
                 .lastModifiedDate(testReport.getLastModifiedDate())
                 .lastModifiedBy(testReport.getLastModifiedBy())
-                .testResponse(TestResponse.fromTest(testReport.getTest()))
+                .testOfTestReportResponse(TestOfTestReportResponse.fromTest(testReport.getTest()))
                 .userInfoResponse(UserInfoResponse.fromUserInfo(testReport.getUserInfo()))
-                .questionReportResponses(testReport.getQuestionReports().stream().map(QuestionReportResponse::fromQuestionReport).toList())
+                .questionReportResponses(testReport.getQuestionReports() != null ?testReport.getQuestionReports().stream().map(QuestionReportResponse::fromQuestionReport).toList() : null)
                 .doingDate(testReport.getDoingDate())
                 .build();
     }

@@ -18,7 +18,7 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 public class ReportItemRequest {
     @NotBlank
-    @JsonProperty("question_test_id")
-    private UUID questionTestId;
+    @JsonProperty("question_id")
+    private UUID questionId;
     private List<String> answers;
 }

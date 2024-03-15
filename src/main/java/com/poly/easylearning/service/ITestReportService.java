@@ -16,7 +16,5 @@ public interface ITestReportService {
     RestResponse<TestReportResponse> getOneTestReport(UUID id) throws DataNotFoundException;
     RestResponse<TestReportResponse> createTestReport(TestReportRequest testReportRequest);
 
-    RestResponse<TestReportResponse> updateTestReport(UUID id, TestReportRequest testReportRequest) throws DataNotFoundException;
-
     void deleteTestReport(UUID id) throws DataNotFoundException;
 }
