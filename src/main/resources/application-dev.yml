@@ -53,12 +53,6 @@ spring:
         enable_lazy_load_no_trans: true
     hibernate:
       ddl-auto: validate
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    ssl: ${REDIS_SSL:false}
-    password: ${REDIS_PASSWORD:""}
-    database: ${REDIS_DATABASE:0}
 internal-url:
   configuration-service:
 
