@@ -66,6 +66,6 @@ dependencies {
 	//Cloudinary
 	implementation 'com.cloudinary:cloudinary-http44:1.32.2'
 }
-test {
-	enabled = false
+tasks.named('test', Test) {
+	useJUnitPlatform()
 }
