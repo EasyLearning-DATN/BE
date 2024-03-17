@@ -84,10 +84,7 @@ public class TestReportServiceImpl implements ITestReportService {
                 .doingDate(LocalDateTime.now())
                 .build();
         TestReport testReportResponse = testReportRepo.save(testReport);
-        CompletableFuture<Void> listQuestionReportFuture = CompletableFuture.runAsync(() ->
-                {
-                    questionReportService.createListQuestionReportAndAnswerReport(testReportRequest.getReportItems(), testReportResponse);
-                });
+        questionReportService.createListQuestionReportAndAnswerReport(testReportRequest.getReportItems(), testReportResponse);
         return testReportResponse;
     }
 }

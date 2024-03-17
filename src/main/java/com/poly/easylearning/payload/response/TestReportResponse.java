@@ -29,6 +29,8 @@ public class TestReportResponse extends BaseResponse {
 
     @Column(name = "doing_date")
     private LocalDateTime doingDate;
+    @JsonProperty("total_point")
+    private double totalPoint;
 
     public static TestReportResponse fromTestReport(TestReport testReport) {
         return TestReportResponse.builder()
@@ -39,8 +41,9 @@ public class TestReportResponse extends BaseResponse {
                 .lastModifiedBy(testReport.getLastModifiedBy())
                 .testOfTestReportResponse(TestOfTestReportResponse.fromTest(testReport.getTest()))
                 .userInfoResponse(UserInfoResponse.fromUserInfo(testReport.getUserInfo()))
-                .questionReportResponses(testReport.getQuestionReports() != null ?testReport.getQuestionReports().stream().map(QuestionReportResponse::fromQuestionReport).toList() : null)
+                .questionReportResponses(testReport.getQuestionReports() != null ? testReport.getQuestionReports().stream().map(QuestionReportResponse::fromQuestionReport).toList() : null)
                 .doingDate(testReport.getDoingDate())
+                .totalPoint(testReport.getTotalPoint())
                 .build();
     }
 }

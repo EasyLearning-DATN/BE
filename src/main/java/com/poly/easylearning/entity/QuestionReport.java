@@ -32,4 +32,5 @@ public class QuestionReport extends BaseEntity {
     private TestReport testReport;
     @JoinColumn(name = "answerOfUser")
     private String answerOfUser;
+    private double point;
 }

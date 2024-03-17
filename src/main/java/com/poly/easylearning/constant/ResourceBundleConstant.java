@@ -84,8 +84,10 @@ public class ResourceBundleConstant {
     public static final String QUE_7002 = "QUE_7002";
     public static final String QUE_7003 = "QUE_7003";
     public static final String QUE_7004 = "QUE_7004";
-    public static final String QUE_7007 = "QUE_7003";
-    public static final String QUE_7008 = "QUE_7004";
+    public static final String QUE_7007 = "QUE_7007";
+    public static final String QUE_7008 = "QUE_7008";
+    public static final String QUE_7009 = "QUE_7009";
+    public static final String QUE_7010 = "QUE_7010";
 
     //DATE
     public static final String DAT_8001 = "DAT_8001";

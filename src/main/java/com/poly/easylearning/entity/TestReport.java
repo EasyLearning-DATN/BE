@@ -31,4 +31,6 @@ public class TestReport extends BaseEntity {
 
     @OneToMany(mappedBy = "testReport")
     private List<QuestionReport> questionReports;
+    @JoinColumn(name = "total_point")
+    private double totalPoint;
 }
