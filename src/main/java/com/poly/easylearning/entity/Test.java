@@ -37,7 +37,7 @@ public class Test extends BaseEntity{
     private ViewResultType viewResultType;
 
     @OneToMany(mappedBy = "test")
-    private Set<QuestionTest> questionTests;
+    private List<QuestionTest> questionTests;
 
     @OneToMany(mappedBy = "test")
     private List<TestReport> testReports;
