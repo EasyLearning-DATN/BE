@@ -40,6 +40,7 @@ public class MoMoPayMemberController {
         String secretKey = MoMoConfig.SECRET_KEY;
         String returnUrl = MoMoConfig.REDIRECT_URL;
         String notifyUrl = MoMoConfig.NOTIFY_URL;
+        String ipnUrl = MoMoConfig.IPN_URL;
         json.put("partnerCode", partnerCode);
         json.put("accessKey", accessKey);
         json.put("requestId", String.valueOf(System.currentTimeMillis()));
@@ -48,6 +49,7 @@ public class MoMoPayMemberController {
         json.put("orderInfo", "Thanh toan don hang " + order_id.toString());
         json.put("returnUrl", returnUrl);
         json.put("notifyUrl", notifyUrl);
+        json.put("ipnUrl", ipnUrl);
         json.put("requestType", "captureMoMoWallet");
 
         String data = "partnerCode=" + partnerCode

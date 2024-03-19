@@ -67,4 +67,6 @@ public class RoleServiceImpl implements IRoleService {
 		List<RoleDTO> roleDTOS = roles.stream().map(role -> roleMapper.apply(role)).toList();
 		return RestResponse.ok(ResourceBundleConstant.RL_6001, roleDTOS);
 	}
+
+
 }

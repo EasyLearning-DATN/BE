@@ -50,6 +50,8 @@ public class SystemConstant {
 	/* Api Thanh toán */
 	public static final String API_PAYMENT = "/payment";
 	public static final String API_MOMO = "/momo";
+//	Api invoice
+	public static final String API_INVOICE = "/invoice";
 //	Xử lý thanh toán thành công
 	public static final String API_PAYMENT_SUCCESS = "/payment-success";
 
