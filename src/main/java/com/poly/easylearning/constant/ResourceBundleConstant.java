@@ -165,4 +165,11 @@ public class ResourceBundleConstant {
     public static final String TER_10006 = "TER_10006";
     public static final String TER_10007 = "TER_10007";
 
+//    Invoice
+    public static final String INV_13001 = "INV_13001";
+    public static final String INV_13002 = "INV_13002";
+    public static final String INV_13003 = "INV_13003";
+    public static final String INV_13004 = "INV_13004";
+    public static final String INV_13005 = "INV_13005";
+
 }
