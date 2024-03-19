@@ -31,9 +31,9 @@ import org.springframework.web.bind.annotation.*;
 public class MoMoPayMemberController {
     @SneakyThrows
     @PostMapping("/create-order")
-    public Map<String, Object> createPayment(HttpServletRequest request, @RequestParam Long amount, @RequestParam Long order_id)
+    public Map<String, Object> createPayment(HttpServletRequest request, @RequestParam Long amount)
             throws InvalidKeyException, NoSuchAlgorithmException, ClientProtocolException, IOException {
-//        Long order_id = (long) (Math.random() * 1000000000);
+        Long order_id = (long) (Math.random() * 1000000000);
         JSONObject json = new JSONObject();
         String partnerCode = MoMoConfig.PARTNER_CODE;
         String accessKey = MoMoConfig.ACCESS_KEY;
