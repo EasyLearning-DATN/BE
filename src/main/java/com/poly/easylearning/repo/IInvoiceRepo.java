@@ -39,6 +39,21 @@ public interface IInvoiceRepo extends JpaRepository<Invoice, UUID> {
             """)
     Optional<Invoice> findById(UUID id);
 
+//    existsByOrderId
+    @Query("""
+            SELECT CASE WHEN COUNT(i) > 0 THEN TRUE ELSE FALSE END
+            FROM Invoice i
+            WHERE i.orderID = :orderId
+            AND i.isDeleted != TRUE
+            """)
+    boolean existsByOrderId(String orderId);
+
+    @Query("""
+            SELECT i FROM Invoice i
+            WHERE i.isDeleted != TRUE
+            AND i.userId = :userId
+            """)
+    List<Invoice> findByUserId(UUID userId);
 
 
 }
