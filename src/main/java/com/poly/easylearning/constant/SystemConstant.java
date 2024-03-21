@@ -11,7 +11,7 @@ public class SystemConstant {
 	public static final String ACTIVE = "ACTIVE";
 	public static final String IN_ACTIVE = "IN_ACTIVE";
 
-//	/* API path */
+	/* API path */
 	public static final String API_ADMIN = "/admin";
 	public static final String API_PUBLIC = "/public";
 	public static final String API_MEMBER = "/member";
@@ -29,31 +29,15 @@ public class SystemConstant {
 	public static final String API_LOGOUT = "/logout";
 	public static final String API_SIGNUP = "/sign-up";
 	public static final String API_AUTHENTICATION = "/authenticate";
-	public static final String API_COMMENT = "/comment";
 	public static final String API_LESSON = "/lesson";
-	public static final String API_FILE_UPLOAD = "/file-upload";
 	public static final String API_PACKAGE_UPGRADE = "/package-upgrade";
 	public static final String API_VALID_TOKEN = "/valid-token";
 
 	public static final String API_QUESTION_TYPE = "/question-type";
-	public static final String API_QUESTION = "/question";
-	public static final String API_CREATE_LIST = "/list";
 	public static final String API_ANSWER = "/answer";
-	public static final String API_REACTION = "/reaction";
-	public static final String API_TEST = "/test";
-	public static final String API_TEST_REPORT = "/test-report";
-	public static final String API_VIEW_RESULT_TYPE = "/view-result-type";
 
 	public static final String PATH_ID = "/{id}";
 	public static final String ID = "id";
-
-	/* Api Thanh toán */
-	public static final String API_PAYMENT = "/payment";
-	public static final String API_MOMO = "/momo";
-//	Api invoice
-	public static final String API_INVOICE = "/invoice";
-//	Xử lý thanh toán thành công
-	public static final String API_PAYMENT_SUCCESS = "/payment-success";
 
 	/* Default Data */
 	public static final String DEF_AVATAR = "https://i.imgur.com/6VBx3io.png";

@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Validated
 @RequiredArgsConstructor
@@ -36,12 +35,5 @@ public class ReportAdminController {
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(reportService.changeStatus(statusRQ));
-	}
-	@GetMapping(SystemConstant.PATH_ID)
-	public ResponseEntity<?> findById(
-			@PathVariable(name = SystemConstant.ID) UUID id) {
-		return ResponseEntity
-				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(reportService.getDetail(id));
 	}
 }

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,7 +20,7 @@ public class ReportMemberController {
 	@PostMapping
 	public ResponseEntity<?> createLessonReport(
 			@AuthenticationPrincipal User user,
-			ReportRQ reportRQ
+			@RequestBody ReportRQ reportRQ
 	) {
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)

@@ -33,10 +33,6 @@ public class Report extends BaseEntity{
 
 	private UUID targetId;
 
-	@OneToOne
-	@JoinColumn(name = "image_id")
-	private Image image;
-
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;

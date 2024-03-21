@@ -18,7 +18,6 @@ public class ReportMapper implements Function<Report, ReportDTO> {
 				.status(report.getStatus())
 				.type(report.getType())
 				.userReport(report.getUser().getUsername())
-				.imageUrl(report.getImage() != null ? report.getImage().getUrl() : "")
 				.build();
 	}
 }

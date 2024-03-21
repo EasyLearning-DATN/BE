@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Validated
 @RequiredArgsConstructor
@@ -23,9 +22,7 @@ public class UserPublicController {
 	private final AuthService authService;
 
 	@PostMapping(SystemConstant.API_SIGNUP)
-	public ResponseEntity<?> doRegister(
-			 UserRQ userRequest
-	){
+	public ResponseEntity<?> doRegister(@RequestBody UserRQ userRequest){
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
 				.body(userService.register(userRequest));
