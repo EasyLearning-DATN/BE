@@ -9,6 +9,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -39,9 +40,6 @@ public class UserInfo implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "userInfo")
-    private List<TestReport> reports;
-
-    @OneToMany(mappedBy = "userInfo")
-    private List<Test> tests;
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY)
+    private Collection<Lesson> lessons;
 }

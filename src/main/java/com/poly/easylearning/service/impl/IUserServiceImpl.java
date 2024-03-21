@@ -6,6 +6,7 @@ import com.poly.easylearning.entity.*;
 import com.poly.easylearning.enums.TokenType;
 import com.poly.easylearning.enums.UserStatus;
 import com.poly.easylearning.payload.request.*;
+import com.poly.easylearning.payload.response.LessonResponse;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.constant.ResourceBundleConstant;
@@ -25,11 +26,14 @@ import com.poly.easylearning.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +49,7 @@ public class IUserServiceImpl implements IUserService {
     private final IUserRepo userRepo;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final IImageStorageService storageService;
     private final IJwtService jwtService;
     private final UserMapper userMapper;
     private final IImageStorageService imageStorageService;
@@ -61,13 +66,6 @@ public class IUserServiceImpl implements IUserService {
         if(checkEmail.isPresent()){
             throw new ApiRequestException(ResourceBundleConstant.USR_2015);
         }
-        Image avatar = null;
-        if(Objects.nonNull(userRQ.getAvatar())){
-            avatar = imageStorageService.upload(userRQ.getAvatar(), UploadFolder.USER);
-        }else{
-            avatar = imageStorageService.findByPublicId(DefaultValueConstants.IMAGE_USER_DEFAULT);
-        }
-
         User newUser = User.builder()
                 .username(userRQ.getUsername())
                 .password(passwordEncoder.encode(userRQ.getPassword()))
@@ -89,7 +87,6 @@ public class IUserServiceImpl implements IUserService {
                 .fullName(userRQ.getFullName())
                 .dayOfBirth(userRQ.getDayOfBirth())
                 .user(newUser)
-                .avatar(avatar)
                 .isDeleted(false)
                 .build();
         newUser.setUserInfo(userInfo); // set user info for new Account
@@ -143,10 +140,10 @@ public class IUserServiceImpl implements IUserService {
     public RestResponse updateAvatar(User user, MultipartFile avatarFile) {
         if(Objects.nonNull(avatarFile)){
             if(user.getUserInfo() != null && user.getUserInfo().getAvatar() != null) {
-                imageStorageService.delete(user.getUserInfo().getAvatar().getPublicId());
+                storageService.delete(user.getUserInfo().getAvatar().getPublicId());
             }
-            Image image = imageStorageService
-                    .upload(avatarFile, UploadFolder.USER);
+            Image image = storageService
+                    .upload(avatarFile, UploadFolder.USER, String.valueOf(user.getId()));
             UserInfo userInfo = user.getUserInfo();
             userInfo.setAvatar(image);
             user.setUserInfo(userInfo);

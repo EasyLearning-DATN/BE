@@ -1,14 +1,13 @@
 package com.poly.easylearning.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -18,13 +17,6 @@ import java.util.Collection;
 @Table(name="question_type")
 @Entity
 public class QuestionType extends BaseEntity {
-    @Column(length = 255, nullable = false)
+    @Column(name = "name", length = 255, nullable = false)
     private String name;
-
-    @Column(length = 5, nullable = false, unique = true)
-    private String code;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "questionType", fetch = FetchType.LAZY)
-    private Collection<Question> questions;
 }

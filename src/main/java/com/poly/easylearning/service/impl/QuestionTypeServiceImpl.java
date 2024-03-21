@@ -1,4 +1,5 @@
 package com.poly.easylearning.service.impl;
+
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.QuestionType;
 import com.poly.easylearning.exception.DataNotFoundException;
@@ -8,7 +9,6 @@ import com.poly.easylearning.payload.response.QuestionTypeResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.repo.IQuestionTypeRepo;
 import com.poly.easylearning.service.IQuestionTypeService;
-import com.poly.easylearning.utils.ValidateUserUpdateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -48,7 +48,6 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
     public RestResponse<QuestionTypeResponse> createQuestionType(QuestionTypeRequest questionTypeRequest) {
         QuestionType questionType = QuestionType.builder()
                 .name(questionTypeRequest.getName())
-                .code(questionTypeRequest.getCode())
                 .build();
 
         questionTypeRepo.save(questionType);
@@ -61,9 +60,7 @@ public class QuestionTypeServiceImpl implements IQuestionTypeService {
         QuestionType existingQuestionType =
                 questionTypeRepo.getQuestionTypeById(id)
                         .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QST_5001));
-        ValidateUserUpdateUtils.checkUserUpdate(existingQuestionType);
         existingQuestionType.setName(questionTypeRequest.getName());
-        existingQuestionType.setCode(questionTypeRequest.getCode());
 
         QuestionType questionType = questionTypeRepo.save(existingQuestionType);
 

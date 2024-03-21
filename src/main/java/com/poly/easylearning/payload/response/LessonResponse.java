@@ -10,26 +10,21 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-public class GetListLessonResponse extends BaseResponse {
+public class LessonResponse extends BaseResponse {
     private String name;
     private String description;
 
     @JsonProperty("is_public")
     private boolean isPublic;
 
-    private ImageResponse image;
+    @JsonProperty("image_url")
+    private String imageUrl;
 
     @JsonProperty("user_info")
     private UserInfoResponse userInfoResponse;
 
-    @JsonProperty("access_times")
-    private Integer accessTimes;
-
-    @JsonProperty("number_of_question")
-    private Integer numberOfQuestion;
-
-    public static GetListLessonResponse fromLesson(Lesson lesson) {
-        return GetListLessonResponse.builder()
+    public static LessonResponse fromLesson(Lesson lesson) {
+        LessonResponse lessonResponse = LessonResponse.builder()
                 .id(lesson.getId())
                 .createdDate(lesson.getCreatedDate())
                 .createdBy(lesson.getCreatedBy())
@@ -38,10 +33,10 @@ public class GetListLessonResponse extends BaseResponse {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .isPublic(lesson.isPublic())
-                .numberOfQuestion(lesson.getQuestions().size())
-                .accessTimes(lesson.getAccessTimes())
-                .image(ImageResponse.fromImage(lesson.getImage()))
+                .imageUrl(lesson.getImageUrl())
                 .userInfoResponse(UserInfoResponse.fromUserInfo(lesson.getUserInfo()))
                 .build();
+
+        return lessonResponse;
     }
 }
