@@ -15,11 +15,11 @@ public class InvoiceRQ {
     public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
-    public String getRequestId() {
+    public String getTransId() {
         return transId;
     }
-    public void setRequestId(String requestId) {
-        this.transId = requestId;
+    public void setTransId(String transId) {
+        this.transId = transId;
     }
     public String getDate() {
         return date;

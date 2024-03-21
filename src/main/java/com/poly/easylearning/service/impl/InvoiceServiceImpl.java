@@ -40,7 +40,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
        Invoice invoice = invoiceRepo.save(
                     Invoice.builder()
                             .orderID(invoiceRequest.getOrderID())
-                            .transId(invoiceRequest.getRequestId())
+                            .transId(invoiceRequest.getTransId())
                             .date(LocalDateTime.now())
                             .total(invoiceRequest.getTotal())
                             .userId(invoiceRequest.getUserId())
@@ -48,6 +48,11 @@ public class InvoiceServiceImpl implements IInvoiceService {
                             .build()
             );
             return RestResponse.ok(ResourceBundleConstant.INV_13002, invoice);
+    }
+
+    @Override
+    public boolean existsByOrderId(String orderId) {
+          return invoiceRepo.existsByOrderId(orderId);
     }
 
     //    delete invoice
