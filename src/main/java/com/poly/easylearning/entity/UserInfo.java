@@ -44,4 +44,7 @@ public class UserInfo implements Serializable {
 
     @OneToMany(mappedBy = "userInfo")
     private List<Test> tests;
+
+    @OneToMany(mappedBy = "userInfo")
+    private List<Invoice> invoices;
 }

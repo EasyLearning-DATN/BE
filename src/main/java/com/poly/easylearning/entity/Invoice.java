@@ -1,7 +1,6 @@
 package com.poly.easylearning.entity;
 
-import com.poly.easylearning.enums.ReportStatus;
-import com.poly.easylearning.enums.ReportType;
+import com.poly.easylearning.enums.InvoiceStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,11 +19,18 @@ import java.util.UUID;
 @Table(name = "`invoice`")
 @Entity
 public class Invoice extends BaseEntity{
-    private UUID id;
+    @JoinColumn(name = "order_id", unique = true)
     private String orderID; // Mã hóa đơn (orderID)
+    @JoinColumn(name = "trans_id", unique = true)
     private String transId; // Mã yêu cầu (transId)
     private LocalDateTime date;
     private double total;
-    private UUID userId;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InvoiceStatusEnum status;
+    @ManyToOne
+    @JoinColumn(name = "user_info_id")
+    private UserInfo userInfo;
+    @ManyToOne
+    @JoinColumn(name = "package_upgrade_id")
+    private PackageUpgrade packageUpgrade;
 }

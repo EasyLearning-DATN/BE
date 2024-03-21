@@ -27,7 +27,7 @@ public interface IUserService {
 
     RestResponse validTokenForgotPass(String token);
 
-    RestResponse updatePassword(User user, PasswordUpdate passwordUpdate);
+    RestResponse updatePassword(User user, PasswordUpdateRequest passwordUpdateRequest);
 
     RestResponse getUserResById(UUID id);
 

@@ -54,17 +54,17 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public RestResponse register(UserRQ userRQ) {
         Optional<User> checkUsername = userRepo.findByUsername(userRQ.getUsername());
-        if(checkUsername.isPresent()){
+        if (checkUsername.isPresent()) {
             throw new ApiRequestException(ResourceBundleConstant.USR_2003);
         }
         Optional<User> checkEmail = userRepo.findByEmail(userRQ.getEmail());
-        if(checkEmail.isPresent()){
+        if (checkEmail.isPresent()) {
             throw new ApiRequestException(ResourceBundleConstant.USR_2015);
         }
         Image avatar = null;
-        if(Objects.nonNull(userRQ.getAvatar())){
+        if (Objects.nonNull(userRQ.getAvatar())) {
             avatar = imageStorageService.upload(userRQ.getAvatar(), UploadFolder.USER);
-        }else{
+        } else {
             avatar = imageStorageService.findByPublicId(DefaultValueConstants.IMAGE_USER_DEFAULT);
         }
 
@@ -104,16 +104,19 @@ public class IUserServiceImpl implements IUserService {
         User userSaved = userRepo.save(newUser);
         return RestResponse.ok(ResourceBundleConstant.USR_2004, userMapper.apply(userSaved));
     }
+
     @Override
-    public RestResponse getInfo(User user){
+    public RestResponse getInfo(User user) {
         checkUserIsLocked(user);
         return RestResponse.ok(ResourceBundleConstant.USR_2005, userMapper.apply(user));
     }
-    public void checkUserIsLocked(User user){
-        if(user.isLocked()){
+
+    public void checkUserIsLocked(User user) {
+        if (user.isLocked()) {
             throw new ApiRequestException(ResourceBundleConstant.USR_2010);
         }
     }
+
     //check it
     @Override
     public RestResponse updateInfo(User oldUser, UserUpdateRQ userUpdateRQ) {
@@ -133,16 +136,17 @@ public class IUserServiceImpl implements IUserService {
     }
 
     @Override
-    public User findById(UUID userID){
+    public User findById(UUID userID) {
         return userRepo.findById(userID)
                 .orElseThrow(() -> new ApiRequestException(
                         ResourceBundleConstant.USR_2002
                 ));
     }
+
     @Override
     public RestResponse updateAvatar(User user, MultipartFile avatarFile) {
-        if(Objects.nonNull(avatarFile)){
-            if(user.getUserInfo() != null && user.getUserInfo().getAvatar() != null) {
+        if (Objects.nonNull(avatarFile)) {
+            if (user.getUserInfo() != null && user.getUserInfo().getAvatar() != null) {
                 imageStorageService.delete(user.getUserInfo().getAvatar().getPublicId());
             }
             Image image = imageStorageService
@@ -152,10 +156,11 @@ public class IUserServiceImpl implements IUserService {
             user.setUserInfo(userInfo);
             userRepo.save(user);
             return RestResponse.ok(ResourceBundleConstant.USR_2006, image.getUrl());
-        }else{
+        } else {
             throw new ApiRequestException(ResourceBundleConstant.IMG_3001);
         }
     }
+
     @Override
     public User findByUsername(String username) {
         return userRepo.findByUsername(username)
@@ -163,6 +168,7 @@ public class IUserServiceImpl implements IUserService {
                         ResourceBundleConstant.USR_2002
                 ));
     }
+
     @Override
     public RestResponse generateTokenForgotPass(String email) {
         User user = userRepo.findByEmailAndLocked(email, false)
@@ -188,7 +194,7 @@ public class IUserServiceImpl implements IUserService {
         String username = jwtService.extractUsername(token);
         UserDetails userDetails = findByUsername(username);
         if (jwtService.isValidToken(token, userDetails)) {
-            saveUserToken((User)userDetails, token);
+            saveUserToken((User) userDetails, token);
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authToken);
             return RestResponse.ok(ResourceBundleConstant.USR_2013, token);
@@ -197,9 +203,12 @@ public class IUserServiceImpl implements IUserService {
     }
 
     @Override
-    public RestResponse updatePassword(User user, PasswordUpdate passwordUpdate) {
+    public RestResponse updatePassword(User user, PasswordUpdateRequest passwordUpdateRequest) {
         checkUserIsLocked(user);
-        user.setPassword(passwordEncoder.encode(passwordUpdate.getPassword()));
+        if (!passwordEncoder.matches(passwordUpdateRequest.getPasswordOld(), user.getPassword())) {
+            throw new ApiRequestException(ResourceBundleConstant.USR_2021);
+        }
+        user.setPassword(passwordEncoder.encode(passwordUpdateRequest.getPasswordNew()));
         userRepo.save(user);
         return RestResponse.ok(ResourceBundleConstant.USR_2016, "OK");
     }
@@ -213,11 +222,11 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public RestResponse changeStatus(UUID userId, UserStatusRQ userStatusRQ) {
         User user = findById(userId);
-        if(UserStatus.UNLOCK.equals(userStatusRQ.getStatus())){
+        if (UserStatus.UNLOCK.equals(userStatusRQ.getStatus())) {
             user.setLocked(false);
             userRepo.save(user);
             return RestResponse.ok(ResourceBundleConstant.USR_2017, user.getId());
-        }else{
+        } else {
             return lockAccount(user);
         }
     }
@@ -229,6 +238,7 @@ public class IUserServiceImpl implements IUserService {
         userRepo.save(user);
         return RestResponse.ok(ResourceBundleConstant.USR_2018, user.getId());
     }
+
     @Override
     public RestResponse updateUser(UserUpdateRQ userUpdateRQ, UUID userId) {
         User oldUser = findById(userId);
@@ -237,12 +247,14 @@ public class IUserServiceImpl implements IUserService {
         User userUpdated = userRepo.save(oldUser);
         return RestResponse.ok(ResourceBundleConstant.USR_2006, userMapper.applyForA(userUpdated));
     }
+
     @Override
     public RestResponse lockAccount(User user) {
         user.setLocked(true);
         userRepo.save(user);
         return RestResponse.ok(ResourceBundleConstant.USR_2008, user.getId());
     }
+
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
@@ -253,6 +265,7 @@ public class IUserServiceImpl implements IUserService {
                 .build();
         tokenRepo.save(token);
     }
+
     private String generateRandomPassword() {
         String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowerCase = "abcdefghijklmnopqrstuvwxyz";
@@ -290,6 +303,7 @@ public class IUserServiceImpl implements IUserService {
 
         return shuffleString(password.toString());
     }
+
     private static String shuffleString(String string) {
         char[] characters = string.toCharArray();
         for (int i = 0; i < characters.length; i++) {

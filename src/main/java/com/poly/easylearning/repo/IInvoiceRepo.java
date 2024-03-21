@@ -51,9 +51,9 @@ public interface IInvoiceRepo extends JpaRepository<Invoice, UUID> {
     @Query("""
             SELECT i FROM Invoice i
             WHERE i.isDeleted != TRUE
-            AND i.userId = :userId
+            AND i.userInfo = :userInfoId
             """)
-    List<Invoice> findByUserId(UUID userId);
+    List<Invoice> findByUserId(Integer userInfoId);
 
 
 }

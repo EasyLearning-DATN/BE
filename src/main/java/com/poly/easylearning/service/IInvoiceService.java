@@ -11,7 +11,7 @@ public interface IInvoiceService {
 
     RestResponse getInvoiceByOrderId(UUID id);
 
-    RestResponse createInvoice(InvoiceRQ invoiceRequest, User user);
+    RestResponse createInvoice(InvoiceRequest invoiceRequest, User user);
     boolean existsByOrderId(String orderId);
 
     RestResponse deleteInvoice(UUID id);

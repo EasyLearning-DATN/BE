@@ -1,15 +1,11 @@
 package com.poly.easylearning.controller.member;
 
 import com.poly.easylearning.constant.SystemConstant;
-import com.poly.easylearning.dto.ReactionDTO;
 import com.poly.easylearning.entity.User;
-import com.poly.easylearning.payload.request.PasswordUpdate;
-import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
+import com.poly.easylearning.payload.request.PasswordUpdateRequest;
 import com.poly.easylearning.payload.request.UserUpdateRQ;
 import com.poly.easylearning.service.IUserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -51,11 +47,11 @@ public class UserMemberController {
 	@PatchMapping(SystemConstant.API_PASSWORD)
 	public ResponseEntity<?> updatePassword(
 			@AuthenticationPrincipal User user,
-			@RequestBody PasswordUpdate passwordUpdate
+			@RequestBody PasswordUpdateRequest passwordUpdateRequest
 	){
 		return ResponseEntity
 				.status(SystemConstant.STATUS_CODE_SUCCESS)
-				.body(userService.updatePassword(user, passwordUpdate));
+				.body(userService.updatePassword(user, passwordUpdateRequest));
 	}
 	@PatchMapping(SystemConstant.LOCK_USER)
 	public ResponseEntity<?> lockAccount(@AuthenticationPrincipal User user) {

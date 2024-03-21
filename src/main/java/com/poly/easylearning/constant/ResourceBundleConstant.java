@@ -30,6 +30,7 @@ public class ResourceBundleConstant {
     public static final String USR_2018 = "USR_2018";
     public static final String USR_2019 = "USR_2019";
     public static final String USR_2020 = "USR_2020";
+    public static final String USR_2021 = "USR_2021";
 
     //Image
     public static final String IMG_3001 = "IMG_3001";
@@ -171,5 +172,11 @@ public class ResourceBundleConstant {
     public static final String INV_13003 = "INV_13003";
     public static final String INV_13004 = "INV_13004";
     public static final String INV_13005 = "INV_13005";
-
+    public static final String INV_13006 = "INV_13006";
+    public static final String INV_13007 = "INV_13007";
+    public static final String INV_13008 = "INV_13008";
+    public static final String INV_13009 = "INV_13009";
+    public static final String INV_13010 = "INV_13010";
+    public static final String INV_13011 = "INV_13011";
+    public static final String INV_13012 = "INV_13012";
 }

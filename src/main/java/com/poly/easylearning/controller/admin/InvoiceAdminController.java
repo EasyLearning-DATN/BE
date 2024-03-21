@@ -2,6 +2,7 @@ package com.poly.easylearning.controller.admin;
 import com.poly.easylearning.constant.SystemConstant;
 import com.poly.easylearning.entity.User;
 import com.poly.easylearning.payload.request.InvoiceRQ;
+import com.poly.easylearning.payload.request.InvoiceRequest;
 import com.poly.easylearning.service.IInvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,9 @@ public class InvoiceAdminController {
 
 // create invoice
 @PostMapping("/create")
-public ResponseEntity<?> createInvoice(@RequestBody InvoiceRQ invoiceRQ) {
+public ResponseEntity<?> createInvoice(@RequestBody InvoiceRequest invoiceRequest) {
     // Kiểm tra orderId đã tồn tại hay chưa
-    if (invoiceService.existsByOrderId(invoiceRQ.getOrderID())) {
+    if (invoiceService.existsByOrderId(invoiceRequest.getOrderID())) {
         // Nếu orderId đã tồn tại, trả về ResponseEntity với thông báo lỗi
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("OrderId đã tồn tại. Vui lòng chọn orderId khác.");
@@ -39,7 +40,7 @@ public ResponseEntity<?> createInvoice(@RequestBody InvoiceRQ invoiceRQ) {
 
     // Nếu orderId chưa tồn tại, tiến hành tạo invoice và trả về ResponseEntity thành công
     return ResponseEntity.status(SystemConstant.STATUS_CODE_SUCCESS)
-            .body(invoiceService.createInvoice(invoiceRQ, new User()));
+            .body(invoiceService.createInvoice(invoiceRequest, new User()));
 }
 
 }

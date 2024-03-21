@@ -1,10 +1,8 @@
 package com.poly.easylearning.service.impl;
 
 import com.poly.easylearning.constant.ResourceBundleConstant;
-import com.poly.easylearning.dto.InvoiceDTO;
-import com.poly.easylearning.dto.RoleDTO;
 import com.poly.easylearning.entity.*;
-import com.poly.easylearning.payload.request.InvoiceRQ;
+import com.poly.easylearning.payload.request.InvoiceRequest;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.repo.IInvoiceRepo;
 import com.poly.easylearning.service.IInvoiceService;
@@ -36,14 +34,14 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     @Override
-    public RestResponse createInvoice(InvoiceRQ invoiceRequest, User user) {
+    public RestResponse createInvoice(InvoiceRequest invoiceRequest, User user) {
        Invoice invoice = invoiceRepo.save(
                     Invoice.builder()
                             .orderID(invoiceRequest.getOrderID())
                             .transId(invoiceRequest.getTransId())
                             .date(LocalDateTime.now())
                             .total(invoiceRequest.getTotal())
-                            .userId(invoiceRequest.getUserId())
+                            .userInfo(user.getUserInfo())
                             .status(invoiceRequest.getStatus())
                             .build()
             );

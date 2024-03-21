@@ -1,7 +1,7 @@
 package com.poly.easylearning.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.poly.easylearning.enums.Provider;
+import com.poly.easylearning.entity.UserInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,6 @@ public class InvoiceDTO {
     private String transId; // Mã yêu cầu (transId)
     private LocalDate date;
     private double total;
-    private UUID userId;
+    private UserInfo userInfo;
     private String status;
-
 }
