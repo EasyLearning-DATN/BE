@@ -22,32 +22,11 @@ public class AnswerMemberController {
     private final IAnswerService answerService;
 
     @PostMapping("")
-    public ResponseEntity<RestResponse<AnswerResponse>> createAnswer(
-            @Valid @RequestBody AnswerRequest answerRequest, BindingResult result) throws BindException {
+    public ResponseEntity<RestResponse<List<AnswerResponse>>> createAnswer(
+            @Valid @RequestBody List<AnswerRequest> answerRequests, BindingResult result, @RequestParam("question_id") UUID questionId) throws BindException {
         if (result.hasErrors()) {
             throw new BindException(result);
         }
-        return ResponseEntity.ok(answerService.createAnswer(answerRequest));
-    }
-
-    @PutMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<RestResponse<AnswerResponse>> updateAnswer(@PathVariable(name = "id") UUID id,
-                                                                     @Valid @RequestBody AnswerRequest answerRequest, BindingResult result) throws BindException {
-        if (result.hasErrors()) {
-            throw new BindException(result);
-        }
-        return ResponseEntity.ok(answerService.updateAnswer(id, answerRequest));
-    }
-
-    @DeleteMapping(SystemConstant.PATH_ID)
-    public ResponseEntity<Void> deleteAnswer(@PathVariable(name = "id") UUID id) {
-        answerService.deleteOneAnswer(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("")
-    public ResponseEntity<Void> deleteListAnswer(@RequestParam(name = "ids") List<UUID> ids) {
-        answerService.deleteListAnswer(ids);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(answerService.createAllAnswer(answerRequests, questionId));
     }
 }

@@ -37,7 +37,7 @@ spring:
     password: ${MYSQL.PASSWORD:password}
 
     hikari:
-      connectionTimeout: ${DATASOURCE.CONNECTION.TIMEOUT:30000}
+      connectionTimeout: ${DATASOURCE.CONNECTION.TIMEOUT:100000}
       idleTimeout: ${DATASOURCE.IDLE.TIMEOUT:600000}
       maxLifetime: ${DATASOURCE.MAX_LIFE_TIME:0}
       minimum-idle: ${DATASOURCE.MINIMUM_IDLE:5}
@@ -70,13 +70,13 @@ redis:
 
 #Cloudinary config
 cloudinary:
-  cloud_name: dvjmszx5r
-  api_key: 894964399353631
-  api_secret: iYa0dfZzxS7-MdPuNp-CKgUTyM4
+  cloud_name: dfz7841n3
+  api_key: 983357693662753
+  api_secret: TY2Wz3vGIBKnvqcTUXkdmiwvSFY
 
 #App config
 app:
   config:
-    domain: "http://localhost:1001/easy-learning"
+    domain: ${DOMAIN:http://localhost:1001}
     path:
-      valid_token: "/public/v1/user/valid-token?token="
+      valid_token: "/easy-learning/public/v1/user/valid-token?token="

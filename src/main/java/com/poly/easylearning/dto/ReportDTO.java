@@ -22,4 +22,5 @@ public class ReportDTO {
 	private UUID targetId;
 	private ReportType type;
 	private String userReport;
+	private String imageUrl;
 }

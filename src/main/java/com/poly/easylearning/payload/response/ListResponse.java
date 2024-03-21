@@ -1,6 +1,7 @@
 package com.poly.easylearning.payload.response;
 
 import com.poly.easylearning.utils.ResponseUtil;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;

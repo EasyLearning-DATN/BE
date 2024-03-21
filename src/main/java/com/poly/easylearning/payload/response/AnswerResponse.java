@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
-public class AnswerResponse extends BaseResponse {
+public class AnswerResponse {
     private String value;
 
     @JsonProperty("is_correct")
@@ -22,11 +22,6 @@ public class AnswerResponse extends BaseResponse {
 
     public static AnswerResponse fromAnswer(Answer answer) {
         return AnswerResponse.builder()
-                .id(answer.getId())
-                .createdDate(answer.getCreatedDate())
-                .createdBy(answer.getCreatedBy())
-                .lastModifiedDate(answer.getLastModifiedDate())
-                .lastModifiedBy(answer.getLastModifiedBy())
                 .value(answer.getValue())
                 .isCorrect(answer.getIsCorrect())
                 .build();

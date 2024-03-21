@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -133,6 +132,17 @@ public class AppExceptionHandler {
                 e.getMessage(),
                 SystemConstant.STATUS_CODE_BAD_REQUEST,
                 ResponseUtil.getMessageBundle(e.getMessage()),
+                ResponseUtil.currentTimeSeconds()
+        );
+        return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InvalidUserException.class)
+    public ResponseEntity<Object> handleException(InvalidUserException e) {
+        AppException exception = new AppException(
+                e.getMessage(),
+                SystemConstant.STATUS_CODE_BAD_REQUEST,
+                ResponseUtil.getMessageBundle(e.getCode()),
                 ResponseUtil.currentTimeSeconds()
         );
         return new ResponseEntity<>(exception, HttpStatusCode.valueOf(SystemConstant.STATUS_CODE_BAD_REQUEST));

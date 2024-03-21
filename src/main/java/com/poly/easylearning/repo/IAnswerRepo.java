@@ -1,7 +1,6 @@
 package com.poly.easylearning.repo;
 
 import com.poly.easylearning.entity.Answer;
-import com.poly.easylearning.entity.QuestionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +20,6 @@ public interface IAnswerRepo extends JpaRepository<Answer, UUID> {
     Optional<Answer> getAnswerById(UUID id);
 
     void deleteAllByIdIn(List<UUID> ids);
+
+    void deleteAnswersByQuestionId(UUID questionId);
 }

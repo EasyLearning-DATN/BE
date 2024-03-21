@@ -1,12 +1,14 @@
 package com.poly.easylearning.entity;
 
-import com.poly.easylearning.utils.SecurityContextUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -28,6 +30,13 @@ public class Lesson extends BaseEntity
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @OneToMany(mappedBy = "lesson")
+    private Collection<Question> questions;
+
+    @Column(name = "access_times", nullable = false)
+    private Integer accessTimes;
 }
