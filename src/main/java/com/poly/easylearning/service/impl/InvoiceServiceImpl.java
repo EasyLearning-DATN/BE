@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +35,16 @@ public class InvoiceServiceImpl implements IInvoiceService {
     private final IPackageUpgradeRepo packageUpgradeRepo;
 
     public RestResponse<ListResponse<InvoiceResponse>> getListInvoice(String status, Integer userInfoId, String dateStart, String dateEnd, String orderId, String transId, Pageable pageable) {
-        Page<Invoice> pageReponse = invoiceRepo.searchInvoice(InvoiceStatusEnum.valueOf(status), userInfoId, DateUtil.fromString(dateStart), DateUtil.fromString(dateEnd), orderId, transId, pageable);
+        InvoiceStatusEnum invoiceStatus = null;
+        if(!status.isEmpty()){
+            try {
+                invoiceStatus = InvoiceStatusEnum.valueOf(status);
+            } catch (Exception e) {
+                throw new InvalidParameterException(ResourceBundleConstant.SYS_1002);
+            }
+        }
+
+        Page<Invoice> pageReponse = invoiceRepo.searchInvoice(invoiceStatus, userInfoId, DateUtil.fromString(dateStart), DateUtil.fromString(dateEnd), orderId, transId, pageable);
         List<InvoiceResponse> invoiceResponses = pageReponse.get().map(InvoiceResponse::fromInvoice).toList();
         ListResponse<InvoiceResponse> listResponse = ListResponse.build(pageReponse.getTotalPages(), invoiceResponses);
         return RestResponse.ok(ResourceBundleConstant.INV_13003,
