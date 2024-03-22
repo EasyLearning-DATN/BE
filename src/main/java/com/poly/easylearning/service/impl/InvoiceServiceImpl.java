@@ -2,18 +2,27 @@ package com.poly.easylearning.service.impl;
 
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.entity.*;
+import com.poly.easylearning.enums.InvoiceStatusEnum;
+import com.poly.easylearning.exception.DataNotFoundException;
+import com.poly.easylearning.exception.InvalidUserException;
 import com.poly.easylearning.payload.request.InvoiceRequest;
+import com.poly.easylearning.payload.response.InvoiceResponse;
+import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.repo.IInvoiceRepo;
+import com.poly.easylearning.repo.IPackageUpgradeRepo;
 import com.poly.easylearning.service.IInvoiceService;
+import com.poly.easylearning.utils.DateUtil;
+import com.poly.easylearning.utils.SecurityContextUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -22,45 +31,49 @@ import java.util.UUID;
 @Transactional
 public class InvoiceServiceImpl implements IInvoiceService {
     private final IInvoiceRepo invoiceRepo;
-//    get all invoice
-    public RestResponse getAllInvoice(Optional<Integer> currentPage, Optional<Integer> limitPage) {
-        List<Invoice> invoices = invoiceRepo.findAll();
-        return RestResponse.ok(ResourceBundleConstant.INV_13003, invoices);
-    }
+    private final IPackageUpgradeRepo packageUpgradeRepo;
 
-//    get invoice by order id
-    public RestResponse getInvoiceByOrderId(UUID id) {
-        return null;
-    }
-
-    @Override
-    public RestResponse createInvoice(InvoiceRequest invoiceRequest, User user) {
-       Invoice invoice = invoiceRepo.save(
-                    Invoice.builder()
-                            .orderID(invoiceRequest.getOrderID())
-                            .transId(invoiceRequest.getTransId())
-                            .date(LocalDateTime.now())
-                            .total(invoiceRequest.getTotal())
-                            .userInfo(user.getUserInfo())
-                            .status(invoiceRequest.getStatus())
-                            .build()
-            );
-            return RestResponse.ok(ResourceBundleConstant.INV_13002, invoice);
+    public RestResponse<ListResponse<InvoiceResponse>> getListInvoice(String status, Integer userInfoId, String dateStart, String dateEnd, String orderId, String transId, Pageable pageable) {
+        Page<Invoice> pageReponse = invoiceRepo.searchInvoice(InvoiceStatusEnum.valueOf(status), userInfoId, DateUtil.fromString(dateStart), DateUtil.fromString(dateEnd), orderId, transId, pageable);
+        List<InvoiceResponse> invoiceResponses = pageReponse.get().map(InvoiceResponse::fromInvoice).toList();
+        ListResponse<InvoiceResponse> listResponse = ListResponse.build(pageReponse.getTotalPages(), invoiceResponses);
+        return RestResponse.ok(ResourceBundleConstant.INV_13003,
+                listResponse);
     }
 
     @Override
-    public boolean existsByOrderId(String orderId) {
-          return invoiceRepo.existsByOrderId(orderId);
-    }
+    public RestResponse<InvoiceResponse> getOneInvoice(UUID id) throws DataNotFoundException {
+        Invoice invoice = invoiceRepo.getInvoiceById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.INV_13001));
+        InvoiceResponse invoiceResponse = InvoiceResponse.fromInvoice(invoice);
 
-    //    delete invoice
-    public RestResponse deleteInvoice(UUID id) {
-        return null;
+        return RestResponse.ok(ResourceBundleConstant.INV_13004, invoiceResponse);
     }
 
     @Override
-    public RestResponse getInvoiceByUserId(UUID id) {
-        return null;
+    public RestResponse<InvoiceResponse> createInvoice(InvoiceRequest invoiceRequest) {
+        User user = SecurityContextUtils.getCurrentUser();
+        UserInfo userInfo;
+        if(user != null){
+            userInfo = user.getUserInfo();
+        }else {
+            throw new InvalidUserException(ResourceBundleConstant.USR_2020);
+        }
+
+        PackageUpgrade packageUpgrade = packageUpgradeRepo.getPackageUpgradeById(invoiceRequest.getPackageUpgradeId())
+                .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.PKU_6001));
+
+        Invoice invoice = invoiceRepo.save(
+                Invoice.builder()
+                        .orderID(invoiceRequest.getOrderID())
+                        .transId(invoiceRequest.getTransId())
+                        .date(LocalDateTime.now())
+                        .total(invoiceRequest.getTotal())
+                        .userInfo(userInfo)
+                        .status(invoiceRequest.getStatus())
+                        .packageUpgrade(packageUpgrade)
+                        .build()
+        );
+        return RestResponse.ok(ResourceBundleConstant.INV_13002, InvoiceResponse.fromInvoice(invoice));
     }
 
 

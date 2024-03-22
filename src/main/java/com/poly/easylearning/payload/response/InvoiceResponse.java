@@ -43,6 +43,7 @@ public class InvoiceResponse extends BaseResponse{
                 .transId(invoice.getTransId())
                 .total(invoice.getTotal())
                 .date(invoice.getDate())
+                .userInfoId(invoice.getUserInfo().getId())
                 .status(invoice.getStatus())
                 .build();
         return invoiceResponse;

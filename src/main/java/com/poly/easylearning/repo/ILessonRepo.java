@@ -23,6 +23,4 @@ public interface ILessonRepo extends JpaRepository<Lesson, UUID> {
     @Query("SELECT l FROM Lesson l WHERE " +
             "(l.id = :id)" + " AND (l.isDeleted = false )")
     Optional<Lesson> getLessonById(UUID id);
-//
-//    Page<Lesson> findLessonsByCreatedBy(String username, Pageable pageable);
 }

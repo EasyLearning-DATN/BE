@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -35,13 +36,14 @@ public class InvoiceRequest {
     @Min(value = 0, message = ResourceBundleConstant.INV_13009)
     private double total;
 
-    @NotNull(message = ResourceBundleConstant.INV_13010)
-    private LocalDateTime date;
-
     @NotNull(message = ResourceBundleConstant.INV_13011)
     private InvoiceStatusEnum status;
 
     @NotNull(message = ResourceBundleConstant.INV_13012)
     @JsonProperty("user_info_id")
     private Integer userInfoId;
+
+    @NotNull(message = ResourceBundleConstant.INV_13012)
+    @JsonProperty("package_upgrade_id")
+    private UUID packageUpgradeId;
 }
