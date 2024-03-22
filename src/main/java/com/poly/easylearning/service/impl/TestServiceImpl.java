@@ -79,7 +79,16 @@ public class TestServiceImpl implements ITestService {
 
         ViewResultType viewResultType = viewResultTypeRepo.findViewResultTypeByCode(testRequest.getViewResultTypeCode()).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.VRT_11001));
 
-        Test newTest = Test.builder().name(testRequest.getName()).description(testRequest.getDescription()).timeTotal(testRequest.getTimeTotal()).timeQuestion(testRequest.getTimeQuestion()).totalQuestion(testRequest.getQuestionIds().size()).image(image).viewResultType(viewResultType).userInfo(SecurityContextUtils.getCurrentUser().getUserInfo()).build();
+        Test newTest = Test.builder()
+                .name(testRequest.getName())
+                .description(testRequest.getDescription())
+                .timeTotal(testRequest.getTimeTotal())
+                .timeQuestion(testRequest.getTimeQuestion())
+                .totalQuestion(testRequest.getQuestionIds().size()).image(image)
+                .viewResultType(viewResultType)
+                .userInfo(SecurityContextUtils.getCurrentUser().getUserInfo())
+                .doingTime(0)
+                .build();
         Test test = testRepo.save(newTest);
         questionTestService.createListQuestionTest(testRequest.getQuestionIds(), test.getId());
         return RestResponse.created(ResourceBundleConstant.TES_10002, TestResponse.fromTest(test));

@@ -27,6 +27,8 @@ public class Test extends BaseEntity{
     private Long timeQuestion;
     @Column(name = "total_question", nullable = false)
     private Integer totalQuestion;
+    @Column(name = "doing_time", nullable = false)
+    private Integer doingTime;
 
     @ManyToOne
     @JoinColumn(name = "image_id")

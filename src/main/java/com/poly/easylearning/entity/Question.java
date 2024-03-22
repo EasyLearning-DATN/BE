@@ -26,7 +26,7 @@ public class Question extends BaseEntity {
     @Column(nullable = false)
     private Double weighted;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     private List<Answer> answers;
 
     @ManyToOne

@@ -35,7 +35,7 @@ public class UserInfo implements Serializable {
     private boolean isDeleted;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

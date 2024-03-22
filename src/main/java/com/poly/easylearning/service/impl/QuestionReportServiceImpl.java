@@ -66,27 +66,31 @@ public class QuestionReportServiceImpl implements IQuestionReportService {
     @Override
     public void createListQuestionReportAndAnswerReport(List<ReportItemRequest> reportItemRequests, TestReport testReport) {
         Test test = testReport.getTest();
-        double totalWeight = test.getQuestionTests().stream().map(questionTest -> questionTest.getQuestion().getWeighted()).reduce(0.0, Double::sum);
+        double totalWeight = test.getQuestionTests().stream()
+                .map(questionTest -> questionTest.getQuestion().getWeighted())
+                .reduce(0.0, Double::sum);
         double pointEachWeight = TOTAL_POINT_TEST / totalWeight;
-        List<QuestionReport> questionReports = reportItemRequests.stream().map(reportItemRequest -> {
-            Question question = questionRepo.findById(reportItemRequest.getQuestionId()).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QUE_7001));
-            List<AnswerReport> answerReports = question.getAnswers().stream().map(answer -> AnswerReport.builder()
-                    .value(answer.getValue())
-                    .isCorrect(answer.getIsCorrect())
-                    .build()
-            ).collect(Collectors.toList());
-            double point = calculatePoint(question, reportItemRequest.getAnswers(), pointEachWeight);
-            return QuestionReport.builder()
-                    .testReport(testReport)
-                    .title(question.getTitle())
-                    .description(question.getDescription())
-                    .questionTypeCode(question.getQuestionType().getCode())
-                    .weighted(question.getWeighted())
-                    .answerReports(answerReports)
-                    .point(point)
-                    .answerOfUser(String.join(DefaultValueConstants.JOIN_CHARACTER, reportItemRequest.getAnswers()))
-                    .build();
-        }).collect(Collectors.toList());
+        List<QuestionReport> questionReports = reportItemRequests.stream()
+                .map(reportItemRequest ->
+                {
+                    Question question = questionRepo.findById(reportItemRequest.getQuestionId()).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.QUE_7001));
+                    List<AnswerReport> answerReports = question.getAnswers().stream().map(answer -> AnswerReport.builder()
+                            .value(answer.getValue())
+                            .isCorrect(answer.getIsCorrect())
+                            .build()
+                    ).collect(Collectors.toList());
+                    double point = calculatePoint(question, reportItemRequest.getAnswers(), pointEachWeight);
+                    return QuestionReport.builder()
+                            .testReport(testReport)
+                            .title(question.getTitle())
+                            .description(question.getDescription())
+                            .questionTypeCode(question.getQuestionType().getCode())
+                            .weighted(question.getWeighted())
+                            .answerReports(answerReports)
+                            .point(point)
+                            .answerOfUser(String.join(DefaultValueConstants.JOIN_CHARACTER, reportItemRequest.getAnswers()))
+                            .build();
+                }).collect(Collectors.toList());
         double totalPoint = questionReports.stream().map(QuestionReport::getPoint).reduce(0.0, Double::sum);
         testReport.setTotalPoint(totalPoint);
         createListQuestionReport(questionReports, testReport);
