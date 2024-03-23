@@ -180,4 +180,7 @@ public class ResourceBundleConstant {
     public static final String INV_13011 = "INV_13011";
     public static final String INV_13012 = "INV_13012";
     public static final String INV_13013 = "INV_13013";
+
+    //ReportFinance
+    public static final String RPF_14003 = "RPF_14003";
 }

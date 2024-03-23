@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,4 +27,9 @@ public interface IInvoiceRepo extends JpaRepository<Invoice, UUID> {
             "(i.id = :id)" + " AND (i.isDeleted = false )")
     Optional<Invoice> getInvoiceById(UUID id);
 
+    @Query("SELECT SUM(i.total) as revenueTotal, " +
+            "SUM(case when (date( i.date) BETWEEN :dateStart AND :dateEnd) then i.total else 0.0 end) as revenueQuarter " +
+            "FROM Invoice i WHERE " +
+            "i.isDeleted = false ")
+    Map<String, Double> getRevenue(LocalDate dateStart, LocalDate dateEnd);
 }

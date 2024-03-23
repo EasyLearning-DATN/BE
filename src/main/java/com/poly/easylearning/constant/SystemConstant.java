@@ -52,6 +52,7 @@ public class SystemConstant {
 	public static final String API_MOMO = "/momo";
 //	Api invoice
 	public static final String API_INVOICE = "/invoice";
+	public static final String API_REPORT_FINANCE = "/report-finance";
 //	Xử lý thanh toán thành công
 	public static final String API_PAYMENT_SUCCESS = "/payment-success";
 
@@ -67,5 +68,7 @@ public class SystemConstant {
 	//Param
 	public static final String CURRENT_PAGE = "currentPage";
 	public static final String LIMIT_PAGE = "limitPage";
+	public static final String START_DATE = "startDate";
+	public static final String END_DATE = "endDate";
 	public static final String NAME = "name";
 }
