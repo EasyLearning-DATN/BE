@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -24,6 +25,8 @@ import java.util.List;
 @Entity
 public class Comment extends BaseEntity{
     private Boolean enabled;
+    private UUID rootId;
+    private String usernameReply;
 
     @Column(length = 1024)
     private String content;

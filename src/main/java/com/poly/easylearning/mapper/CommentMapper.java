@@ -4,6 +4,7 @@ import com.poly.easylearning.dto.CommentDTO;
 import com.poly.easylearning.dto.UserDTO;
 import com.poly.easylearning.entity.Comment;
 import com.poly.easylearning.entity.Reaction;
+import com.poly.easylearning.repo.ICommentRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class CommentMapper implements Function<Comment, CommentDTO> {
     private final UserMapper userMapper;
+    private final ICommentRepo commentRepo;
 
     @Override
     public CommentDTO apply(Comment comment) {
@@ -45,6 +47,9 @@ public class CommentMapper implements Function<Comment, CommentDTO> {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
+                .rootId(comment.getRootId())
+                .usernameReply(comment.getUsernameReply())
+                .amountChild(commentRepo.getAmountChild(comment.getId()))
                 .creator(creator)
                 .isCreator(isCreator)
                 .dateCreate(comment.getCreatedDate())

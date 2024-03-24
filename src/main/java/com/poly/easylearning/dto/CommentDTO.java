@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,4 +22,7 @@ public class CommentDTO {
     private Boolean isCreator;
     private int amountLike;
     private int amountDislike;
+    private UUID rootId;
+    private int amountChild;
+    private String usernameReply;
 }

@@ -15,6 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentRQ {
+    private UUID rootId;
     private String content;
     private UUID lessonId;
+    private String usernameReply;
 }

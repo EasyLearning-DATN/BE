@@ -45,10 +45,12 @@ public class CommentServiceImpl implements ICommentService {
         Comment commentSaved = commentRepo.save(
                 Comment.builder()
                         .content(commentRQ.getContent())
+                        .usernameReply(commentRQ.getUsernameReply())
                         .user(user)
                         .lesson(lesson)
                         .enabled(true)
                         .isDeleted(false)
+                        .rootId(commentRQ.getRootId())
                         .build()
         );
         return RestResponse.ok(ResourceBundleConstant.CMT_8001, commentMapper.apply(commentSaved));
@@ -66,21 +68,22 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public RestResponse findCommentByLesson(UUID lessonId, User user, Scope scope, Optional<Integer> currentPage, Optional<Integer> limitPage) {
+    public RestResponse findCommentByLesson(UUID lessonId,UUID rootId, User user, Scope scope,
+                                            Optional<Integer> currentPage, Optional<Integer> limitPage) {
         Pageable pageable = ResponseUtil.pageable(currentPage.orElse(1),
                 limitPage.orElse(DefaultValueConstants.LIMIT_PAGE));
         Page<Comment> comments = null;
         List<CommentDTO> commentDTOS = new ArrayList<>();
         switch (scope) {
             case ADMIN -> {
-                comments = commentRepo.findCommentByCondition(lessonId, pageable);
+                comments = commentRepo.findCommentByCondition(lessonId, rootId, pageable);
                 commentDTOS = comments.stream()
                         .map(commentMapper).toList();
                 break;
             }
             case MEMBER -> {
                 UUID currentUserId = user.getId();
-                comments = commentRepo.findPublicCommentByCondition(lessonId, pageable);
+                comments = commentRepo.findPublicCommentByCondition(lessonId, rootId, pageable);
                 commentDTOS = comments.stream()
                         .map(comment -> {
                             boolean isCreator = comment.getCreatedBy().equals(currentUserId);
@@ -89,7 +92,7 @@ public class CommentServiceImpl implements ICommentService {
                 break;
             }
             case EXTERNAL -> {
-                comments = commentRepo.findPublicCommentByCondition(lessonId, pageable);
+                comments = commentRepo.findPublicCommentByCondition(lessonId, rootId, pageable);
                 commentDTOS = comments.stream()
                         .map(commentMapper::applyForPublic).toList();
                 break;

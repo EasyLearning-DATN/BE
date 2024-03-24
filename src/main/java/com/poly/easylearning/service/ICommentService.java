@@ -15,7 +15,8 @@ public interface ICommentService {
 
     RestResponse deleteComment(UUID commentId, User user);
 
-    RestResponse findCommentByLesson(UUID lessonId, User user, Scope scope, Optional<Integer> currentPage, Optional<Integer> limitPage);
+    RestResponse findCommentByLesson(UUID lessonId, UUID rootId, User user, Scope scope, Optional<Integer> currentPage
+            , Optional<Integer> limitPage);
 
     RestResponse changeStatus(CommentStatusRQ statusRQ);
 
