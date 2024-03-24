@@ -3,6 +3,7 @@ package com.poly.easylearning.payload.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.enums.InvoiceStatusEnum;
+import com.poly.easylearning.enums.MethodPaymentEnum;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,11 +40,15 @@ public class InvoiceRequest {
     @NotNull(message = ResourceBundleConstant.INV_13011)
     private InvoiceStatusEnum status;
 
+    @NotNull(message = ResourceBundleConstant.INV_13014)
+    @JsonProperty("method_payment")
+    private MethodPaymentEnum methodPayment;
+
     @NotNull(message = ResourceBundleConstant.INV_13012)
     @JsonProperty("user_info_id")
     private Integer userInfoId;
 
-    @NotNull(message = ResourceBundleConstant.INV_13012)
+    @NotNull(message = ResourceBundleConstant.INV_13013)
     @JsonProperty("package_upgrade_id")
     private UUID packageUpgradeId;
 }

@@ -1,6 +1,7 @@
 package com.poly.easylearning.entity;
 
 import com.poly.easylearning.enums.InvoiceStatusEnum;
+import com.poly.easylearning.enums.MethodPaymentEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,9 @@ public class Invoice extends BaseEntity{
     private double total;
     @Enumerated(EnumType.STRING)
     private InvoiceStatusEnum status;
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "method_payment")
+    private MethodPaymentEnum methodPayment;
     @ManyToOne
     @JoinColumn(name = "user_info_id")
     private UserInfo userInfo;

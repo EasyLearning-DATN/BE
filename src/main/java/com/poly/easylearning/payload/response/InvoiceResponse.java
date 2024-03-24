@@ -3,6 +3,7 @@ package com.poly.easylearning.payload.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.easylearning.entity.Invoice;
 import com.poly.easylearning.enums.InvoiceStatusEnum;
+import com.poly.easylearning.enums.MethodPaymentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,8 @@ public class InvoiceResponse extends BaseResponse{
     private LocalDateTime date;
 
     private InvoiceStatusEnum status;
+    @JsonProperty("method_payment")
+    private MethodPaymentEnum methodPayment;
 
     @JsonProperty("user_info_id")
     private Integer userInfoId;
@@ -45,6 +48,7 @@ public class InvoiceResponse extends BaseResponse{
                 .date(invoice.getDate())
                 .userInfoId(invoice.getUserInfo().getId())
                 .status(invoice.getStatus())
+                .methodPayment(invoice.getMethodPayment())
                 .build();
         return invoiceResponse;
     }

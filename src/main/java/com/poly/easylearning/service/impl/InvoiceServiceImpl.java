@@ -80,6 +80,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
                         .total(invoiceRequest.getTotal())
                         .userInfo(userInfo)
                         .status(invoiceRequest.getStatus())
+                        .methodPayment(invoiceRequest.getMethodPayment())
                         .packageUpgrade(packageUpgrade)
                         .build()
         );
