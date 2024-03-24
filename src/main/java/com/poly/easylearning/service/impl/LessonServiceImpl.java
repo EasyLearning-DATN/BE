@@ -126,6 +126,7 @@ public class LessonServiceImpl implements ILessonService {
     @Override
     public void deleteLesson(UUID id) throws DataNotFoundException {
         Lesson existingLesson = lessonRepo.getLessonById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.LSN_4001));
+        ValidateUserUpdateUtils.checkUserUpdate(existingLesson);
         existingLesson.setIsDeleted(true);
         lessonRepo.save(existingLesson);
     }
