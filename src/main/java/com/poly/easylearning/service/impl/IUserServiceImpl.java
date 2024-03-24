@@ -203,14 +203,21 @@ public class IUserServiceImpl implements IUserService {
     }
 
     @Override
-    public RestResponse updatePassword(User user, PasswordUpdateRequest passwordUpdateRequest) {
+    public RestResponse<User> updatePassword(User user, PasswordUpdateRequest passwordUpdateRequest) {
         checkUserIsLocked(user);
         if (!passwordEncoder.matches(passwordUpdateRequest.getPasswordOld(), user.getPassword())) {
             throw new ApiRequestException(ResourceBundleConstant.USR_2021);
         }
         user.setPassword(passwordEncoder.encode(passwordUpdateRequest.getPasswordNew()));
-        userRepo.save(user);
-        return RestResponse.ok(ResourceBundleConstant.USR_2016, "OK");
+        return RestResponse.ok(ResourceBundleConstant.USR_2016, userRepo.save(user));
+    }
+
+    @Override
+    public RestResponse<User> forgotPassword(User user, ForgotPasswordRequest forgotPasswordRequest) {
+        checkUserIsLocked(user);
+        user.setPassword(passwordEncoder.encode(forgotPasswordRequest.getPasswordUpdate()));
+        User userUpdate = userRepo.save(user);
+        return RestResponse.ok(ResourceBundleConstant.USR_2016, userUpdate);
     }
 
     @Override

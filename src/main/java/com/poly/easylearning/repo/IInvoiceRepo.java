@@ -32,4 +32,9 @@ public interface IInvoiceRepo extends JpaRepository<Invoice, UUID> {
             "FROM Invoice i WHERE " +
             "i.isDeleted = false ")
     Map<String, Double> getRevenue(LocalDate dateStart, LocalDate dateEnd);
+
+//    @Query("SELECT COUNT(i) as saleTotal, COUNT(case when ) " +
+//            "FROM Invoice i WHERE " +
+//            "i.isDeleted = false ")
+//    Map<String, Double> getDataActivity(LocalDate dateStart, LocalDate dateEnd);
 }

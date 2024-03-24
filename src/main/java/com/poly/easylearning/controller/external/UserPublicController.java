@@ -1,7 +1,9 @@
 package com.poly.easylearning.controller.external;
 
 import com.poly.easylearning.constant.SystemConstant;
+import com.poly.easylearning.entity.User;
 import com.poly.easylearning.payload.request.AuthRequest;
+import com.poly.easylearning.payload.request.PasswordUpdateRequest;
 import com.poly.easylearning.payload.request.UserForgotPasswordRequest;
 import com.poly.easylearning.payload.request.UserRQ;
 import com.poly.easylearning.service.AuthService;
@@ -10,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
