@@ -184,4 +184,6 @@ public class ResourceBundleConstant {
 
     //ReportFinance
     public static final String RPF_14003 = "RPF_14003";
+    //ReportDataActivity
+    public static final String RDA_15003 = "RDA_15003";
 }

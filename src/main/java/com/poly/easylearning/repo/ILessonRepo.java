@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,4 +25,8 @@ public interface ILessonRepo extends JpaRepository<Lesson, UUID> {
     @Query("SELECT l FROM Lesson l WHERE " +
             "(l.id = :id)" + " AND (l.isDeleted = false )")
     Optional<Lesson> getLessonById(UUID id);
+
+    @Query("SELECT COUNT(t) as createLessonTimeQuarter " +
+            "FROM Lesson t WHERE (date(t.createdDate) BETWEEN :dateStart AND :dateEnd)")
+    Map<String, Long> getCreateLessonTime(LocalDate dateStart, LocalDate dateEnd);
 }

@@ -53,6 +53,7 @@ public class SystemConstant {
 //	Api invoice
 	public static final String API_INVOICE = "/invoice";
 	public static final String API_REPORT_FINANCE = "/report-finance";
+	public static final String API_REPORT_ACTIVITY = "/report-activity";
 //	Xử lý thanh toán thành công
 	public static final String API_PAYMENT_SUCCESS = "/payment-success";
 
