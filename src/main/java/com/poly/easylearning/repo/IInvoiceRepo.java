@@ -33,8 +33,9 @@ public interface IInvoiceRepo extends JpaRepository<Invoice, UUID> {
             "i.isDeleted = false ")
     Map<String, Double> getRevenue(LocalDate dateStart, LocalDate dateEnd);
 
-//    @Query("SELECT COUNT(i) as saleTotal, COUNT(case when ) " +
-//            "FROM Invoice i WHERE " +
-//            "i.isDeleted = false ")
-//    Map<String, Double> getDataActivity(LocalDate dateStart, LocalDate dateEnd);
+    @Query("SELECT COUNT(i) as saleTotal, " +
+            "SUM((case when (date(i.date) BETWEEN :dateStart AND :dateEnd) then 1 else 0 end)) as saleQuarter " +
+            "FROM Invoice i WHERE " +
+            "i.isDeleted = false ")
+    Map<String, Long> getDataSaleAmount(LocalDate dateStart, LocalDate dateEnd);
 }

@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,4 +23,9 @@ public interface ITestReportRepo extends JpaRepository<TestReport, UUID> {
     @Query("SELECT t FROM TestReport t WHERE " +
             "(t.id = :id)" + " AND (t.isDeleted = false )")
     Optional<TestReport> getTestReportById(UUID id);
+
+    @Query("SELECT COUNT(t) as doingTestAmountQuarter " +
+            "FROM TestReport t WHERE (date(t.createdDate) BETWEEN :dateStart AND :dateEnd) " +
+            "AND t.isDeleted = false")
+    Map<String, Long> getDoingTestAmount(LocalDate dateStart, LocalDate dateEnd);
 }

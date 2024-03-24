@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,4 +51,8 @@ public interface IUserRepo extends JpaRepository<User, UUID> {
 			""")
 	Optional<User> findById(UUID userID);
 
+	@Query("SELECT COUNT(u) as userAmountQuarter " +
+			"FROM User u WHERE (date(u.createdDate) BETWEEN :dateStart AND :dateEnd) " +
+			"AND u.isDeleted = false ")
+	Map<String, Long> getUserAmount(LocalDate dateStart, LocalDate dateEnd);
 }
