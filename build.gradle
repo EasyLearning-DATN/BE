@@ -65,6 +65,9 @@ dependencies {
 
 	//Cloudinary
 	implementation 'com.cloudinary:cloudinary-http44:1.32.2'
+
+	//Json
+	implementation 'org.json:json:20210307'
 }
 test {
 	enabled = false

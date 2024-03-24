@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +36,9 @@ public class TestResponse extends BaseResponse {
     @JsonProperty("user_info")
     private UserInfoResponse userInfoResponse;
 
+    @JsonProperty("doing_time")
+    private Integer doingTime;
+
     public static TestResponse fromTest(Test test) {
         return TestResponse.builder()
                 .id(test.getId())
@@ -54,6 +55,7 @@ public class TestResponse extends BaseResponse {
                 .viewResultType(ViewResultTypeResponse.fromViewResultType(test.getViewResultType()))
                 .questions(test.getQuestionTests() != null ? test.getQuestionTests().stream().map(questionTest -> QuestionResponse.fromQuestion(questionTest.getQuestion())).collect(Collectors.toSet()): new HashSet<>())
                 .userInfoResponse(UserInfoResponse.fromUserInfo(test.getUserInfo()))
+                .doingTime(test.getDoingTime())
                 .build();
     }
 }

@@ -22,4 +22,6 @@ public interface ITestRepo extends JpaRepository<Test, UUID> {
     @Query("SELECT t FROM Test t WHERE " +
             "(t.id = :id)" + " AND (t.isDeleted = false )")
     Optional<Test> getTestById(UUID id);
+
+
 }

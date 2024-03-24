@@ -75,9 +75,9 @@ public class TestReportServiceImpl implements ITestReportService {
     public TestReport saveTestReport(TestReportRequest testReportRequest) {
         Test existingTest = testRepo.findById(testReportRequest.getTestId())
                 .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.TES_10001));
+        existingTest.setDoingTime(existingTest.getDoingTime() + 1);
         UserInfo existingUserInfo = userInfoRepo.findById(testReportRequest.getUserInfoId())
                 .orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.USR_2002));
-
         TestReport testReport = TestReport.builder()
                 .test(existingTest)
                 .userInfo(existingUserInfo)

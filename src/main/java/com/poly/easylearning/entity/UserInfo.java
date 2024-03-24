@@ -35,7 +35,7 @@ public class UserInfo implements Serializable {
     private boolean isDeleted;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -44,4 +44,7 @@ public class UserInfo implements Serializable {
 
     @OneToMany(mappedBy = "userInfo")
     private List<Test> tests;
+
+    @OneToMany(mappedBy = "userInfo")
+    private List<Invoice> invoices;
 }
