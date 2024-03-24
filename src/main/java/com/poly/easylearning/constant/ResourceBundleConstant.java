@@ -129,6 +129,7 @@ public class ResourceBundleConstant {
     public static final String TES_10005 = "TES_10005";
     public static final String TES_10006 = "TES_10006";
     public static final String TES_10007 = "TES_10007";
+    public static final String TES_10008 = "TES_10008";
 
     //ViewResultType
     public static final String VRT_11001 = "VRT_11001";

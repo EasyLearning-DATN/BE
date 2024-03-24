@@ -16,6 +16,7 @@ import com.poly.easylearning.service.IQuestionTestService;
 import com.poly.easylearning.service.ITestService;
 import com.poly.easylearning.utils.DateUtil;
 import com.poly.easylearning.utils.SecurityContextUtils;
+import com.poly.easylearning.utils.ValidateUserUpdateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -97,6 +98,7 @@ public class TestServiceImpl implements ITestService {
     @Override
     public RestResponse<TestResponse> updateTest(UUID id, TestRequest testRequest) throws DataNotFoundException {
         Test existingTest = testRepo.findById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.TES_10001));
+        ValidateUserUpdateUtils.checkUserUpdate(existingTest);
         ViewResultType viewResultType = viewResultTypeRepo.findViewResultTypeByCode(testRequest.getViewResultTypeCode()).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.VRT_11001));
         Image image = imageRepo.findByPublicId(testRequest.getImageId()).orElse(imageRepo.findByPublicId(DefaultValueConstants.IMAGE_LESSON_DEFAULT).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.IMG_3005)));
         existingTest.setName(testRequest.getName());
@@ -115,12 +117,13 @@ public class TestServiceImpl implements ITestService {
         TestResponse testResponse = TestResponse.fromTest(test);
         testResponse.setQuestions(questionTestResponses.stream().map(QuestionTestResponse::getQuestionResponse).collect(Collectors.toSet()));
 
-        return RestResponse.created(ResourceBundleConstant.TES_10002, testResponse);
+        return RestResponse.created(ResourceBundleConstant.TES_10008, testResponse);
     }
 
     @Override
     public void deleteTest(UUID id) throws DataNotFoundException {
         Test existingTest = testRepo.findById(id).orElseThrow(() -> new DataNotFoundException(ResourceBundleConstant.TES_10001));
+        ValidateUserUpdateUtils.checkUserUpdate(existingTest);
         existingTest.setIsDeleted(true);
         testRepo.save(existingTest);
     }
