@@ -2,8 +2,12 @@ package com.poly.easylearning.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poly.easylearning.entity.Lesson;
+import com.poly.easylearning.entity.Question;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class GetListLessonResponse extends BaseResponse {
+    public static final int DO_NOT_HAVE_QUESTION = 0;
     private String name;
     private String description;
 
@@ -29,6 +34,7 @@ public class GetListLessonResponse extends BaseResponse {
     private Integer numberOfQuestion;
 
     public static GetListLessonResponse fromLesson(Lesson lesson) {
+        Collection<Question> questions = lesson.getQuestions();
         return GetListLessonResponse.builder()
                 .id(lesson.getId())
                 .createdDate(lesson.getCreatedDate())
@@ -38,7 +44,7 @@ public class GetListLessonResponse extends BaseResponse {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .isPublic(lesson.isPublic())
-                .numberOfQuestion(lesson.getQuestions().size())
+                .numberOfQuestion(questions!= null ? questions.size() : DO_NOT_HAVE_QUESTION)
                 .accessTimes(lesson.getAccessTimes())
                 .image(ImageResponse.fromImage(lesson.getImage()))
                 .userInfoResponse(UserInfoResponse.fromUserInfo(lesson.getUserInfo()))

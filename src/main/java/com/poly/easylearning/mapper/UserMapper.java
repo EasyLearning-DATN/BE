@@ -18,6 +18,7 @@ public class UserMapper implements Function<User, UserDTO> {
 				.fullName(userInfo.getFullName())
 				.email(userInfo.getEmail())
 				.dayOfBirth(userInfo.getDayOfBirth())
+				.userInfoId(userInfo.getId())
 				.avatar(userInfo.getAvatar() != null ? userInfo.getAvatar().getUrl() : "")
 				.build();
 	}
@@ -33,6 +34,7 @@ public class UserMapper implements Function<User, UserDTO> {
 				.dayOfBirth(userInfo.getDayOfBirth())
 				.provider(user.getProvider())
 				.locked(user.isLocked())
+				.userInfoId(userInfo.getId())
 				.avatar(userInfo.getAvatar() != null ? userInfo.getAvatar().getUrl() : "")
 				.build();
 	}
