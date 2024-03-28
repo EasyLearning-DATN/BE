@@ -40,4 +40,7 @@ public interface ICommentRepo extends JpaRepository<Comment, UUID> {
 			AND o.isDeleted != TRUE
 			""")
 	int getAmountChild(UUID rootId);
+
+	@Query("SELECT COUNT(o) FROM Comment o JOIN Lesson l ON o.lesson.id = l.id WHERE l.id = :lessonId")
+	int getTotalCommentByLesson(UUID lessonId);
 }

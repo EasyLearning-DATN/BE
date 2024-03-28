@@ -43,6 +43,7 @@ public class ReactionServiceImpl implements IReactionService {
         Reaction reactionSaved = reactionRepo.save(
                 Reaction.builder()
                         .liked(reactionRQ.isLiked())
+                        .userId(user.getId())
                         .user(user)
                         .comment(comment)
                         .build()

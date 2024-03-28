@@ -25,4 +25,6 @@ public class CommentDTO {
     private UUID rootId;
     private int amountChild;
     private String usernameReply;
+    private Boolean isLiked;
+    private Boolean isDisLiked;
 }

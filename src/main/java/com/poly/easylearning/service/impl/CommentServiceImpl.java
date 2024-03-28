@@ -5,6 +5,7 @@ import com.poly.easylearning.constant.ResourceBundleConstant;
 import com.poly.easylearning.dto.CommentDTO;
 import com.poly.easylearning.entity.Comment;
 import com.poly.easylearning.entity.Lesson;
+import com.poly.easylearning.entity.Reaction;
 import com.poly.easylearning.entity.User;
 import com.poly.easylearning.enums.Scope;
 import com.poly.easylearning.exception.ApiRequestException;
@@ -14,6 +15,7 @@ import com.poly.easylearning.payload.request.CommentStatusRQ;
 import com.poly.easylearning.payload.response.ListResponse;
 import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.repo.ICommentRepo;
+import com.poly.easylearning.repo.IReactionRepo;
 import com.poly.easylearning.service.ICommentService;
 import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.service.IReactionService;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,7 @@ public class CommentServiceImpl implements ICommentService {
     private final ICommentRepo commentRepo;
     private final ILessonService lessonService;
     private final CommentMapper commentMapper;
+    private final IReactionRepo reactionRepo;
     @Override
     public RestResponse create(CommentRQ commentRQ, User user) {
         Lesson lesson = lessonService.findLessonEntityById(commentRQ.getLessonId());
@@ -87,7 +91,21 @@ public class CommentServiceImpl implements ICommentService {
                 commentDTOS = comments.stream()
                         .map(comment -> {
                             boolean isCreator = comment.getCreatedBy().equals(currentUserId);
-                            return commentMapper.applyForMember(comment, isCreator);
+
+                            Optional<Reaction> reactionLiked = reactionRepo
+                                    .findByCommentIdAndIsLikedTrue(comment.getId(),true);
+                            Optional<Reaction> reactionDisLiked = reactionRepo
+                                    .findByCommentIdAndIsLikedTrue(comment.getId(),false);
+
+                            CommentDTO commentDTO = commentMapper.applyForMember(comment, isCreator);
+                            commentDTO.setIsLiked(
+                                    reactionLiked.isPresent() &&
+                                            reactionLiked.get().getUserId().equals(currentUserId));
+
+                            commentDTO.setIsDisLiked(
+                                    reactionDisLiked.isPresent()
+                                            && reactionDisLiked.get().getUserId().equals(currentUserId));
+                            return commentDTO;
                         }).toList();
                 break;
             }
@@ -116,5 +134,10 @@ public class CommentServiceImpl implements ICommentService {
         return commentRepo.findById(id).orElseThrow(
                 ()-> new ApiRequestException(ResourceBundleConstant.CMT_8004)
         );
+    }
+
+    @Override
+    public int getTotalCommentByLesson(UUID lessonId) {
+        return commentRepo.getTotalCommentByLesson(lessonId);
     }
 }

@@ -25,6 +25,7 @@ public class CommentMapper implements Function<Comment, CommentDTO> {
                 .content(comment.getContent())
                 .creator(creator)
                 .dateCreate(comment.getCreatedDate())
+                .rootId(comment.getRootId())
                 .amountLike(getQuantityReaction(comment.getReactions(), true))
                 .amountDislike(getQuantityReaction(comment.getReactions(), false))
                 .build();
