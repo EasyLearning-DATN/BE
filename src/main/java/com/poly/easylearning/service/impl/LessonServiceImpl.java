@@ -10,9 +10,11 @@ import com.poly.easylearning.payload.response.RestResponse;
 import com.poly.easylearning.payload.request.LessonRequest;
 import com.poly.easylearning.entity.Lesson;
 import com.poly.easylearning.exception.DataNotFoundException;
+import com.poly.easylearning.repo.ICommentRepo;
 import com.poly.easylearning.repo.IImageRepo;
 import com.poly.easylearning.repo.ILessonRepo;
 import com.poly.easylearning.payload.response.GetListLessonResponse;
+import com.poly.easylearning.service.ICommentService;
 import com.poly.easylearning.service.ILessonService;
 import com.poly.easylearning.utils.DateUtil;
 import com.poly.easylearning.utils.SecurityContextUtils;
@@ -35,6 +37,7 @@ import java.util.UUID;
 public class LessonServiceImpl implements ILessonService {
     private final ILessonRepo lessonRepo;
     private final IImageRepo imageRepo;
+    private final ICommentRepo commentRepo;
 
     @Override
     public RestResponse<ListResponse<GetListLessonResponse>> getListLesson(String keyword, String id, String dateStart, String dateEnd, String createdBy, String isPublic, PageRequest pageRequest) {
@@ -81,7 +84,7 @@ public class LessonServiceImpl implements ILessonService {
         lesson.setAccessTimes(lesson.getAccessTimes() + 1);
         Lesson lessonNew = lessonRepo.save(lesson);
         GetOneLessonResponse lessonResponse = GetOneLessonResponse.fromLesson(lessonNew);
-
+        lessonResponse.setTotalComment(commentRepo.getTotalCommentByLesson(lesson.getId()));
         return RestResponse.ok(ResourceBundleConstant.LSN_4004, lessonResponse);
     }
 

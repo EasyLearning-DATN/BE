@@ -33,6 +33,8 @@ public class GetOneLessonResponse extends BaseResponse {
     @JsonProperty("questions")
     private List<QuestionResponse> questionResponses;
 
+    private int totalComment;
+
     public static GetOneLessonResponse fromLesson(Lesson lesson) {
         return GetOneLessonResponse.builder()
                 .id(lesson.getId())

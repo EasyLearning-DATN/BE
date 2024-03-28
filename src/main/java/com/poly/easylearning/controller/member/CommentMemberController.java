@@ -49,11 +49,12 @@ public class CommentMemberController {
     public ResponseEntity<?> findByLesson(
             @AuthenticationPrincipal User user,
             @RequestParam(value = "lessonId", defaultValue = "")UUID lessonId,
+            @RequestParam(value = "rootId", required = false)UUID rootId,
             @RequestParam(value = SystemConstant.CURRENT_PAGE, required = false) Optional<Integer> currentPage,
             @RequestParam(value = SystemConstant.LIMIT_PAGE, required = false) Optional<Integer> limitPage
     ){
         return ResponseEntity
                 .status(SystemConstant.STATUS_CODE_SUCCESS)
-                .body(commentService.findCommentByLesson(lessonId, user, Scope.MEMBER, currentPage, limitPage));
+                .body(commentService.findCommentByLesson(lessonId, rootId, user, Scope.MEMBER, currentPage, limitPage));
     }
 }

@@ -17,16 +17,30 @@ public interface ICommentRepo extends JpaRepository<Comment, UUID> {
 			SELECT o FROM Comment o
 			JOIN Lesson l ON o.lesson.id = l.id
 			WHERE o.lesson.id = :lessonId
+			AND (:rootId IS NULL OR o.rootId = :rootId)
 			AND o.enabled != FALSE
 			AND o.isDeleted != TRUE
 			""")
-    Page<Comment> findPublicCommentByCondition(UUID lessonId, Pageable pageable);
+    Page<Comment> findPublicCommentByCondition(UUID lessonId, UUID rootId, Pageable pageable);
 
 	@Query("""
 			SELECT o FROM Comment o
 			JOIN Lesson l ON o.lesson.id = l.id
 			WHERE o.lesson.id = :lessonId
+			AND (:rootId IS NULL OR o.rootId = :rootId)
 			AND o.isDeleted != TRUE
 			""")
-	Page<Comment> findCommentByCondition(UUID lessonId, Pageable pageable);
+	Page<Comment> findCommentByCondition(UUID lessonId, UUID rootId, Pageable pageable);
+
+
+	@Query("""
+			SELECT COUNT(o) FROM Comment o
+			WHERE (:rootId IS NULL OR o.rootId = :rootId)
+			AND o.enabled != FALSE
+			AND o.isDeleted != TRUE
+			""")
+	int getAmountChild(UUID rootId);
+
+	@Query("SELECT COUNT(o) FROM Comment o JOIN Lesson l ON o.lesson.id = l.id WHERE l.id = :lessonId")
+	int getTotalCommentByLesson(UUID lessonId);
 }

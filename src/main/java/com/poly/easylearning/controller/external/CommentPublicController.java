@@ -22,11 +22,13 @@ public class CommentPublicController {
     @GetMapping
     public ResponseEntity<?> findByLesson(
             @RequestParam(value = "lessonId", defaultValue = "") UUID lessonId,
+            @RequestParam(value = "rootId", required = false)UUID rootId,
             @RequestParam(value = SystemConstant.CURRENT_PAGE, required = false) Optional<Integer> currentPage,
             @RequestParam(value = SystemConstant.LIMIT_PAGE, required = false) Optional<Integer> limitPage
     ){
         return ResponseEntity
                 .status(SystemConstant.STATUS_CODE_SUCCESS)
-                .body(commentService.findCommentByLesson(lessonId, null, Scope.EXTERNAL, currentPage, limitPage));
+                .body(commentService.findCommentByLesson(lessonId, rootId, null, Scope.EXTERNAL, currentPage,
+                        limitPage));
     }
 }
