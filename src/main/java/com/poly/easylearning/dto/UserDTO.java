@@ -22,4 +22,5 @@ public class UserDTO {
 	private LocalDate dayOfBirth;
 	private boolean locked;
 	private Provider provider;
+	private Integer userInfoId;
 }
